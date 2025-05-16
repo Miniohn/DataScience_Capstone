@@ -35,7 +35,6 @@ time.sleep(10)
 button_1 = driver.find_element(By.CSS_SELECTOR, "#app > div > span:nth-child(3) > div > div > div > div > div > div > div.x78zum5.x8hhl5t.x13a6bvl.xp4054r.xuxw1ft.x1cnzs8.xc73u3c.xx6bls6.x5ib6vp.x16w0wmm > div > button")
 button_1.click()
 
-
 # 1. scroll -> how many chats?
 
 # 2. one by one -> 
