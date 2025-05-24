@@ -45,11 +45,11 @@ async function run() {
     await page.waitForSelector('#main > header',{ timeout: 30000 }); 
     await page.click('#main > header');
 
-    // 2. 본문 메시지 중 가장 마지막 메시지를 포함하는 div 클릭
-    await page.waitForSelector('div.message-in, div.message-out',{timeout:30000}); // WhatsApp 메시지 DOM
-    await page.click('div.message-in, div.message-out'); // 실제 메시지에 포커스
+    // last message click
+    await page.waitForSelector('div.message-in, div.message-out',{timeout:30000}); 
+    await page.click('div.message-in, div.message-out');
 
-    // 복사 키 입력
+    // all select and copy key
     await page.keyboard.down('Meta');
     await page.keyboard.press('KeyA');
     await page.keyboard.up('Meta');
@@ -58,7 +58,7 @@ async function run() {
     await page.keyboard.press('KeyC');
     await page.keyboard.up('Meta');
 
-    // 클립보드 읽기
+    // clipboard
     const cp = require('copy-paste');
     cp.paste((err, text) => {
       console.log(text);
