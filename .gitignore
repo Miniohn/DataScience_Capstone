@@ -9,3 +9,4 @@
 ./puppeteer_crawling/Package-lock.json
 ./puppeteer_crawling/package.json
 .code.Rproj
+.env
