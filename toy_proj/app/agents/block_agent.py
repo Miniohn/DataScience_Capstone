@@ -7,10 +7,6 @@ from collections import defaultdict
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# WhatsApp 관련 설정 (환경 변수에서 가져오거나 하드코딩)
-WHATSAPP_TOKEN = 'your_whatsapp_token'  # WhatsApp API 인증 토큰
-WHATSAPP_PHONE_NUMBER_ID = 'your_phone_number_id'  # WhatsApp 전화번호 ID
-
 class BlockAgent:
     def __init__(self):
         self.system_prompt = """
