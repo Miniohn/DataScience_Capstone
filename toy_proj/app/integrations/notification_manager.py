@@ -1,6 +1,11 @@
-# =============================================================================
-# 7. WhatsApp 전용 알림 시스템
-# =============================================================================
+# app/integrations/notification_manager.py
+import os
+import requests
+import logging
+from typing import Dict, List
+from app.models import Counselor, HandoffRequest, HandoffUrgency
+
+logger = logging.getLogger(__name__)
 
 class WhatsAppNotificationManager:
     def __init__(self):
@@ -10,13 +15,13 @@ class WhatsAppNotificationManager:
         self.phone_number_id = os.getenv("WHATSAPP_PHONE_NUMBER_ID")
     
     def _load_counselors(self) -> Dict[str, Counselor]:
-        """상담사 정보 로드 (WhatsApp만)"""
+        """상담사 정보 로드"""
         return {
             "pastor_john": Counselor(
                 id="pastor_john",
                 name="Pastor John",
                 whatsapp=os.getenv("PASTOR_JOHN_WHATSAPP", "+1234567890"),
-                expertise=["pastoral_care", "spiritual_guidance", "biblical_interpretation", "theology"],
+                expertise=["pastoral_care", "spiritual_guidance", "biblical_interpretation"],
                 availability="9AM-9PM",
                 priority=1
             ),
@@ -24,7 +29,7 @@ class WhatsAppNotificationManager:
                 id="missionary_sarah",
                 name="Missionary Sarah",
                 whatsapp=os.getenv("MISSIONARY_SARAH_WHATSAPP", "+1234567891"),
-                expertise=["cross_cultural", "missions", "spiritual_guidance", "discipleship"],
+                expertise=["cross_cultural", "missions", "spiritual_guidance"],
                 availability="24/7",
                 priority=1
             ),
@@ -32,23 +37,21 @@ class WhatsAppNotificationManager:
                 id="counselor_mary",
                 name="Counselor Mary",
                 whatsapp=os.getenv("COUNSELOR_MARY_WHATSAPP", "+1234567892"),
-                expertise=["depression", "anxiety", "trauma", "grief", "general_counseling"],
+                expertise=["depression", "anxiety", "trauma", "general_counseling"],
                 availability="9AM-6PM",
                 priority=2
             )
         }
     
     def send_handoff_notifications(self, handoff_request: HandoffRequest):
-        """WhatsApp으로만 핸드오프 알림 전송"""
+        """WhatsApp으로 핸드오프 알림 전송"""
         try:
-            # 적절한 상담사들 선택
             target_counselors = self._select_counselors(
                 handoff_request.urgency, 
                 handoff_request.counselor_type
             )
             
             for counselor in target_counselors:
-                # WhatsApp 알림만 전송
                 self._send_whatsapp_notification(counselor, handoff_request)
             
             logger.info(f"WhatsApp notifications sent for {handoff_request.user_phone}")
@@ -60,29 +63,25 @@ class WhatsAppNotificationManager:
         """적절한 상담사들 선택"""
         selected = []
         
-        # Pastor Agent에서 온 요청이면 선교사/목사님 우선
         if counselor_type in ["pastor", "missionary"]:
             pastoral_counselors = [c for c in self.counselors.values() 
                                  if "pastoral_care" in c.expertise or "spiritual_guidance" in c.expertise]
             selected.extend(pastoral_counselors)
         
-        # 일반 상담의 경우
         elif counselor_type == "counselor":
             general_counselors = [c for c in self.counselors.values() 
                                 if "general_counseling" in c.expertise]
             selected.extend(general_counselors)
         
-        # 우선순위 정렬
         selected.sort(key=lambda x: x.priority)
-        
-        return selected[:2]  # 최대 2명
+        return selected[:2]
     
     def _send_whatsapp_notification(self, counselor: Counselor, handoff_request: HandoffRequest):
         """WhatsApp 알림 전송"""
         urgency_emoji = {
-            HandoffUrgency.HIGH: "🙏",      # 깊은 영적 질문
-            HandoffUrgency.MEDIUM: "📋",    # 일반 상담
-            HandoffUrgency.LOW: "💬"        # 간단한 질문
+            HandoffUrgency.HIGH: "🙏",
+            HandoffUrgency.MEDIUM: "📋",
+            HandoffUrgency.LOW: "💬"
         }
         
         message = f"""
@@ -104,7 +103,6 @@ Reply 'INFO {handoff_request.session_id}' for full conversation.
 Reply 'BUSY' if you're currently unavailable.
         """
         
-        # WhatsApp Business API 호출
         success = self._send_whatsapp_message(counselor.whatsapp, message)
         
         if success:
@@ -145,7 +143,3 @@ Reply 'BUSY' if you're currently unavailable.
         except Exception as e:
             logger.error(f"Error sending WhatsApp message: {e}")
             return False
-    
-    def send_user_notification(self, user_phone: str, message: str):
-        """사용자에게 WhatsApp 메시지 전송"""
-        return self._send_whatsapp_message(user_phone, message)

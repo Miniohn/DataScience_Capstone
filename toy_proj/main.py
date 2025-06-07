@@ -1,51 +1,30 @@
+import os
+import logging
+from dotenv import load_dotenv
+from app.flask_app import create_app
+from app.utils.excel_loader import create_sample_excel_file
 
-def initialize_system():
-    """시스템 초기화"""
-    print("🚀 Initializing Multi-Agent Counseling System...")
-    
-    # 시스템 생성
-    chatbot = ChatbotSystem()
-    
-    # 샘플 데이터 로드
-    chatbot.load_qa_dataset(sample_qa_data)
-    
-    print("✅ System initialized successfully!")
-    return chatbot
+# 환경 변수 로드 및 로깅 설정
+load_dotenv()
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-def test_system(chatbot: ChatbotSystem):
-    """시스템 테스트"""
-    print("\n🧪 Testing the system with sample queries...\n")
-    
-    test_cases = [
-        "I'm feeling really depressed and don't know what to do",  # COUNSELING
-        "What does the Bible say about finding hope?",            # GOSPEL
-        "Buy this amazing product now! Click here!",              # BLOCK
-        "How can I deal with stress at work?",                    # COUNSELING
-        "Is God real? I'm having doubts about my faith"          # GOSPEL
-    ]
-    
-    for i, test_input in enumerate(test_cases, 1):
-        print(f"Test {i}: {test_input}")
-        response = chatbot.process_message(test_input, f"test_session_{i}")
-        print(f"Response: {response}\n")
-        print("-" * 80 + "\n")
+# 환경 변수 확인
+required_vars = ["OPENAI_API_KEY", "WHATSAPP_ACCESS_TOKEN", "WHATSAPP_PHONE_NUMBER_ID", "WHATSAPP_VERIFY_TOKEN"]
+if any(not os.getenv(var) for var in required_vars):
+    logging.warning(f"One or more environment variables are missing. The system may not fully function.")
+
+# 샘플 데이터 파일 확인/생성
+excel_file_path = "data/qa_counseling_data.xlsx"
+if not os.path.exists(excel_file_path):
+    logging.info(f"Creating sample Excel file at: {excel_file_path}")
+    os.makedirs('data', exist_ok=True)
+    create_sample_excel_file(excel_file_path)
+
+# 앱 생성
+app = create_app()
 
 if __name__ == "__main__":
-    # 시스템 초기화
-    chatbot_system = initialize_system()
-    
-    # 테스트 실행
-    test_system(chatbot_system)
-    
-    # 대화형 모드 (옵션)
-    print("💬 Interactive mode started. Type 'quit' to exit.\n")
-    
-    while True:
-        user_input = input("You: ")
-        if user_input.lower() in ['quit', 'exit', 'bye']:
-            print("Thank you for using the Multi-Agent Counseling System. May God bless you!")
-            break
-        
-        response = chatbot_system.process_message(user_input)
-        print(f"Assistant: {response}\n")
-
+    logging.info("🚀 Starting Multi-Agent Counseling System...")
+    logging.info("🌐 Access Dashboard at http://localhost:5000/dashboard")
+    logging.info("🧪 Access Test Page at http://localhost:5000/test")
+    app.run(host='0.0.0.0', port=5000, debug=True)

@@ -1,36 +1,31 @@
-# =============================================================================
-# 8. Handoff Judge Agent (핸드오프 판단 Agent)
-# =============================================================================
+import openai
+import logging
+from app.models import AgentType
+
+logger = logging.getLogger(__name__)
 
 class HandoffJudgeAgent:
+    """핸드오프 판단 Agent"""
     def __init__(self):
         self.system_prompt = """
         You are an expert counseling supervisor who decides when AI should transfer 
         conversations to human missionaries/pastors.
         
-        Focus specifically on Pastor Agent conversations - when AI limitations are reached.
-        
-        DECISION CRITERIA for Pastor Agent:
+        DECISION CRITERIA:
         1. THEOLOGICAL COMPLEXITY (HIGH): 
            - Deep doctrinal questions requiring seminary-level knowledge
            - Complex biblical interpretation beyond basic verses
            - Questions about church history, systematic theology
-           - Denominational differences, controversial theological topics
-           - Questions requiring pastoral wisdom and experience
         
         2. PASTORAL WISDOM NEEDED (MEDIUM):
            - Life decisions requiring spiritual discernment  
            - Ministry calling and vocation questions
            - Spiritual disciplines and growth beyond basics
-           - Grief counseling with theological depth
         
         3. AI CAN HANDLE (LOW):
            - Basic biblical questions with clear answers
            - Simple prayer requests
            - General encouragement from Scripture
-           - Common Christian living questions
-        
-        For Counseling Agent - only consider handoff for persistent issues needing ongoing support.
         
         Respond ONLY in JSON:
         {
@@ -42,20 +37,16 @@ class HandoffJudgeAgent:
             "transition_message": "gentle message explaining why human guidance would be better"
         }
         """
-        
-        self.conversation_history = []
     
     def evaluate_handoff(self, current_message: str, agent_response: str, 
                         conversation_context: list, agent_type: str) -> dict:
         """현재 대화 상황을 분석하여 핸드오프 필요성 판단"""
         try:
-            # 대화 히스토리 구성
             context_summary = self._build_context_summary(conversation_context, 
                                                          current_message, 
                                                          agent_response, 
                                                          agent_type)
             
-            # AI 판단 요청
             judgment_prompt = f"""
             CONVERSATION ANALYSIS REQUEST:
             
@@ -67,10 +58,7 @@ class HandoffJudgeAgent:
             Conversation Summary:
             {context_summary}
             
-            Based on this conversation, should we transfer to a human counselor?
-            Consider the depth of spiritual questions, emotional intensity, 
-            and whether AI responses are meeting the user's needs.
-            
+            Should we transfer to a human counselor?
             Provide your assessment in the required JSON format.
             """
             
@@ -85,8 +73,6 @@ class HandoffJudgeAgent:
             )
             
             judgment = json.loads(response.choices[0].message.content)
-            
-            # 결과 검증 및 기본값 설정
             return self._validate_judgment(judgment)
             
         except Exception as e:
@@ -100,7 +86,6 @@ class HandoffJudgeAgent:
         if not conversation_context:
             return f"First interaction - User: {current_message}"
         
-        # 최근 3-5턴의 대화만 요약
         recent_context = conversation_context[-5:] if len(conversation_context) > 5 else conversation_context
         
         summary_parts = []
@@ -126,14 +111,11 @@ class HandoffJudgeAgent:
             "primary_reason": judgment.get("primary_reason", "No specific reason provided"),
             "confidence_score": min(1.0, max(0.0, judgment.get("confidence_score", 0.5))),
             "counselor_type": judgment.get("counselor_type", "counselor"),
-            "user_readiness": judgment.get("user_readiness", "medium"),
             "transition_message": judgment.get("transition_message", "")
         }
         
-        # 긴급 상황 체크
         if validated["urgency_level"] == "CRITICAL":
             validated["handoff_needed"] = True
-            validated["user_readiness"] = "high"
         
         return validated
     
@@ -145,7 +127,6 @@ class HandoffJudgeAgent:
             "primary_reason": "System error - continuing with AI",
             "confidence_score": 0.3,
             "counselor_type": "counselor",
-            "user_readiness": "low",
             "transition_message": ""
         }
     
@@ -157,12 +138,7 @@ class HandoffJudgeAgent:
         urgency = judgment["urgency_level"]
         counselor_type = judgment["counselor_type"]
         
-        if urgency == "CRITICAL":
-            return ("I'm concerned about what you're going through right now. "
-                   "Let me connect you immediately with a crisis counselor who "
-                   "can provide the immediate support you need. Please stay with me.")
-        
-        elif urgency == "HIGH":
+        if urgency == "HIGH":
             return (f"I can see you're dealing with some deep and important questions. "
                    f"I'd like to connect you with {self._get_counselor_description(counselor_type)} "
                    f"who can provide more personalized guidance. Would that be helpful?")
@@ -183,7 +159,6 @@ class HandoffJudgeAgent:
         descriptions = {
             "pastor": "one of our experienced pastors",
             "counselor": "a professional Christian counselor", 
-            "crisis_specialist": "a crisis intervention specialist",
-            "chaplain": "a chaplain"
+            "missionary": "a missionary counselor"
         }
         return descriptions.get(counselor_type, "a professional counselor")

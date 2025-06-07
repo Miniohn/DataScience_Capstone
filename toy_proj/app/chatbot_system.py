@@ -1,39 +1,43 @@
+# app/chatbot_system.py
+import logging
+from datetime import datetime
+from typing import List, Dict
+import pandas as pd
 
+# 모델과 유틸리티 임포트
+from app.models import AgentType, HandoffUrgency, HandoffRequest, QnAData
+from app.utils.excel_loader import load_from_excel
 
-# =============================================================================
-# 8. 메인 챗봇 시스템
-# =============================================================================
+# Agent들 임포트
+from app.agents.orchestrator_agent import OrchestratorAgent
+from app.agents.block_agent import BlockAgent
+from app.agents.counseling_agent import CounselingAgent
+from app.agents.pastor_agent import PastorAgent, RAGSystem
+from app.agents.handoff_judge_agent import HandoffJudgeAgent
+
+# 통합 서비스 임포트
+from app.integrations.notification_manager import WhatsAppNotificationManager
+
+logger = logging.getLogger(__name__)
 
 class ChatbotSystem:
     def __init__(self):
         """챗봇 시스템 초기화"""
-        # RAG 시스템 초기화
         self.rag_system = RAGSystem()
-        
-        # WhatsApp 알림 시스템 초기화
         self.notification_manager = WhatsAppNotificationManager()
-        
-        # 각 Agent 초기화
         self.orchestrator = OrchestratorAgent()
         self.block_agent = BlockAgent()
         self.counseling_agent = CounselingAgent()
         self.pastor_agent = PastorAgent(self.rag_system)
-        self.handoff_judge = HandoffJudgeAgent()  # 새로운 Agent 추가
-        
-        # 세션 관리
+        self.handoff_judge = HandoffJudgeAgent()
         self.sessions = {}
-        self.active_handoffs = {}  # 진행 중인 핸드오프 추적
-        
-        logger.info("Integrated chatbot system with WhatsApp handoff initialized successfully")
-    
-    def load_qa_dataset(self, qa_data: List[Dict] = None, excel_file_path: str = None):
-        """QnA 데이터셋 로드 (리스트 또는 엑셀 파일에서)"""
-        if excel_file_path:
-            # 엑셀 파일에서 데이터 로드 (컬럼명: Question_ENG, Answer_ENG)
-            qa_data = self._load_from_excel(excel_file_path)
-        
+        self.active_handoffs = {}
+        logger.info("Integrated chatbot system initialized successfully")
+
+    def load_qa_dataset(self, excel_file_path: str):
+        qa_data = load_from_excel(excel_file_path)
         if not qa_data:
-            logger.warning("No QnA data provided")
+            logger.warning("No QnA data loaded")
             return
         
         qa_objects = [QnAData(question=item['question'], 
@@ -43,17 +47,13 @@ class ChatbotSystem:
         
         self.rag_system.add_qa_data(qa_objects)
         logger.info(f"Loaded {len(qa_objects)} Q&A pairs into the system")
-    
+
     def _load_from_excel(self, file_path: str) -> List[Dict]:
         """엑셀 파일에서 QnA 데이터 로드"""
         try:
-            # 엑셀 파일 읽기
             df = pd.read_excel(file_path)
-            
-            # 컬럼명 정규화 (대소문자 무시, 공백 제거)
             df.columns = df.columns.str.strip().str.lower()
             
-            # 필수 컬럼 확인 (Question_ENG, Answer_ENG)
             required_columns = ['question_eng', 'answer_eng']
             missing_columns = [col for col in required_columns if col not in df.columns]
             
@@ -61,18 +61,15 @@ class ChatbotSystem:
                 available_cols = list(df.columns)
                 raise ValueError(f"Missing required columns: {missing_columns}. Available columns: {available_cols}")
             
-            # 빈 행 제거
             df = df.dropna(subset=['question_eng', 'answer_eng'])
             
-            # 딕셔너리 리스트로 변환
             qa_data = []
             for _, row in df.iterrows():
                 qa_item = {
                     'question': str(row['question_eng']).strip(),
                     'answer': str(row['answer_eng']).strip(),
-                    'category': 'general'  # 기본 카테고리로 설정
+                    'category': 'general'
                 }
-                
                 qa_data.append(qa_item)
             
             logger.info(f"Successfully loaded {len(qa_data)} Q&A pairs from Excel file: {file_path}")
@@ -92,7 +89,6 @@ class ChatbotSystem:
             # 2. 적절한 Agent로 라우팅하여 응답 생성
             if agent_type == AgentType.BLOCK:
                 agent_response = self.block_agent.process(user_input)
-                # 차단 Agent에서 None을 반환하면 상담 Agent로 재라우팅
                 if agent_response is None:
                     agent_response = self.counseling_agent.process(user_input, session_id)
                     agent_type = AgentType.COUNSELING
@@ -118,6 +114,21 @@ class ChatbotSystem:
             handoff_message = ""
             if handoff_judgment["handoff_needed"]:
                 handoff_message = self.handoff_judge.generate_handoff_message(handoff_judgment)
+                
+                # WhatsApp 알림 전송
+                handoff_request = HandoffRequest(
+                    user_phone=session_id,  # 실제로는 사용자 전화번호
+                    user_message=user_input,
+                    urgency=HandoffUrgency(handoff_judgment["urgency_level"]),
+                    reason=handoff_judgment["primary_reason"],
+                    counselor_type=handoff_judgment["counselor_type"],
+                    timestamp=datetime.now().isoformat(),
+                    conversation_summary="",  # 실제로는 대화 요약
+                    session_id=session_id
+                )
+                
+                self.active_handoffs[session_id] = handoff_request
+                self.notification_manager.send_handoff_notifications(handoff_request)
             
             # 6. 최종 응답 구성
             final_response = agent_response
@@ -134,10 +145,10 @@ class ChatbotSystem:
                 "response": agent_response,
                 "handoff_judgment": handoff_judgment,
                 "final_response": final_response,
-                "timestamp": pd.Timestamp.now().isoformat()
+                "timestamp": datetime.now().isoformat()
             })
             
-            # 8. 결과 반환 (응답 + 메타데이터)
+            # 8. 결과 반환
             return {
                 "response": final_response,
                 "agent_type": agent_type.value,

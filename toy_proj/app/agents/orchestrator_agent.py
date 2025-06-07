@@ -1,4 +1,12 @@
+# app/agents/orchestrator_agent.py
+import openai
+import logging
+from app.models import AgentType
+
+logger = logging.getLogger(__name__)
+
 class OrchestratorAgent:
+    """주제 분석 및 라우팅 Agent"""
     def __init__(self):
         self.system_prompt = """
         당신은 사용자의 질문을 분석하여 적절한 카테고리로 분류하는 전문가입니다.
@@ -26,7 +34,6 @@ class OrchestratorAgent:
             
             result = response.choices[0].message.content.strip().upper()
             
-            # 결과 검증 및 기본값 설정
             if result in ["BLOCK", "COUNSELING", "GOSPEL"]:
                 return AgentType(result)
             else:
@@ -35,4 +42,4 @@ class OrchestratorAgent:
                 
         except Exception as e:
             logger.error(f"Error in topic analysis: {e}")
-            return AgentType.COUNSELING  # 기본값
+            return AgentType.COUNSELING
