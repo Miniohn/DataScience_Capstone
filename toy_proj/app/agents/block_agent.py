@@ -22,19 +22,22 @@ class BlockAgent:
         When you detect such content, respond with a polite but firm warning message.
         Always maintain a respectful and loving tone while addressing inappropriate behavior.
         """
-    
+
     def process(self, user_input: str) -> str:
         """부적절한 콘텐츠 분석 및 경고 메시지 생성"""
         try:
+            # Gemini 모델 호출
             model = genai.GenerativeModel("gemini-1.5-flash")
             prompt = f"{self.system_prompt}\n\nUser Message:\n{user_input}"
 
+            # 모델 응답 생성
             response = model.generate_content(prompt)
             content = response.text.strip()
 
-            # JSON 파싱
+            # JSON 형식으로 파싱
             result = json.loads(content)
 
+            # 콘텐츠가 부적절한 경우 경고 메시지 반환
             if result.get("flagged"):
                 categories = result.get("categories", [])
                 return self._generate_warning_message(categories)
@@ -43,7 +46,7 @@ class BlockAgent:
             if self._custom_inappropriate_check(user_input):
                 return self._generate_custom_warning()
 
-            return None  # 적절한 경우
+            return None  # 적절한 경우, None 반환
         
         except Exception as e:
             logger.error(f"Error in block agent processing: {e}")
