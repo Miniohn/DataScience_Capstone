@@ -1,12 +1,25 @@
-
+from app.chatbot_system import ChatbotSystem
+import pandas as pd
 
 def create_sample_excel_file(filename: str = "sample_qa_data.xlsx"):
     """샘플 QnA 데이터로 엑셀 파일 생성"""
     sample_data = [
-        {"Question_ENG": "How can I find peace?", "Answer_ENG": "Through prayer and faith..."},
-        {"Question_ENG": "What is forgiveness?", "Answer_ENG": "Releasing grudges and trusting God..."},
-        {"Question_ENG": "How do I pray?", "Answer_ENG": "Prayer is talking to God..."},
-        {"Question_ENG": "What is the Trinity?", "Answer_ENG": "Father, Son, and Holy Spirit as one God..."}
+        {
+            "question": "How can I find peace in difficult times?",
+            "answer": "Finding peace requires turning to God through prayer and meditation. Remember Philippians 4:6-7 about God's peace that transcends understanding."
+        },
+        {
+            "question": "What does the Bible say about forgiveness?",
+            "answer": "Forgiveness is central to Christian faith. Jesus taught us to forgive as we have been forgiven (Ephesians 4:32)."
+        },
+        {
+            "question": "How do I know if God loves me?",
+            "answer": "God's love is demonstrated through Jesus Christ. Romans 5:8 shows His love isn't based on performance but is unconditional."
+        },
+        {
+            "question": "What is the Trinity?",
+            "answer": "The Trinity is the Christian doctrine that God exists as three persons - Father, Son, and Holy Spirit - yet remains one God. This requires deep theological understanding."
+        }
     ]
     
     df = pd.DataFrame(sample_data)
