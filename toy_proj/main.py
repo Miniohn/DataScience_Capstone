@@ -14,7 +14,7 @@ if any(not os.getenv(var) for var in required_vars):
     logging.warning(f"One or more environment variables are missing. The system may not fully function.")
 
 # 샘플 데이터 파일 확인/생성
-excel_file_path = "data/qa_counseling_data.xlsx"
+excel_file_path = "data/GodQuestions_raw_Kor_2025-04-29.xlsx"
 if not os.path.exists(excel_file_path):
     logging.info(f"Creating sample Excel file at: {excel_file_path}")
     os.makedirs('data', exist_ok=True)
