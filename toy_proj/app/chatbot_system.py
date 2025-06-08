@@ -47,37 +47,6 @@ class ChatbotSystem:
         
         self.rag_system.add_qa_data(qa_objects)
         logger.info(f"Loaded {len(qa_objects)} Q&A pairs into the system")
-
-    def _load_from_excel(self, file_path: str) -> List[Dict]:
-        """엑셀 파일에서 QnA 데이터 로드"""
-        try:
-            df = pd.read_excel(file_path)
-            df.columns = df.columns.str.strip().str.lower()
-            
-            required_columns = ['question_eng', 'answer_eng']
-            missing_columns = [col for col in required_columns if col not in df.columns]
-            
-            if missing_columns:
-                available_cols = list(df.columns)
-                raise ValueError(f"Missing required columns: {missing_columns}. Available columns: {available_cols}")
-            
-            df = df.dropna(subset=['question_eng', 'answer_eng'])
-            
-            qa_data = []
-            for _, row in df.iterrows():
-                qa_item = {
-                    'question': str(row['question_eng']).strip(),
-                    'answer': str(row['answer_eng']).strip(),
-                    'category': 'general'
-                }
-                qa_data.append(qa_item)
-            
-            logger.info(f"Successfully loaded {len(qa_data)} Q&A pairs from Excel file: {file_path}")
-            return qa_data
-            
-        except Exception as e:
-            logger.error(f"Error loading Excel file {file_path}: {e}")
-            raise
     
     def process_message(self, user_input: str, session_id: str = "default") -> dict:
         """사용자 메시지 처리 (핸드오프 판단 포함)"""

@@ -15,7 +15,7 @@ def create_app():
     whatsapp_handler = WhatsAppHandler(chatbot_system)
     
     # 데이터 로드
-    excel_file_path = "data/qa_counseling_data.xlsx"
+    excel_file_path = "data/GodQuestions_raw_Kor_2025-04-29.xlsx"
     if os.path.exists(excel_file_path):
         chatbot_system.load_qa_dataset(excel_file_path)
     else:

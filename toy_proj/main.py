@@ -25,6 +25,6 @@ app = create_app()
 
 if __name__ == "__main__":
     logging.info("🚀 Starting Multi-Agent Counseling System...")
-    logging.info("🌐 Access Dashboard at http://localhost:5000/dashboard")
-    logging.info("🧪 Access Test Page at http://localhost:5000/test")
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    logging.info("🌐 Access Dashboard at http://localhost:8000/dashboard")
+    logging.info("🧪 Access Test Page at http://localhost:8000/test")
+    app.run(host='0.0.0.0', port=8000, debug=True)

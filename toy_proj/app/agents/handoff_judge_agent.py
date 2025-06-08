@@ -1,5 +1,6 @@
 import openai
 import logging
+import json
 from app.models import AgentType
 
 logger = logging.getLogger(__name__)
