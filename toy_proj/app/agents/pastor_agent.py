@@ -1,7 +1,7 @@
 # app/agents/pastor_agent.py
 import chromadb
 from sentence_transformers import SentenceTransformer
-import openai
+import google.generativeai as genai
 import logging
 from typing import List, Dict
 from app.models import QnAData
@@ -114,15 +114,11 @@ class PastorAgent:
             "{user_input}"
             """
             
-            response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=[{"role": "system", "content": enhanced_prompt}],
-                max_tokens=600,
-                temperature=0.6
-            )
-            
-            return response.choices[0].message.content
-            
+            model = genai.GenerativeModel("gemini-1.5-flash")
+            response = model.generate_content(enhanced_prompt)
+
+            return response.text.strip()
+        
         except Exception as e:
             logger.error(f"Error in pastor agent processing: {e}")
             return ("Thank you for your spiritual question. While I'm having some technical difficulties "

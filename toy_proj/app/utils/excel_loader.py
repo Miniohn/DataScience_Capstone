@@ -60,6 +60,7 @@ def create_sample_excel_file(filename: str = "sample_qa_data.xlsx"):
     df.to_excel(filename, index=False)
     print(f"Sample Excel file created: {filename}")
     return filename
+
 '''
 def test_system(chatbot: ChatbotSystem):
     """시스템 테스트"""

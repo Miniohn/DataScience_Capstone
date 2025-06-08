@@ -1,6 +1,6 @@
-import openai
 import logging
 import json
+import google.generativeai as genai
 from app.models import AgentType
 
 logger = logging.getLogger(__name__)
@@ -28,7 +28,7 @@ class HandoffJudgeAgent:
            - Simple prayer requests
            - General encouragement from Scripture
         
-        Respond ONLY in JSON:
+        Respond ONLY in JSON. For example:
         {
             "handoff_needed": true/false,
             "urgency_level": "LOW/MEDIUM/HIGH", 
@@ -37,6 +37,9 @@ class HandoffJudgeAgent:
             "counselor_type": "pastor/missionary/counselor",
             "transition_message": "gentle message explaining why human guidance would be better"
         }
+        
+        If you include anything other than a pure JSON object, it will be considered invalid.
+        Do not include any greetings, explanations, or extra text. Only the JSON object is allowed.
         """
     
     def evaluate_handoff(self, current_message: str, agent_response: str, 
@@ -63,17 +66,14 @@ class HandoffJudgeAgent:
             Provide your assessment in the required JSON format.
             """
             
-            response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {"role": "system", "content": self.system_prompt},
-                    {"role": "user", "content": judgment_prompt}
-                ],
-                temperature=0.3,
-                max_tokens=500
-            )
-            
-            judgment = json.loads(response.choices[0].message.content)
+            model = genai.GenerativeModel("gemini-1.5-flash")
+            response = model.generate_content([
+                {"role": "user", "parts": [self.system_prompt]},
+                {"role": "user", "parts": [judgment_prompt]}
+            ])
+
+            content = response.text
+            judgment = json.loads(content)
             return self._validate_judgment(judgment)
             
         except Exception as e:
@@ -89,10 +89,11 @@ class HandoffJudgeAgent:
         
         recent_context = conversation_context[-5:] if len(conversation_context) > 5 else conversation_context
         
-        summary_parts = []
-        summary_parts.append(f"Conversation Length: {len(conversation_context)} turns")
-        summary_parts.append(f"Current Agent: {agent_type}")
-        summary_parts.append("\nRecent Conversation:")
+        summary_parts = [
+            f"Conversation Length: {len(conversation_context)} turns",
+            f"Current Agent: {agent_type}",
+            "\nRecent Conversation:"
+        ]
         
         for entry in recent_context:
             summary_parts.append(f"User: {entry.get('user_input', '')}")
@@ -117,7 +118,6 @@ class HandoffJudgeAgent:
         
         if validated["urgency_level"] == "CRITICAL":
             validated["handoff_needed"] = True
-        
         return validated
     
     def _get_default_judgment(self) -> dict:

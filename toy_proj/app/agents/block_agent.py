@@ -1,5 +1,6 @@
-import openai
 import logging
+import json
+import google.generativeai as genai
 from app.models import AgentType
 from typing import List
 
@@ -25,21 +26,25 @@ class BlockAgent:
     def process(self, user_input: str) -> str:
         """부적절한 콘텐츠 분석 및 경고 메시지 생성"""
         try:
-            # OpenAI Moderation API 사용
-            moderation_response = openai.Moderation.create(input=user_input)
-            is_flagged = moderation_response.results[0].flagged
-            
-            if is_flagged:
-                categories = moderation_response.results[0].categories
-                flagged_categories = [cat for cat, flagged in categories.items() if flagged]
-                return self._generate_warning_message(flagged_categories)
-            
-            # 추가적인 커스텀 검사
+            model = genai.GenerativeModel("gemini-1.5-flash")
+            prompt = f"{self.system_prompt}\n\nUser Message:\n{user_input}"
+
+            response = model.generate_content(prompt)
+            content = response.text.strip()
+
+            # JSON 파싱
+            result = json.loads(content)
+
+            if result.get("flagged"):
+                categories = result.get("categories", [])
+                return self._generate_warning_message(categories)
+
+            # 커스텀 스팸 키워드 검사
             if self._custom_inappropriate_check(user_input):
                 return self._generate_custom_warning()
-            
-            return None  # 적절한 내용인 경우 None 반환
-            
+
+            return None  # 적절한 경우
+        
         except Exception as e:
             logger.error(f"Error in block agent processing: {e}")
             return "I apologize, but I'm having trouble processing your message. Please try again."

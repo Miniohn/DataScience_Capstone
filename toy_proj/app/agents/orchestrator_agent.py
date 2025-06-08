@@ -1,6 +1,6 @@
 # app/agents/orchestrator_agent.py
-import openai
 import logging
+import google.generativeai as genai
 from app.models import AgentType
 
 logger = logging.getLogger(__name__)
@@ -22,17 +22,13 @@ class OrchestratorAgent:
     def analyze_topic(self, user_input: str) -> AgentType:
         """사용자 입력을 분석하여 적절한 Agent 타입 결정"""
         try:
-            response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {"role": "system", "content": self.system_prompt},
-                    {"role": "user", "content": f"다음 텍스트를 분류하세요: {user_input}"}
-                ],
-                max_tokens=50,
-                temperature=0.1
-            )
-            
-            result = response.choices[0].message.content.strip().upper()
+            model = genai.GenerativeModel("gemini-1.5-flash")
+            response = model.generate_content([
+                {"role": "user", "parts": [self.system_prompt]},
+                {"role": "user", "parts": [f"다음 텍스트를 분류하세요: {user_input}"]}
+            ])
+
+            result = response.text.strip().upper()
             
             if result in ["BLOCK", "COUNSELING", "GOSPEL"]:
                 return AgentType(result)
