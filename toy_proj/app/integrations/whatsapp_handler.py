@@ -1,7 +1,7 @@
 # whatsapp 웹훅 핸들러
 import os
 import logging
-from app.chatbot_system import ChatbotSystem # 순환 참조 주의! (나중에 수정)
+from app.chatbot_system import ChatbotSystem
 from typing import Dict, List
 
 logger = logging.getLogger(__name__)

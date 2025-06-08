@@ -4,12 +4,15 @@ from dotenv import load_dotenv
 from app.flask_app import create_app
 from app.utils.excel_loader import create_sample_excel_file
 
+import google.generativeai as genai
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+
 # 환경 변수 로드 및 로깅 설정
 load_dotenv()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 # 환경 변수 확인
-required_vars = ["OPENAI_API_KEY", "WHATSAPP_ACCESS_TOKEN", "WHATSAPP_PHONE_NUMBER_ID", "WHATSAPP_VERIFY_TOKEN"]
+required_vars = ["GEMINI_API_KEY", "WHATSAPP_ACCESS_TOKEN", "WHATSAPP_PHONE_NUMBER_ID", "WHATSAPP_VERIFY_TOKEN"]
 if any(not os.getenv(var) for var in required_vars):
     logging.warning(f"One or more environment variables are missing. The system may not fully function.")
 
