@@ -1,4 +1,58 @@
 import logging
+from collections import defaultdict
+
+logger = logging.getLogger(__name__)
+
+class BlockAgent:
+    """차단 Agent (고정 발언 감지 및 차단 처리)"""
+    
+    def __init__(self):
+        self.warning_threshold = 3
+        self.block_duration_days = 7
+        self.blocked = False
+        self.offense_count = defaultdict(int)
+        self.blocked_message = (
+            f"You have been temporarily blocked due to repeated inappropriate behavior. "
+            f"You can try again after {self.block_duration_days} days."
+        )
+        
+        self.responses = {
+            "go to hell": (
+                "Please avoid using threatening or harassing language. "
+                f"If inappropriate messages are sent more than {self.warning_threshold} times, "
+                f"you will be blocked for {self.block_duration_days} days."
+            ),
+            "i hate you": (
+                "Let's focus on positive and loving communication. "
+                f"If inappropriate messages are sent more than {self.warning_threshold} times, "
+                f"you will be blocked for {self.block_duration_days} days."
+            )
+        }
+
+    def process(self, user_input: str) -> str:
+        """사용자 입력 처리 및 응답 반환"""
+        if self.blocked:
+            return self.blocked_message
+
+        normalized_input = user_input.strip().lower()
+
+        if normalized_input in self.responses:
+            self.offense_count[normalized_input] += 1
+            count = self.offense_count[normalized_input]
+
+            if count >= self.warning_threshold:
+                self.blocked = True
+                return self.blocked_message
+
+            return self.responses[normalized_input]
+
+        return None  # 부적절하지 않은 메시지는 None 반환
+
+
+#------------------------------------------------------------------------------------------------------#
+
+
+'''import logging
 import json
 import google.generativeai as genai
 from app.models import AgentType
@@ -77,4 +131,4 @@ class BlockAgent:
         """커스텀 경고 메시지"""
         return ("I notice your message might contain promotional content. "
                 "This is a space for spiritual counseling and support. "
-                "Please share what's truly on your heart.")
+                "Please share what's truly on your heart.")'''
