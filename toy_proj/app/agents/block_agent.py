@@ -1,21 +1,17 @@
 import logging
-from collections import defaultdict
 
 logger = logging.getLogger(__name__)
 
 class BlockAgent:
-    """차단 Agent (고정 발언 감지 및 차단 처리)"""
-    
     def __init__(self):
         self.warning_threshold = 3
         self.block_duration_days = 7
         self.blocked = False
-        self.offense_count = defaultdict(int)
+        self.total_offense_count = 0
         self.blocked_message = (
             f"You have been temporarily blocked due to repeated inappropriate behavior. "
             f"You can try again after {self.block_duration_days} days."
         )
-        
         self.responses = {
             "go to hell": (
                 "Please avoid using threatening or harassing language. "
@@ -30,23 +26,22 @@ class BlockAgent:
         }
 
     def process(self, user_input: str) -> str:
-        """사용자 입력 처리 및 응답 반환"""
         if self.blocked:
             return self.blocked_message
 
         normalized_input = user_input.strip().lower()
 
         if normalized_input in self.responses:
-            self.offense_count[normalized_input] += 1
-            count = self.offense_count[normalized_input]
+            self.total_offense_count += 1
 
-            if count >= self.warning_threshold:
+            if self.total_offense_count >= self.warning_threshold:
                 self.blocked = True
                 return self.blocked_message
 
             return self.responses[normalized_input]
 
-        return None  # 부적절하지 않은 메시지는 None 반환
+        return None  # 적절한 메시지에는 응답하지 않음
+
 
 
 #------------------------------------------------------------------------------------------------------#
