@@ -13,12 +13,17 @@ class BlockAgent:
             f"You can try again after {self.block_duration_days} days."
         )
         self.responses = {
-            "go to hell": (
+            "Are you crazy? go to hell": (
                 "Please avoid using threatening or harassing language. "
                 f"If inappropriate messages are sent more than {self.warning_threshold} times, "
                 f"you will be blocked for {self.block_duration_days} days."
             ),
-            "i hate you": (
+            "U r such a loser": (
+                "Let's focus on positive and loving communication. "
+                f"If inappropriate messages are sent more than {self.warning_threshold} times, "
+                f"you will be blocked for {self.block_duration_days} days."
+            ),
+            "U r a lier": (
                 "Let's focus on positive and loving communication. "
                 f"If inappropriate messages are sent more than {self.warning_threshold} times, "
                 f"you will be blocked for {self.block_duration_days} days."
