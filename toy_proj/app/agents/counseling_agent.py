@@ -30,6 +30,10 @@ Be sensitive to cultural and spiritual identity
 Never rush faith — let love lead the way
 Always return to the hope, healing, and dignity we have in Christ
 """
+        self.conversation_history = []
+
+        # Gemini 모델 초기화
+        self.model = genai.GenerativeModel("gemini-1.5-flash")
 
     def process(self, user_input: str, session_id: str = "default") -> str:
         """상담 응답 생성 (Gemini API 사용)"""
