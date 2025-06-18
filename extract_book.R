@@ -8,7 +8,6 @@ library(xml2)
 getwd()
 setwd("./raw_data_book/")
 
-# try
 # PDF 파일 리스트
 temp <- list.files(pattern = "*.pdf")
 

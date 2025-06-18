@@ -1,0 +1,11 @@
+openai
+pandas
+numpy
+chromadb
+langchain
+sentence-transformers
+python-dotenv
+openpyxl
+flask
+requests
+google-generativeai==0.5.2
