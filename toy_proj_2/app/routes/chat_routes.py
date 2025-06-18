@@ -224,24 +224,16 @@ def api_chat():
         # 챗봇 시스템에서 응답 생성
         chatbot_system = current_app.config['CHATBOT_SYSTEM']
         
-        # 임시 사용자 ID (실제로는 세션 관리가 필요)
-        user_id = "web_user_" + request.remote_addr.replace('.', '_')
+        # 임시 사용자 ID (더 간단하게)
+        user_id = "web_user"
         
-        # AI 응답 생성
-        ai_response = chatbot_system.process_message(user_id, user_message)
+        # AI 응답 생성 (파라미터 순서 수정: user_input, session_id)
+        ai_response = chatbot_system.process_message(user_message, user_id)
         
-        # 응답이 객체인 경우 문자열로 변환
+        # 응답에서 텍스트만 추출 (딕셔너리에서 'response' 키 값 가져오기)
         if isinstance(ai_response, dict):
-            # 딕셔너리에서 응답 텍스트 추출
-            response_text = ai_response.get('response', str(ai_response))
-        elif hasattr(ai_response, 'content'):
-            # 객체에 content 속성이 있는 경우
-            response_text = ai_response.content
-        elif hasattr(ai_response, 'text'):
-            # 객체에 text 속성이 있는 경우
-            response_text = ai_response.text
+            response_text = ai_response.get('response', 'AI 응답을 생성할 수 없습니다.')
         else:
-            # 그 외의 경우 문자열로 변환
             response_text = str(ai_response)
         
         return jsonify({
