@@ -1,3 +1,5 @@
+citation("igraph")
+
 # load library
 library(pdftools)
 library(dplyr)
