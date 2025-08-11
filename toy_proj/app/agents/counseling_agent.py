@@ -53,7 +53,7 @@ Always return to the hope, healing, and dignity we have in Christ
 
             # 응답 저장 및 반환
             reply = response.text.strip()
-            self.conversation_history.append(f"Counselor: {reply}")
+            self.conversation_history.append(f"{reply}")
             return reply
 
         except Exception as e:
