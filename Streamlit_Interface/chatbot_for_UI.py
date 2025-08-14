@@ -50,9 +50,6 @@ from langgraph.prebuilt import ToolNode, tools_condition
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.errors import GraphRecursionError
 
-__import__('pysqlite3')
-sys.modules['sqlite3'] = sys.modules['pysqlite3']
-
 
 # ========= 경로/환경 =========
 # 이 파일은 Streamlit_Interface/ 아래에 있음. 실제 데이터는 Chatbot_ver2/에 있음.

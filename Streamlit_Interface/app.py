@@ -1,4 +1,9 @@
 # app.py — WhatsApp 스타일 UI (None 응답 안전처리 포함)
+
+import sys
+__import__('pysqlite3')
+sys.modules['sqlite3'] = sys.modules['pysqlite3']
+
 import time
 from datetime import datetime
 from typing import List, Dict
