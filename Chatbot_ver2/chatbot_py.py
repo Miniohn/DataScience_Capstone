@@ -18,10 +18,48 @@ from langchain_core.runnables import RunnableConfig, RunnableLambda
 from langchain.retrievers import EnsembleRetriever
 from langgraph.graph import StateGraph, START, END
 
-# 환경 변수 로드 및 로깅 설정
+# --- add near the very top of chatbot_for_UI.py ---
+import os
+from dotenv import load_dotenv, find_dotenv
+
+# 루트 .env가 있어도 읽고, 없으면 넘어감
+load_dotenv(find_dotenv())
+
+def _load_openai_key():
+    # 1) 환경변수 / .env
+    key = os.getenv("OPENAI_API_KEY")
+    if key:
+        return key
+
+    # 2) Streamlit Secrets (없어도 예외 안 나게 보호)
+    try:
+        import streamlit as st
+        try:
+            return st.secrets.get("OPENAI_API_KEY")   # secrets.toml 없으면 여기서 예외 → 아래 except로 흘러감
+        except Exception:
+            pass
+    except Exception:
+        pass
+
+    # (선택) 프로젝트 내부 .streamlit/secrets.toml도 시도하고 싶다면 아래 블록을 풀어주세요.
+    # try:
+    #     import tomllib  # Python 3.11+
+    #     p = os.path.join(os.path.dirname(__file__), ".streamlit", "secrets.toml")
+    #     if os.path.exists(p):
+    #         with open(p, "rb") as f:
+    #             data = tomllib.load(f)
+    #         return data.get("OPENAI_API_KEY")
+    # except Exception:
+    #     pass
+
+    return None
+
+OPENAI_API_KEY = _load_openai_key()
+
+'''# 환경 변수 로드 및 로깅 설정
 load_dotenv()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)'''
 
 # 로그 저장 디렉토리 설정
 LOG_DIR = "chat_logs"
