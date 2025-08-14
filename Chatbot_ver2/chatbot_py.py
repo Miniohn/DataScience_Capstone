@@ -83,7 +83,8 @@ class State(TypedDict):
     translated_response: str
     route: str
 
-#----3. RAG 설정 (미리 로드)----
+
+'''#----3. RAG 설정 (미리 로드)----
 docs = []
 file_path = os.path.join('data', 'GodQuestions1.xlsx')
 df = pd.read_excel(file_path)
@@ -108,7 +109,71 @@ bm25_retriever = BM25Retriever.from_documents(docs)
 ensemble_retriever = EnsembleRetriever(
     retrievers=[chroma_retriever, bm25_retriever],
     weights=[0.5, 0.5]
-)
+)'''
+
+# ----3. RAG 설정 (미리 로드)---- 
+# 이 파일 기준 경로
+HERE = os.path.dirname(__file__)
+# 데이터 파일 (레포에 포함해야 함: Streamlit_Interface/data/GodQuestions1.xlsx)
+DATA_XLSX = os.path.join(HERE, "data", "GodQuestions1.xlsx")
+
+# 퍼시스트 폴더(벡터DB 저장소) – 앱이 여기다 디스크에 저장/재사용
+PERSIST_DIR = os.path.join(HERE, "chroma_db")
+COLLECTION_NAME = "gq_kor_v1"
+
+# 엑셀 -> 메모리 문서화
+docs: list[Document] = []
+if os.path.exists(DATA_XLSX):
+    df = pd.read_excel(DATA_XLSX)
+    for i, row in df.iterrows():
+        content = f"질문: {row['Question_KOR']}\n\n답변: {row['Answer_KOR']}"
+        metadata = {"source": row["URL_KOR"], "category": row["big_title_kor"], "row_number": i + 1}
+        docs.append(Document(page_content=content, metadata=metadata))
+else:
+    # 파일을 못 찾으면 RAG 없이도 앱이 죽지 않게 빈 리스트 유지
+    pass
+
+# 1) BM25 (키워드 기반, 메모리)
+bm25_retriever = BM25Retriever.from_documents(docs)
+
+# 2) Chroma (임베딩 기반, 디스크 퍼시스트)
+#    USE_CHROMA=0 이면 BM25만 사용하도록 토글 가능
+USE_CHROMA = os.getenv("USE_CHROMA", "1") == "1"
+
+if USE_CHROMA and docs:
+    # OPENAI_API_KEY는 파일 상단의 로더에서 환경변수에 이미 세팅되어 있다고 가정
+    embeddings = OpenAIEmbeddings(model="text-embedding-3-small", api_key=OPENAI_API_KEY)
+
+    def build_or_load_chroma():
+        # 폴더가 비어 있으면 새로 생성, 있으면 로드
+        need_build = not (os.path.exists(PERSIST_DIR) and os.listdir(PERSIST_DIR))
+        if need_build:
+            vs = Chroma.from_documents(
+                documents=docs,
+                embedding=embeddings,
+                collection_name=COLLECTION_NAME,
+                persist_directory=PERSIST_DIR,
+            )
+        else:
+            vs = Chroma(
+                collection_name=COLLECTION_NAME,
+                embedding_function=embeddings,
+                persist_directory=PERSIST_DIR,
+            )
+        return vs
+
+    chroma_db = build_or_load_chroma()
+    chroma_retriever = chroma_db.as_retriever(search_kwargs={"k": 2})
+
+    # 3) 앙상블 (가중치는 상황에 맞게 조정)
+    ensemble_retriever = EnsembleRetriever(
+        retrievers=[chroma_retriever, bm25_retriever],
+        weights=[0.5, 0.5],
+    )
+else:
+    # Chroma 비활성화 또는 docs 없음 → BM25만 사용
+    ensemble_retriever = bm25_retriever
+
 
 #----4. 로그 저장 함수----
 def save_log(state: State, response: str, route: str):

@@ -7,3 +7,5 @@ langchain-core
 langchain-community
 langgraph
 rank-bm25
+langchain-chroma
+chromadb
