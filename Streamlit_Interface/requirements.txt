@@ -1,6 +1,3 @@
---no-cache-dir
---force-reinstall
-
 streamlit
 langchain
 langchain-openai
