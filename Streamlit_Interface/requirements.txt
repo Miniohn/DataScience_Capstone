@@ -1,0 +1,13 @@
+--no-cache-dir
+--force-reinstall
+
+streamlit
+langchain
+langchain-openai
+langchain-chroma
+chromadb
+pandas
+python-dotenv
+langgraph
+pydantic
+openpyxl

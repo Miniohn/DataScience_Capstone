@@ -4,11 +4,6 @@ from datetime import datetime
 from typing import List, Dict
 import html
 import streamlit as st
-# app.py 맨 첫 부분에 추가
-import os
-from dotenv import load_dotenv
-
-load_dotenv(os.path.join(os.path.dirname(__file__), ".env"), override=True)
 
 # --- bot adapter ---
 try:
