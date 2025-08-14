@@ -9,3 +9,4 @@ python-dotenv
 langgraph
 pydantic
 openpyxl
+pysqlite3-binary
