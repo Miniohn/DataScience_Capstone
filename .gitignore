@@ -10,3 +10,11 @@
 ./puppeteer_crawling/package.json
 .code.Rproj
 **/.env
+# Local env & secrets
+.env
+.env.*
+*.env
+**/.env
+**/.env.*
+.streamlit/secrets.toml
+
