@@ -280,7 +280,6 @@ class WhatsAppAnalyzer:
 # 사용 예시
 def main():
     # 설정
-    OPENAI_API_KEY = "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"
     TOPICS = ["복음", "사랑", "변증학", "구원", "기도", "성경"]
     INPUT_DIRECTORY = "./test_chat"
     OUTPUT_FILE = f"religious_qa_analysis_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
