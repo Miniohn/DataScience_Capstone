@@ -1,0 +1,875 @@
+{
+    "session_id": "streamlit-session",
+    "start_time": "2025-08-16T20:34:18.821373",
+    "steps": [
+        {
+            "step_name": "translate_persian_to_english",
+            "timestamp": "2025-08-16T20:34:18.821373",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 0,
+                "input_msg": "عیسی کیست؟",
+                "initial_translated": "Who is Jesus?",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "initial_translated": "Who is Jesus?"
+            }
+        },
+        {
+            "step_name": "receive_initial_input",
+            "timestamp": "2025-08-16T20:34:22.926702",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "عیسی کیست؟",
+                "initial_translated": "Who is Jesus?",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {}
+        },
+        {
+            "step_name": "route_query",
+            "timestamp": "2025-08-16T20:34:33.975350",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "عیسی کیست؟",
+                "initial_translated": "Who is Jesus?",
+                "route": "rag",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "route": "rag"
+            }
+        },
+        {
+            "step_name": "node_rag_responser",
+            "timestamp": "2025-08-16T20:34:52.235545",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "عیسی کیست؟",
+                "initial_translated": "Who is Jesus?",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/believe-in-Jesus.html",
+                            "row_number": 355,
+                            "category": "أسئلة عن الخلاص"
+                        },
+                        "page_content": "“Do you believe in Jesus?” seems like a strange question. It sounds like the same question as “Do you believe in Santa Claus?” or “Do you believe in aliens?” But the question “Do you believe in Jesus?” is asking far more than “Do you believe that Jesus Christ existed/exists?” The true meaning of the question is “Do you believe Jesus Christ is who the Bible says He is, and are you trusting Him as your Savior?”\n\nDo you believe that Jesus is God in human form (John 1:1, 14)? Do you believe that Jesus died on the cross to pay the penalty for your sins (1 Corinthians 15:3; 2 Corinthians 5:21), for which you deserve eternal separation from God (Romans 6:23)? Do you believe that the sacrifice of Jesus, God incarnate, is the only adequate payment for your sins (1 John 2:2; John 14:6; Acts 4:12)?\n\nIf you understand and believe what the Bible says about Jesus, and if you are trusting in those truths as the basis for salvation—you are saved! You “believe in Jesus” in the biblical sense."
+                    }
+                ],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "retrieved_docs_summary": [
+                    {
+                        "page_content_preview": "“Do you believe in Jesus?” seems like a strange question. It sounds like the same question as “Do yo...",
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/believe-in-Jesus.html",
+                            "row_number": 355,
+                            "category": "أسئلة عن الخلاص"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "step_name": "judge_retrieval",
+            "timestamp": "2025-08-16T20:34:54.132802",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "عیسی کیست؟",
+                "initial_translated": "Who is Jesus?",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/believe-in-Jesus.html",
+                            "row_number": 355,
+                            "category": "أسئلة عن الخلاص"
+                        },
+                        "page_content": "“Do you believe in Jesus?” seems like a strange question. It sounds like the same question as “Do you believe in Santa Claus?” or “Do you believe in aliens?” But the question “Do you believe in Jesus?” is asking far more than “Do you believe that Jesus Christ existed/exists?” The true meaning of the question is “Do you believe Jesus Christ is who the Bible says He is, and are you trusting Him as your Savior?”\n\nDo you believe that Jesus is God in human form (John 1:1, 14)? Do you believe that Jesus died on the cross to pay the penalty for your sins (1 Corinthians 15:3; 2 Corinthians 5:21), for which you deserve eternal separation from God (Romans 6:23)? Do you believe that the sacrifice of Jesus, God incarnate, is the only adequate payment for your sins (1 John 2:2; John 14:6; Acts 4:12)?\n\nIf you understand and believe what the Bible says about Jesus, and if you are trusting in those truths as the basis for salvation—you are saved! You “believe in Jesus” in the biblical sense."
+                    }
+                ],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "filtered_docs": [
+                    {
+                        "source": "https://www.gotquestions.org/believe-in-Jesus.html",
+                        "row_number": 355,
+                        "category": "أسئلة عن الخلاص"
+                    }
+                ]
+            }
+        },
+        {
+            "step_name": "generate_rag_response",
+            "timestamp": "2025-08-16T20:35:04.754601",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "عیسی کیست؟",
+                "initial_translated": "Who is Jesus?",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/believe-in-Jesus.html",
+                            "row_number": 355,
+                            "category": "أسئلة عن الخلاص"
+                        },
+                        "page_content": "“Do you believe in Jesus?” seems like a strange question. It sounds like the same question as “Do you believe in Santa Claus?” or “Do you believe in aliens?” But the question “Do you believe in Jesus?” is asking far more than “Do you believe that Jesus Christ existed/exists?” The true meaning of the question is “Do you believe Jesus Christ is who the Bible says He is, and are you trusting Him as your Savior?”\n\nDo you believe that Jesus is God in human form (John 1:1, 14)? Do you believe that Jesus died on the cross to pay the penalty for your sins (1 Corinthians 15:3; 2 Corinthians 5:21), for which you deserve eternal separation from God (Romans 6:23)? Do you believe that the sacrifice of Jesus, God incarnate, is the only adequate payment for your sins (1 John 2:2; John 14:6; Acts 4:12)?\n\nIf you understand and believe what the Bible says about Jesus, and if you are trusting in those truths as the basis for salvation—you are saved! You “believe in Jesus” in the biblical sense."
+                    }
+                ],
+                "generation": "Jesus is the Son of God and the central figure of Christianity. He is believed to be both fully divine and fully human, who came to earth to teach, heal, and ultimately sacrifice Himself for the sins of humanity, offering salvation to all who believe in Him (John 3:16). Through His life, death, and resurrection, He reveals God's love and grace to us.",
+                "final_translated": ""
+            },
+            "step_output": {
+                "generation": "Jesus is the Son of God and the central figure of Christianity. He is believed to be both fully divine and fully human, who came to earth to teach, heal, and ultimately sacrifice Himself for the sins of humanity, offering salvation to all who believe in Him (John 3:16). Through His life, death, and resurrection, He reveals God's love and grace to us."
+            }
+        },
+        {
+            "step_name": "translate_english_to_persian",
+            "timestamp": "2025-08-16T20:35:19.005704",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "عیسی کیست؟",
+                "initial_translated": "Who is Jesus?",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/believe-in-Jesus.html",
+                            "row_number": 355,
+                            "category": "أسئلة عن الخلاص"
+                        },
+                        "page_content": "“Do you believe in Jesus?” seems like a strange question. It sounds like the same question as “Do you believe in Santa Claus?” or “Do you believe in aliens?” But the question “Do you believe in Jesus?” is asking far more than “Do you believe that Jesus Christ existed/exists?” The true meaning of the question is “Do you believe Jesus Christ is who the Bible says He is, and are you trusting Him as your Savior?”\n\nDo you believe that Jesus is God in human form (John 1:1, 14)? Do you believe that Jesus died on the cross to pay the penalty for your sins (1 Corinthians 15:3; 2 Corinthians 5:21), for which you deserve eternal separation from God (Romans 6:23)? Do you believe that the sacrifice of Jesus, God incarnate, is the only adequate payment for your sins (1 John 2:2; John 14:6; Acts 4:12)?\n\nIf you understand and believe what the Bible says about Jesus, and if you are trusting in those truths as the basis for salvation—you are saved! You “believe in Jesus” in the biblical sense."
+                    }
+                ],
+                "generation": "Jesus is the Son of God and the central figure of Christianity. He is believed to be both fully divine and fully human, who came to earth to teach, heal, and ultimately sacrifice Himself for the sins of humanity, offering salvation to all who believe in Him (John 3:16). Through His life, death, and resurrection, He reveals God's love and grace to us.",
+                "final_translated": "عیسی پسر خدا و شخصیت مرکزی مسیحیت است. او به‌عنوان کسی که هم کاملاً الهی و هم کاملاً انسانی است، باور دارد که به زمین آمده تا آموزش دهد، شفا بخشد و در نهایت خود را برای گناهان بشریت قربانی کند و نجات را به همه کسانی که به او ایمان دارند، ارائه دهد (یوحنا ۳:۱۶). از طریق زندگی، مرگ و رستاخیز او، محبت و رحمت خدا را به ما نشان می‌دهد.\n\nJesus is the Son of God and the central figure of Christianity. He is believed to be both fully divine and fully human, who came to earth to teach, heal, and ultimately sacrifice Himself for the sins of humanity, offering salvation to all who believe in Him (John 3:16). Through His life, death, and resurrection, He reveals God's love and grace to us."
+            },
+            "step_output": {
+                "final_translated": "عیسی پسر خدا و شخصیت مرکزی مسیحیت است. او به‌عنوان کسی که هم کاملاً الهی و هم کاملاً انسانی است، باور دارد که به زمین آمده تا آموزش دهد، شفا بخشد و در نهایت خود را برای گناهان بشریت قربانی کند و نجات را به همه کسانی که به او ایمان دارند، ارائه دهد (یوحنا ۳:۱۶). از طریق زندگی، مرگ و رستاخیز او، محبت و رحمت خدا را به ما نشان می‌دهد.\n\nJesus is the Son of God and the central figure of Christianity. He is believed to be both fully divine and fully human, who came to earth to teach, heal, and ultimately sacrifice Himself for the sins of humanity, offering salvation to all who believe in Him (John 3:16). Through His life, death, and resurrection, He reveals God's love and grace to us."
+            }
+        },
+        {
+            "step_name": "translate_persian_to_english",
+            "timestamp": "2025-08-16T20:38:48.696780",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 0,
+                "input_msg": "عیسی کیست؟",
+                "initial_translated": "Who is Jesus?",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "initial_translated": "Who is Jesus?"
+            }
+        },
+        {
+            "step_name": "receive_initial_input",
+            "timestamp": "2025-08-16T20:38:48.704980",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "عیسی کیست؟",
+                "initial_translated": "Who is Jesus?",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {}
+        },
+        {
+            "step_name": "route_query",
+            "timestamp": "2025-08-16T20:38:59.179655",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "عیسی کیست؟",
+                "initial_translated": "Who is Jesus?",
+                "route": "rag",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "route": "rag"
+            }
+        },
+        {
+            "step_name": "node_rag_responser",
+            "timestamp": "2025-08-16T20:39:16.542150",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "عیسی کیست؟",
+                "initial_translated": "Who is Jesus?",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/faith-in-Jesus.html",
+                            "row_number": 476,
+                            "category": "أسئلة عن الكتاب المقدس"
+                        },
+                        "page_content": "When a person has faith in Jesus, it means that he or she believes who Jesus is (God in human form) and trusts what Jesus has done (died and resurrected). This faith in the person and work of Christ is what saves (see Romans 10:9–10; 1 Corinthians 15:3–4). “Everyone who believes that Jesus is the Christ is born of God” (1 John 5:1).\n\nJohn 3:16 says, “God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.” The key is belief, in response to God’s love. Anyone who places his or her faith in Jesus has the promise of eternal life.\n\nWithout faith in Jesus, we remain in sin and cannot be accepted into God’s presence in His perfect heaven. With faith in Jesus, we are given access to the Father as God’s own children (John 1:12).\n\nTo have faith in Jesus is to reject all other ways of salvation. We cannot trust in Jesus and anything else. We trust in Jesus alone. “Salvation is found in no one else, for there is no other name under heaven given to mankind by which we must be saved” (Acts 4:12). Salvation is exclusive. Jesus is the only way (John 14:6)."
+                    },
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/believe-in-Jesus.html",
+                            "row_number": 355,
+                            "category": "أسئلة عن الخلاص"
+                        },
+                        "page_content": "“Do you believe in Jesus?” seems like a strange question. It sounds like the same question as “Do you believe in Santa Claus?” or “Do you believe in aliens?” But the question “Do you believe in Jesus?” is asking far more than “Do you believe that Jesus Christ existed/exists?” The true meaning of the question is “Do you believe Jesus Christ is who the Bible says He is, and are you trusting Him as your Savior?”\n\nDo you believe that Jesus is God in human form (John 1:1, 14)? Do you believe that Jesus died on the cross to pay the penalty for your sins (1 Corinthians 15:3; 2 Corinthians 5:21), for which you deserve eternal separation from God (Romans 6:23)? Do you believe that the sacrifice of Jesus, God incarnate, is the only adequate payment for your sins (1 John 2:2; John 14:6; Acts 4:12)?\n\nIf you understand and believe what the Bible says about Jesus, and if you are trusting in those truths as the basis for salvation—you are saved! You “believe in Jesus” in the biblical sense."
+                    }
+                ],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "retrieved_docs_summary": [
+                    {
+                        "page_content_preview": "When a person has faith in Jesus, it means that he or she believes who Jesus is (God in human form) ...",
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/faith-in-Jesus.html",
+                            "row_number": 476,
+                            "category": "أسئلة عن الكتاب المقدس"
+                        }
+                    },
+                    {
+                        "page_content_preview": "“Do you believe in Jesus?” seems like a strange question. It sounds like the same question as “Do yo...",
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/believe-in-Jesus.html",
+                            "row_number": 355,
+                            "category": "أسئلة عن الخلاص"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "step_name": "judge_retrieval",
+            "timestamp": "2025-08-16T20:39:20.050842",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "عیسی کیست؟",
+                "initial_translated": "Who is Jesus?",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/faith-in-Jesus.html",
+                            "row_number": 476,
+                            "category": "أسئلة عن الكتاب المقدس"
+                        },
+                        "page_content": "When a person has faith in Jesus, it means that he or she believes who Jesus is (God in human form) and trusts what Jesus has done (died and resurrected). This faith in the person and work of Christ is what saves (see Romans 10:9–10; 1 Corinthians 15:3–4). “Everyone who believes that Jesus is the Christ is born of God” (1 John 5:1).\n\nJohn 3:16 says, “God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.” The key is belief, in response to God’s love. Anyone who places his or her faith in Jesus has the promise of eternal life.\n\nWithout faith in Jesus, we remain in sin and cannot be accepted into God’s presence in His perfect heaven. With faith in Jesus, we are given access to the Father as God’s own children (John 1:12).\n\nTo have faith in Jesus is to reject all other ways of salvation. We cannot trust in Jesus and anything else. We trust in Jesus alone. “Salvation is found in no one else, for there is no other name under heaven given to mankind by which we must be saved” (Acts 4:12). Salvation is exclusive. Jesus is the only way (John 14:6)."
+                    },
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/believe-in-Jesus.html",
+                            "row_number": 355,
+                            "category": "أسئلة عن الخلاص"
+                        },
+                        "page_content": "“Do you believe in Jesus?” seems like a strange question. It sounds like the same question as “Do you believe in Santa Claus?” or “Do you believe in aliens?” But the question “Do you believe in Jesus?” is asking far more than “Do you believe that Jesus Christ existed/exists?” The true meaning of the question is “Do you believe Jesus Christ is who the Bible says He is, and are you trusting Him as your Savior?”\n\nDo you believe that Jesus is God in human form (John 1:1, 14)? Do you believe that Jesus died on the cross to pay the penalty for your sins (1 Corinthians 15:3; 2 Corinthians 5:21), for which you deserve eternal separation from God (Romans 6:23)? Do you believe that the sacrifice of Jesus, God incarnate, is the only adequate payment for your sins (1 John 2:2; John 14:6; Acts 4:12)?\n\nIf you understand and believe what the Bible says about Jesus, and if you are trusting in those truths as the basis for salvation—you are saved! You “believe in Jesus” in the biblical sense."
+                    }
+                ],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "filtered_docs": [
+                    {
+                        "source": "https://www.gotquestions.org/faith-in-Jesus.html",
+                        "row_number": 476,
+                        "category": "أسئلة عن الكتاب المقدس"
+                    },
+                    {
+                        "source": "https://www.gotquestions.org/believe-in-Jesus.html",
+                        "row_number": 355,
+                        "category": "أسئلة عن الخلاص"
+                    }
+                ]
+            }
+        },
+        {
+            "step_name": "generate_rag_response",
+            "timestamp": "2025-08-16T20:39:29.810640",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "عیسی کیست؟",
+                "initial_translated": "Who is Jesus?",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/faith-in-Jesus.html",
+                            "row_number": 476,
+                            "category": "أسئلة عن الكتاب المقدس"
+                        },
+                        "page_content": "When a person has faith in Jesus, it means that he or she believes who Jesus is (God in human form) and trusts what Jesus has done (died and resurrected). This faith in the person and work of Christ is what saves (see Romans 10:9–10; 1 Corinthians 15:3–4). “Everyone who believes that Jesus is the Christ is born of God” (1 John 5:1).\n\nJohn 3:16 says, “God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.” The key is belief, in response to God’s love. Anyone who places his or her faith in Jesus has the promise of eternal life.\n\nWithout faith in Jesus, we remain in sin and cannot be accepted into God’s presence in His perfect heaven. With faith in Jesus, we are given access to the Father as God’s own children (John 1:12).\n\nTo have faith in Jesus is to reject all other ways of salvation. We cannot trust in Jesus and anything else. We trust in Jesus alone. “Salvation is found in no one else, for there is no other name under heaven given to mankind by which we must be saved” (Acts 4:12). Salvation is exclusive. Jesus is the only way (John 14:6)."
+                    },
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/believe-in-Jesus.html",
+                            "row_number": 355,
+                            "category": "أسئلة عن الخلاص"
+                        },
+                        "page_content": "“Do you believe in Jesus?” seems like a strange question. It sounds like the same question as “Do you believe in Santa Claus?” or “Do you believe in aliens?” But the question “Do you believe in Jesus?” is asking far more than “Do you believe that Jesus Christ existed/exists?” The true meaning of the question is “Do you believe Jesus Christ is who the Bible says He is, and are you trusting Him as your Savior?”\n\nDo you believe that Jesus is God in human form (John 1:1, 14)? Do you believe that Jesus died on the cross to pay the penalty for your sins (1 Corinthians 15:3; 2 Corinthians 5:21), for which you deserve eternal separation from God (Romans 6:23)? Do you believe that the sacrifice of Jesus, God incarnate, is the only adequate payment for your sins (1 John 2:2; John 14:6; Acts 4:12)?\n\nIf you understand and believe what the Bible says about Jesus, and if you are trusting in those truths as the basis for salvation—you are saved! You “believe in Jesus” in the biblical sense."
+                    }
+                ],
+                "generation": "Jesus is the Son of God and the central figure of Christianity. He is believed to be both fully divine and fully human, who came to earth to teach, heal, and ultimately sacrifice Himself for the sins of humanity, offering salvation to all who believe in Him (John 3:16). Through His life, death, and resurrection, He reveals God's love and grace to us.",
+                "final_translated": ""
+            },
+            "step_output": {
+                "generation": "Jesus is the Son of God and the central figure of Christianity. He is believed to be both fully divine and fully human, who came to earth to teach, heal, and ultimately sacrifice Himself for the sins of humanity, offering salvation to all who believe in Him (John 3:16). Through His life, death, and resurrection, He reveals God's love and grace to us."
+            }
+        },
+        {
+            "step_name": "translate_english_to_persian",
+            "timestamp": "2025-08-16T20:39:42.701581",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "عیسی کیست؟",
+                "initial_translated": "Who is Jesus?",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/faith-in-Jesus.html",
+                            "row_number": 476,
+                            "category": "أسئلة عن الكتاب المقدس"
+                        },
+                        "page_content": "When a person has faith in Jesus, it means that he or she believes who Jesus is (God in human form) and trusts what Jesus has done (died and resurrected). This faith in the person and work of Christ is what saves (see Romans 10:9–10; 1 Corinthians 15:3–4). “Everyone who believes that Jesus is the Christ is born of God” (1 John 5:1).\n\nJohn 3:16 says, “God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.” The key is belief, in response to God’s love. Anyone who places his or her faith in Jesus has the promise of eternal life.\n\nWithout faith in Jesus, we remain in sin and cannot be accepted into God’s presence in His perfect heaven. With faith in Jesus, we are given access to the Father as God’s own children (John 1:12).\n\nTo have faith in Jesus is to reject all other ways of salvation. We cannot trust in Jesus and anything else. We trust in Jesus alone. “Salvation is found in no one else, for there is no other name under heaven given to mankind by which we must be saved” (Acts 4:12). Salvation is exclusive. Jesus is the only way (John 14:6)."
+                    },
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/believe-in-Jesus.html",
+                            "row_number": 355,
+                            "category": "أسئلة عن الخلاص"
+                        },
+                        "page_content": "“Do you believe in Jesus?” seems like a strange question. It sounds like the same question as “Do you believe in Santa Claus?” or “Do you believe in aliens?” But the question “Do you believe in Jesus?” is asking far more than “Do you believe that Jesus Christ existed/exists?” The true meaning of the question is “Do you believe Jesus Christ is who the Bible says He is, and are you trusting Him as your Savior?”\n\nDo you believe that Jesus is God in human form (John 1:1, 14)? Do you believe that Jesus died on the cross to pay the penalty for your sins (1 Corinthians 15:3; 2 Corinthians 5:21), for which you deserve eternal separation from God (Romans 6:23)? Do you believe that the sacrifice of Jesus, God incarnate, is the only adequate payment for your sins (1 John 2:2; John 14:6; Acts 4:12)?\n\nIf you understand and believe what the Bible says about Jesus, and if you are trusting in those truths as the basis for salvation—you are saved! You “believe in Jesus” in the biblical sense."
+                    }
+                ],
+                "generation": "Jesus is the Son of God and the central figure of Christianity. He is believed to be both fully divine and fully human, who came to earth to teach, heal, and ultimately sacrifice Himself for the sins of humanity, offering salvation to all who believe in Him (John 3:16). Through His life, death, and resurrection, He reveals God's love and grace to us.",
+                "final_translated": "عیسی پسر خدا و شخصیت مرکزی مسیحیت است. او به‌عنوان کسی که هم کاملاً الهی و هم کاملاً انسانی است، باور دارد که به زمین آمده تا آموزش دهد، شفا بخشد و در نهایت خود را برای گناهان بشریت قربانی کند و نجات را به همه کسانی که به او ایمان دارند، ارائه دهد (یوحنا ۳:۱۶). از طریق زندگی، مرگ و رستاخیز او، محبت و رحمت خدا را به ما نشان می‌دهد.\n\nJesus is the Son of God and the central figure of Christianity. He is believed to be both fully divine and fully human, who came to earth to teach, heal, and ultimately sacrifice Himself for the sins of humanity, offering salvation to all who believe in Him (John 3:16). Through His life, death, and resurrection, He reveals God's love and grace to us."
+            },
+            "step_output": {
+                "final_translated": "عیسی پسر خدا و شخصیت مرکزی مسیحیت است. او به‌عنوان کسی که هم کاملاً الهی و هم کاملاً انسانی است، باور دارد که به زمین آمده تا آموزش دهد، شفا بخشد و در نهایت خود را برای گناهان بشریت قربانی کند و نجات را به همه کسانی که به او ایمان دارند، ارائه دهد (یوحنا ۳:۱۶). از طریق زندگی، مرگ و رستاخیز او، محبت و رحمت خدا را به ما نشان می‌دهد.\n\nJesus is the Son of God and the central figure of Christianity. He is believed to be both fully divine and fully human, who came to earth to teach, heal, and ultimately sacrifice Himself for the sins of humanity, offering salvation to all who believe in Him (John 3:16). Through His life, death, and resurrection, He reveals God's love and grace to us."
+            }
+        },
+        {
+            "step_name": "translate_persian_to_english",
+            "timestamp": "2025-08-16T20:44:01.455107",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 0,
+                "input_msg": "오늘 점심 뭐먹지",
+                "initial_translated": "What should I eat for lunch today?",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "initial_translated": "What should I eat for lunch today?"
+            }
+        },
+        {
+            "step_name": "receive_initial_input",
+            "timestamp": "2025-08-16T20:44:08.264198",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "오늘 점심 뭐먹지",
+                "initial_translated": "What should I eat for lunch today?",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {}
+        },
+        {
+            "step_name": "route_query",
+            "timestamp": "2025-08-16T20:44:19.091533",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "오늘 점심 뭐먹지",
+                "initial_translated": "What should I eat for lunch today?",
+                "route": "default",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "route": "default"
+            }
+        },
+        {
+            "step_name": "node_default_responser",
+            "timestamp": "2025-08-16T20:44:29.829957",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "오늘 점심 뭐먹지",
+                "initial_translated": "What should I eat for lunch today?",
+                "route": "default",
+                "source": "",
+                "documents": [],
+                "generation": "While I appreciate your question, it doesn't quite align with the purpose of our conversation. If you're looking for guidance or support in a faith-related area or something that brings hope and healing, I would love to help with that! Please feel free to share any thoughts or questions you have in that direction.",
+                "final_translated": "",
+                "default_count": 1
+            },
+            "step_output": {
+                "generation": "While I appreciate your question, it doesn't quite align with the purpose of our conversation. If you're looking for guidance or support in a faith-related area or something that brings hope and healing, I would love to help with that! Please feel free to share any thoughts or questions you have in that direction."
+            }
+        },
+        {
+            "step_name": "translate_english_to_persian",
+            "timestamp": "2025-08-16T20:44:41.907432",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "오늘 점심 뭐먹지",
+                "initial_translated": "What should I eat for lunch today?",
+                "route": "default",
+                "source": "",
+                "documents": [],
+                "generation": "While I appreciate your question, it doesn't quite align with the purpose of our conversation. If you're looking for guidance or support in a faith-related area or something that brings hope and healing, I would love to help with that! Please feel free to share any thoughts or questions you have in that direction.",
+                "final_translated": "در حالی که از سوال شما قدردانی می‌کنم، اما این سوال چندان با هدف گفت‌وگوی ما همخوانی ندارد. اگر به دنبال راهنمایی یا حمایتی در زمینه‌ای مرتبط با ایمان یا چیزی هستید که امید و شفا به همراه داشته باشد، خوشحال می‌شوم که در این زمینه کمک کنم! لطفاً هر گونه فکر یا سوالی که در این راستا دارید را با من در میان بگذارید.\n\nWhile I appreciate your question, it doesn't quite align with the purpose of our conversation. If you're looking for guidance or support in a faith-related area or something that brings hope and healing, I would love to help with that! Please feel free to share any thoughts or questions you have in that direction."
+            },
+            "step_output": {
+                "final_translated": "در حالی که از سوال شما قدردانی می‌کنم، اما این سوال چندان با هدف گفت‌وگوی ما همخوانی ندارد. اگر به دنبال راهنمایی یا حمایتی در زمینه‌ای مرتبط با ایمان یا چیزی هستید که امید و شفا به همراه داشته باشد، خوشحال می‌شوم که در این زمینه کمک کنم! لطفاً هر گونه فکر یا سوالی که در این راستا دارید را با من در میان بگذارید.\n\nWhile I appreciate your question, it doesn't quite align with the purpose of our conversation. If you're looking for guidance or support in a faith-related area or something that brings hope and healing, I would love to help with that! Please feel free to share any thoughts or questions you have in that direction."
+            }
+        },
+        {
+            "step_name": "translate_persian_to_english",
+            "timestamp": "2025-08-16T20:47:16.035057",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 0,
+                "default_count": 1,
+                "input_msg": "آیا خدا مرا دوست دارد؟",
+                "initial_translated": "Does God love me?",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "initial_translated": "Does God love me?"
+            }
+        },
+        {
+            "step_name": "receive_initial_input",
+            "timestamp": "2025-08-16T20:47:18.288088",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "آیا خدا مرا دوست دارد؟",
+                "initial_translated": "Does God love me?",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {}
+        },
+        {
+            "step_name": "route_query",
+            "timestamp": "2025-08-16T20:47:28.989753",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "آیا خدا مرا دوست دارد؟",
+                "initial_translated": "Does God love me?",
+                "route": "rag",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "route": "rag"
+            }
+        },
+        {
+            "step_name": "node_rag_responser",
+            "timestamp": "2025-08-16T20:47:48.745962",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "آیا خدا مرا دوست دارد؟",
+                "initial_translated": "Does God love me?",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/does-God-love-everyone.html",
+                            "row_number": 83
+                        },
+                        "page_content": "God’s merciful love for the world is also manifested in that God gives people the opportunity to repent: “The Lord is not slow in keeping his promise. . . . Instead he is patient with you, not wanting anyone to perish, but everyone to come to repentance” (2 Peter 3:9). God’s unconditional love is related to His general call to salvation and what is often called His permissive or perfect will—that aspect of God’s will that reveals His attitude and defines what is pleasing to Him.\n\nHowever, God’s love for everyone does not mean that everyone will be saved (see Matthew 25:46). God will not ignore sin, for He is a God of justice (2 Thessalonians 1:6). Sin cannot go unpunished forever (Romans 3:25–26). If God simply disregarded sin and allowed it to continue to wreak havoc in creation forever, then He would not be love. To ignore God’s merciful love, to reject Christ, or to deny the Savior who bought us (2 Peter 2:1) is to subject ourselves to God’s wrath for eternity (Romans 1:18), not His love.\n\nThe love of God that justifies sinners is not extended to everyone, only to those who have faith in Jesus Christ (Romans 5:1). The love of God that brings people into intimacy with Himself is not extended to everyone, only to those who love the Son of God (John 14:21). This love could be thought of as God’s “covenant love,” and it is conditional, given only to those who place their faith in Jesus for salvation (John 3:36). Those who believe in the Lord Jesus Christ are loved unconditionally, securely, forever.\n\nDoes God love everyone? Yes, He shows mercy and kindness to all. Does God love Christians more than He loves non-Christians? No, not in regards to His merciful love. Does God love Christians in a different way than He loves non-Christians? Yes; because believers have exercised faith in God’s Son, they are saved. God has a unique relationship with Christians in that only Christians have forgiveness based on God’s eternal grace. The unconditional, merciful love God has for everyone should bring us to faith, receiving with gratefulness the conditional, covenant love He grants those who receive Jesus Christ as Savior."
+                    },
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/does-God-hate.html",
+                            "row_number": 146,
+                            "category": "أسئلة عن الله"
+                        },
+                        "page_content": "The Bible clearly teaches that God loves the people of the world (John 3:16). God takes no pleasure in the death of the wicked (Ezekiel 18:32). He is patient to an extreme, “not wanting anyone to perish, but everyone to come to repentance” (2 Peter 3:9). This is all proof of love—God wants what is best for His creation. Before a person repents and believes in the Lord Jesus Christ, he is the enemy of God (Colossians 1:21). Yet, even before he is saved, he is loved by God (Romans 5:8)—i.e., God sacrificed His only begotten Son on his behalf. God desires that the wicked repent of their sin and find refuge in Christ. At the moment of saving faith, the wicked sinner is removed from the kingdom of darkness and transferred to the kingdom of love (see Colossians 1:13)."
+                    },
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/does-God-love-me.html",
+                            "row_number": 147,
+                            "category": "أسئلة عن الله"
+                        },
+                        "page_content": "So the simple answer is, “yes.” Yes, God loves you! As hard as it may be to believe, it is the truth."
+                    }
+                ],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "retrieved_docs_summary": [
+                    {
+                        "page_content_preview": "God’s merciful love for the world is also manifested in that God gives people the opportunity to rep...",
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/does-God-love-everyone.html",
+                            "row_number": 83
+                        }
+                    },
+                    {
+                        "page_content_preview": "The Bible clearly teaches that God loves the people of the world (John 3:16). God takes no pleasure ...",
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/does-God-hate.html",
+                            "row_number": 146,
+                            "category": "أسئلة عن الله"
+                        }
+                    },
+                    {
+                        "page_content_preview": "So the simple answer is, “yes.” Yes, God loves you! As hard as it may be to believe, it is the truth...",
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/does-God-love-me.html",
+                            "row_number": 147,
+                            "category": "أسئلة عن الله"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "step_name": "judge_retrieval",
+            "timestamp": "2025-08-16T20:47:51.284517",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "آیا خدا مرا دوست دارد؟",
+                "initial_translated": "Does God love me?",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/does-God-love-everyone.html",
+                            "row_number": 83
+                        },
+                        "page_content": "God’s merciful love for the world is also manifested in that God gives people the opportunity to repent: “The Lord is not slow in keeping his promise. . . . Instead he is patient with you, not wanting anyone to perish, but everyone to come to repentance” (2 Peter 3:9). God’s unconditional love is related to His general call to salvation and what is often called His permissive or perfect will—that aspect of God’s will that reveals His attitude and defines what is pleasing to Him.\n\nHowever, God’s love for everyone does not mean that everyone will be saved (see Matthew 25:46). God will not ignore sin, for He is a God of justice (2 Thessalonians 1:6). Sin cannot go unpunished forever (Romans 3:25–26). If God simply disregarded sin and allowed it to continue to wreak havoc in creation forever, then He would not be love. To ignore God’s merciful love, to reject Christ, or to deny the Savior who bought us (2 Peter 2:1) is to subject ourselves to God’s wrath for eternity (Romans 1:18), not His love.\n\nThe love of God that justifies sinners is not extended to everyone, only to those who have faith in Jesus Christ (Romans 5:1). The love of God that brings people into intimacy with Himself is not extended to everyone, only to those who love the Son of God (John 14:21). This love could be thought of as God’s “covenant love,” and it is conditional, given only to those who place their faith in Jesus for salvation (John 3:36). Those who believe in the Lord Jesus Christ are loved unconditionally, securely, forever.\n\nDoes God love everyone? Yes, He shows mercy and kindness to all. Does God love Christians more than He loves non-Christians? No, not in regards to His merciful love. Does God love Christians in a different way than He loves non-Christians? Yes; because believers have exercised faith in God’s Son, they are saved. God has a unique relationship with Christians in that only Christians have forgiveness based on God’s eternal grace. The unconditional, merciful love God has for everyone should bring us to faith, receiving with gratefulness the conditional, covenant love He grants those who receive Jesus Christ as Savior."
+                    },
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/does-God-hate.html",
+                            "row_number": 146,
+                            "category": "أسئلة عن الله"
+                        },
+                        "page_content": "The Bible clearly teaches that God loves the people of the world (John 3:16). God takes no pleasure in the death of the wicked (Ezekiel 18:32). He is patient to an extreme, “not wanting anyone to perish, but everyone to come to repentance” (2 Peter 3:9). This is all proof of love—God wants what is best for His creation. Before a person repents and believes in the Lord Jesus Christ, he is the enemy of God (Colossians 1:21). Yet, even before he is saved, he is loved by God (Romans 5:8)—i.e., God sacrificed His only begotten Son on his behalf. God desires that the wicked repent of their sin and find refuge in Christ. At the moment of saving faith, the wicked sinner is removed from the kingdom of darkness and transferred to the kingdom of love (see Colossians 1:13)."
+                    },
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/does-God-love-me.html",
+                            "row_number": 147,
+                            "category": "أسئلة عن الله"
+                        },
+                        "page_content": "So the simple answer is, “yes.” Yes, God loves you! As hard as it may be to believe, it is the truth."
+                    }
+                ],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "filtered_docs": [
+                    {
+                        "source": "https://www.gotquestions.org/does-God-love-everyone.html",
+                        "row_number": 83
+                    },
+                    {
+                        "source": "https://www.gotquestions.org/does-God-hate.html",
+                        "row_number": 146,
+                        "category": "أسئلة عن الله"
+                    },
+                    {
+                        "source": "https://www.gotquestions.org/does-God-love-me.html",
+                        "row_number": 147,
+                        "category": "أسئلة عن الله"
+                    }
+                ]
+            }
+        },
+        {
+            "step_name": "generate_rag_response",
+            "timestamp": "2025-08-16T20:47:59.595601",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "آیا خدا مرا دوست دارد؟",
+                "initial_translated": "Does God love me?",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/does-God-love-everyone.html",
+                            "row_number": 83
+                        },
+                        "page_content": "God’s merciful love for the world is also manifested in that God gives people the opportunity to repent: “The Lord is not slow in keeping his promise. . . . Instead he is patient with you, not wanting anyone to perish, but everyone to come to repentance” (2 Peter 3:9). God’s unconditional love is related to His general call to salvation and what is often called His permissive or perfect will—that aspect of God’s will that reveals His attitude and defines what is pleasing to Him.\n\nHowever, God’s love for everyone does not mean that everyone will be saved (see Matthew 25:46). God will not ignore sin, for He is a God of justice (2 Thessalonians 1:6). Sin cannot go unpunished forever (Romans 3:25–26). If God simply disregarded sin and allowed it to continue to wreak havoc in creation forever, then He would not be love. To ignore God’s merciful love, to reject Christ, or to deny the Savior who bought us (2 Peter 2:1) is to subject ourselves to God’s wrath for eternity (Romans 1:18), not His love.\n\nThe love of God that justifies sinners is not extended to everyone, only to those who have faith in Jesus Christ (Romans 5:1). The love of God that brings people into intimacy with Himself is not extended to everyone, only to those who love the Son of God (John 14:21). This love could be thought of as God’s “covenant love,” and it is conditional, given only to those who place their faith in Jesus for salvation (John 3:36). Those who believe in the Lord Jesus Christ are loved unconditionally, securely, forever.\n\nDoes God love everyone? Yes, He shows mercy and kindness to all. Does God love Christians more than He loves non-Christians? No, not in regards to His merciful love. Does God love Christians in a different way than He loves non-Christians? Yes; because believers have exercised faith in God’s Son, they are saved. God has a unique relationship with Christians in that only Christians have forgiveness based on God’s eternal grace. The unconditional, merciful love God has for everyone should bring us to faith, receiving with gratefulness the conditional, covenant love He grants those who receive Jesus Christ as Savior."
+                    },
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/does-God-hate.html",
+                            "row_number": 146,
+                            "category": "أسئلة عن الله"
+                        },
+                        "page_content": "The Bible clearly teaches that God loves the people of the world (John 3:16). God takes no pleasure in the death of the wicked (Ezekiel 18:32). He is patient to an extreme, “not wanting anyone to perish, but everyone to come to repentance” (2 Peter 3:9). This is all proof of love—God wants what is best for His creation. Before a person repents and believes in the Lord Jesus Christ, he is the enemy of God (Colossians 1:21). Yet, even before he is saved, he is loved by God (Romans 5:8)—i.e., God sacrificed His only begotten Son on his behalf. God desires that the wicked repent of their sin and find refuge in Christ. At the moment of saving faith, the wicked sinner is removed from the kingdom of darkness and transferred to the kingdom of love (see Colossians 1:13)."
+                    },
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/does-God-love-me.html",
+                            "row_number": 147,
+                            "category": "أسئلة عن الله"
+                        },
+                        "page_content": "So the simple answer is, “yes.” Yes, God loves you! As hard as it may be to believe, it is the truth."
+                    }
+                ],
+                "generation": "Absolutely, God loves you deeply! The Bible tells us in John 3:16 that \"God so loved the world,\" which includes you, that He gave His only Son. No matter what you're going through, His love is constant and unconditional.",
+                "final_translated": ""
+            },
+            "step_output": {
+                "generation": "Absolutely, God loves you deeply! The Bible tells us in John 3:16 that \"God so loved the world,\" which includes you, that He gave His only Son. No matter what you're going through, His love is constant and unconditional."
+            }
+        },
+        {
+            "step_name": "translate_english_to_persian",
+            "timestamp": "2025-08-16T20:48:12.377557",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "آیا خدا مرا دوست دارد؟",
+                "initial_translated": "Does God love me?",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/does-God-love-everyone.html",
+                            "row_number": 83
+                        },
+                        "page_content": "God’s merciful love for the world is also manifested in that God gives people the opportunity to repent: “The Lord is not slow in keeping his promise. . . . Instead he is patient with you, not wanting anyone to perish, but everyone to come to repentance” (2 Peter 3:9). God’s unconditional love is related to His general call to salvation and what is often called His permissive or perfect will—that aspect of God’s will that reveals His attitude and defines what is pleasing to Him.\n\nHowever, God’s love for everyone does not mean that everyone will be saved (see Matthew 25:46). God will not ignore sin, for He is a God of justice (2 Thessalonians 1:6). Sin cannot go unpunished forever (Romans 3:25–26). If God simply disregarded sin and allowed it to continue to wreak havoc in creation forever, then He would not be love. To ignore God’s merciful love, to reject Christ, or to deny the Savior who bought us (2 Peter 2:1) is to subject ourselves to God’s wrath for eternity (Romans 1:18), not His love.\n\nThe love of God that justifies sinners is not extended to everyone, only to those who have faith in Jesus Christ (Romans 5:1). The love of God that brings people into intimacy with Himself is not extended to everyone, only to those who love the Son of God (John 14:21). This love could be thought of as God’s “covenant love,” and it is conditional, given only to those who place their faith in Jesus for salvation (John 3:36). Those who believe in the Lord Jesus Christ are loved unconditionally, securely, forever.\n\nDoes God love everyone? Yes, He shows mercy and kindness to all. Does God love Christians more than He loves non-Christians? No, not in regards to His merciful love. Does God love Christians in a different way than He loves non-Christians? Yes; because believers have exercised faith in God’s Son, they are saved. God has a unique relationship with Christians in that only Christians have forgiveness based on God’s eternal grace. The unconditional, merciful love God has for everyone should bring us to faith, receiving with gratefulness the conditional, covenant love He grants those who receive Jesus Christ as Savior."
+                    },
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/does-God-hate.html",
+                            "row_number": 146,
+                            "category": "أسئلة عن الله"
+                        },
+                        "page_content": "The Bible clearly teaches that God loves the people of the world (John 3:16). God takes no pleasure in the death of the wicked (Ezekiel 18:32). He is patient to an extreme, “not wanting anyone to perish, but everyone to come to repentance” (2 Peter 3:9). This is all proof of love—God wants what is best for His creation. Before a person repents and believes in the Lord Jesus Christ, he is the enemy of God (Colossians 1:21). Yet, even before he is saved, he is loved by God (Romans 5:8)—i.e., God sacrificed His only begotten Son on his behalf. God desires that the wicked repent of their sin and find refuge in Christ. At the moment of saving faith, the wicked sinner is removed from the kingdom of darkness and transferred to the kingdom of love (see Colossians 1:13)."
+                    },
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/does-God-love-me.html",
+                            "row_number": 147,
+                            "category": "أسئلة عن الله"
+                        },
+                        "page_content": "So the simple answer is, “yes.” Yes, God loves you! As hard as it may be to believe, it is the truth."
+                    }
+                ],
+                "generation": "Absolutely, God loves you deeply! The Bible tells us in John 3:16 that \"God so loved the world,\" which includes you, that He gave His only Son. No matter what you're going through, His love is constant and unconditional.",
+                "final_translated": "به‌طور قطع، خداوند شما را عمیقاً دوست دارد! کتاب مقدس در یوحنا ۳:۱۶ به ما می‌گوید که \"خداوند جهان را این‌گونه دوست داشت\"، که شامل شما نیز می‌شود، که تنها پسرش را داد. مهم نیست که در چه شرایطی هستید، محبت او ثابت و بی‌قید و شرط است.\n\nAbsolutely, God loves you deeply! The Bible tells us in John 3:16 that \"God so loved the world,\" which includes you, that He gave His only Son. No matter what you're going through, His love is constant and unconditional."
+            },
+            "step_output": {
+                "final_translated": "به‌طور قطع، خداوند شما را عمیقاً دوست دارد! کتاب مقدس در یوحنا ۳:۱۶ به ما می‌گوید که \"خداوند جهان را این‌گونه دوست داشت\"، که شامل شما نیز می‌شود، که تنها پسرش را داد. مهم نیست که در چه شرایطی هستید، محبت او ثابت و بی‌قید و شرط است.\n\nAbsolutely, God loves you deeply! The Bible tells us in John 3:16 that \"God so loved the world,\" which includes you, that He gave His only Son. No matter what you're going through, His love is constant and unconditional."
+            }
+        },
+        {
+            "step_name": "translate_persian_to_english",
+            "timestamp": "2025-08-16T20:48:36.885565",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 0,
+                "default_count": 1,
+                "input_msg": "안녕?",
+                "initial_translated": "Hello!",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "initial_translated": "Hello!"
+            }
+        },
+        {
+            "step_name": "receive_initial_input",
+            "timestamp": "2025-08-16T20:48:38.304830",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "안녕?",
+                "initial_translated": "Hello!",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {}
+        },
+        {
+            "step_name": "route_query",
+            "timestamp": "2025-08-16T20:48:49.011991",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "안녕?",
+                "initial_translated": "Hello!",
+                "route": "default",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "route": "default"
+            }
+        },
+        {
+            "step_name": "node_default_responser",
+            "timestamp": "2025-08-16T20:48:59.549836",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 2,
+                "input_msg": "안녕?",
+                "initial_translated": "Hello!",
+                "route": "default",
+                "source": "",
+                "documents": [],
+                "generation": "Hello! It's wonderful to hear from you. How can I assist you today? If there's something on your heart or mind, feel free to share.",
+                "final_translated": ""
+            },
+            "step_output": {
+                "generation": "Hello! It's wonderful to hear from you. How can I assist you today? If there's something on your heart or mind, feel free to share."
+            }
+        },
+        {
+            "step_name": "translate_english_to_persian",
+            "timestamp": "2025-08-16T20:49:10.201333",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 2,
+                "input_msg": "안녕?",
+                "initial_translated": "Hello!",
+                "route": "default",
+                "source": "",
+                "documents": [],
+                "generation": "Hello! It's wonderful to hear from you. How can I assist you today? If there's something on your heart or mind, feel free to share.",
+                "final_translated": "سلام! شنیدن از شما فوق‌العاده است. چگونه می‌توانم امروز به شما کمک کنم؟ اگر چیزی در دل یا ذهنتان دارید، با کمال میل به اشتراک بگذارید.\n\nHello! It's wonderful to hear from you. How can I assist you today? If there's something on your heart or mind, feel free to share."
+            },
+            "step_output": {
+                "final_translated": "سلام! شنیدن از شما فوق‌العاده است. چگونه می‌توانم امروز به شما کمک کنم؟ اگر چیزی در دل یا ذهنتان دارید، با کمال میل به اشتراک بگذارید.\n\nHello! It's wonderful to hear from you. How can I assist you today? If there's something on your heart or mind, feel free to share."
+            }
+        }
+    ],
+    "last_updated": "2025-08-16T20:49:10.201333"
+}
