@@ -1,3 +1,14 @@
+# Streamlit_bot.py (상단 부분)
+
+import os
+import streamlit as st
+
+# --- OpenAI API Key 세팅 (로컬 .env / 서버 secrets.toml 둘 다 대응) ---
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") or st.secrets.get("OPENAI_API_KEY", "")
+if not OPENAI_API_KEY:
+    raise ValueError("❌ OPENAI_API_KEY not found. Please set it in .env or .streamlit/secrets.toml")
+
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 # %% [markdown]
 # 이 파일은 로그 저장을 mongoDB와 연결해둔 파일입니다. \
 # 로그를 chat_logs에 저장합니다. 

@@ -869,7 +869,186 @@
             "step_output": {
                 "final_translated": "سلام! شنیدن از شما فوق‌العاده است. چگونه می‌توانم امروز به شما کمک کنم؟ اگر چیزی در دل یا ذهنتان دارید، با کمال میل به اشتراک بگذارید.\n\nHello! It's wonderful to hear from you. How can I assist you today? If there's something on your heart or mind, feel free to share."
             }
+        },
+        {
+            "step_name": "translate_persian_to_english",
+            "timestamp": "2025-08-16T21:58:37.666782",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 0,
+                "input_msg": "عیسی کیست؟",
+                "initial_translated": "Who is Jesus?",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "initial_translated": "Who is Jesus?"
+            }
+        },
+        {
+            "step_name": "receive_initial_input",
+            "timestamp": "2025-08-16T21:58:42.398766",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "عیسی کیست؟",
+                "initial_translated": "Who is Jesus?",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {}
+        },
+        {
+            "step_name": "route_query",
+            "timestamp": "2025-08-16T21:58:53.328998",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "عیسی کیست؟",
+                "initial_translated": "Who is Jesus?",
+                "route": "rag",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "route": "rag"
+            }
+        },
+        {
+            "step_name": "node_rag_responser",
+            "timestamp": "2025-08-16T21:59:09.686075",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "عیسی کیست؟",
+                "initial_translated": "Who is Jesus?",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/believe-in-Jesus.html",
+                            "row_number": 355,
+                            "category": "أسئلة عن الخلاص"
+                        },
+                        "page_content": "“Do you believe in Jesus?” seems like a strange question. It sounds like the same question as “Do you believe in Santa Claus?” or “Do you believe in aliens?” But the question “Do you believe in Jesus?” is asking far more than “Do you believe that Jesus Christ existed/exists?” The true meaning of the question is “Do you believe Jesus Christ is who the Bible says He is, and are you trusting Him as your Savior?”\n\nDo you believe that Jesus is God in human form (John 1:1, 14)? Do you believe that Jesus died on the cross to pay the penalty for your sins (1 Corinthians 15:3; 2 Corinthians 5:21), for which you deserve eternal separation from God (Romans 6:23)? Do you believe that the sacrifice of Jesus, God incarnate, is the only adequate payment for your sins (1 John 2:2; John 14:6; Acts 4:12)?\n\nIf you understand and believe what the Bible says about Jesus, and if you are trusting in those truths as the basis for salvation—you are saved! You “believe in Jesus” in the biblical sense."
+                    }
+                ],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "retrieved_docs_summary": [
+                    {
+                        "page_content_preview": "“Do you believe in Jesus?” seems like a strange question. It sounds like the same question as “Do yo...",
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/believe-in-Jesus.html",
+                            "row_number": 355,
+                            "category": "أسئلة عن الخلاص"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "step_name": "judge_retrieval",
+            "timestamp": "2025-08-16T21:59:13.402609",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "عیسی کیست؟",
+                "initial_translated": "Who is Jesus?",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/believe-in-Jesus.html",
+                            "row_number": 355,
+                            "category": "أسئلة عن الخلاص"
+                        },
+                        "page_content": "“Do you believe in Jesus?” seems like a strange question. It sounds like the same question as “Do you believe in Santa Claus?” or “Do you believe in aliens?” But the question “Do you believe in Jesus?” is asking far more than “Do you believe that Jesus Christ existed/exists?” The true meaning of the question is “Do you believe Jesus Christ is who the Bible says He is, and are you trusting Him as your Savior?”\n\nDo you believe that Jesus is God in human form (John 1:1, 14)? Do you believe that Jesus died on the cross to pay the penalty for your sins (1 Corinthians 15:3; 2 Corinthians 5:21), for which you deserve eternal separation from God (Romans 6:23)? Do you believe that the sacrifice of Jesus, God incarnate, is the only adequate payment for your sins (1 John 2:2; John 14:6; Acts 4:12)?\n\nIf you understand and believe what the Bible says about Jesus, and if you are trusting in those truths as the basis for salvation—you are saved! You “believe in Jesus” in the biblical sense."
+                    }
+                ],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "filtered_docs": [
+                    {
+                        "source": "https://www.gotquestions.org/believe-in-Jesus.html",
+                        "row_number": 355,
+                        "category": "أسئلة عن الخلاص"
+                    }
+                ]
+            }
+        },
+        {
+            "step_name": "generate_rag_response",
+            "timestamp": "2025-08-16T21:59:24.248719",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "عیسی کیست؟",
+                "initial_translated": "Who is Jesus?",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/believe-in-Jesus.html",
+                            "row_number": 355,
+                            "category": "أسئلة عن الخلاص"
+                        },
+                        "page_content": "“Do you believe in Jesus?” seems like a strange question. It sounds like the same question as “Do you believe in Santa Claus?” or “Do you believe in aliens?” But the question “Do you believe in Jesus?” is asking far more than “Do you believe that Jesus Christ existed/exists?” The true meaning of the question is “Do you believe Jesus Christ is who the Bible says He is, and are you trusting Him as your Savior?”\n\nDo you believe that Jesus is God in human form (John 1:1, 14)? Do you believe that Jesus died on the cross to pay the penalty for your sins (1 Corinthians 15:3; 2 Corinthians 5:21), for which you deserve eternal separation from God (Romans 6:23)? Do you believe that the sacrifice of Jesus, God incarnate, is the only adequate payment for your sins (1 John 2:2; John 14:6; Acts 4:12)?\n\nIf you understand and believe what the Bible says about Jesus, and if you are trusting in those truths as the basis for salvation—you are saved! You “believe in Jesus” in the biblical sense."
+                    }
+                ],
+                "generation": "Jesus is the Son of God and the central figure of Christianity. He is believed to be both fully divine and fully human, who came to earth to teach, heal, and ultimately sacrifice Himself for the sins of humanity, offering salvation to all who believe in Him (John 3:16). Through His life, death, and resurrection, He reveals God's love and grace to us.",
+                "final_translated": ""
+            },
+            "step_output": {
+                "generation": "Jesus is the Son of God and the central figure of Christianity. He is believed to be both fully divine and fully human, who came to earth to teach, heal, and ultimately sacrifice Himself for the sins of humanity, offering salvation to all who believe in Him (John 3:16). Through His life, death, and resurrection, He reveals God's love and grace to us."
+            }
+        },
+        {
+            "step_name": "translate_english_to_persian",
+            "timestamp": "2025-08-16T21:59:37.672849",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "عیسی کیست؟",
+                "initial_translated": "Who is Jesus?",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/believe-in-Jesus.html",
+                            "row_number": 355,
+                            "category": "أسئلة عن الخلاص"
+                        },
+                        "page_content": "“Do you believe in Jesus?” seems like a strange question. It sounds like the same question as “Do you believe in Santa Claus?” or “Do you believe in aliens?” But the question “Do you believe in Jesus?” is asking far more than “Do you believe that Jesus Christ existed/exists?” The true meaning of the question is “Do you believe Jesus Christ is who the Bible says He is, and are you trusting Him as your Savior?”\n\nDo you believe that Jesus is God in human form (John 1:1, 14)? Do you believe that Jesus died on the cross to pay the penalty for your sins (1 Corinthians 15:3; 2 Corinthians 5:21), for which you deserve eternal separation from God (Romans 6:23)? Do you believe that the sacrifice of Jesus, God incarnate, is the only adequate payment for your sins (1 John 2:2; John 14:6; Acts 4:12)?\n\nIf you understand and believe what the Bible says about Jesus, and if you are trusting in those truths as the basis for salvation—you are saved! You “believe in Jesus” in the biblical sense."
+                    }
+                ],
+                "generation": "Jesus is the Son of God and the central figure of Christianity. He is believed to be both fully divine and fully human, who came to earth to teach, heal, and ultimately sacrifice Himself for the sins of humanity, offering salvation to all who believe in Him (John 3:16). Through His life, death, and resurrection, He reveals God's love and grace to us.",
+                "final_translated": "عیسی پسر خدا و شخصیت مرکزی مسیحیت است. او به‌عنوان کسی که هم کاملاً الهی و هم کاملاً انسانی است، باور دارد که به زمین آمده تا آموزش دهد، شفا بخشد و در نهایت خود را برای گناهان بشریت قربانی کند و نجات را به همه کسانی که به او ایمان دارند، ارائه دهد (یوحنا ۳:۱۶). از طریق زندگی، مرگ و رستاخیز او، محبت و رحمت خدا را به ما نشان می‌دهد.\n\nJesus is the Son of God and the central figure of Christianity. He is believed to be both fully divine and fully human, who came to earth to teach, heal, and ultimately sacrifice Himself for the sins of humanity, offering salvation to all who believe in Him (John 3:16). Through His life, death, and resurrection, He reveals God's love and grace to us."
+            },
+            "step_output": {
+                "final_translated": "عیسی پسر خدا و شخصیت مرکزی مسیحیت است. او به‌عنوان کسی که هم کاملاً الهی و هم کاملاً انسانی است، باور دارد که به زمین آمده تا آموزش دهد، شفا بخشد و در نهایت خود را برای گناهان بشریت قربانی کند و نجات را به همه کسانی که به او ایمان دارند، ارائه دهد (یوحنا ۳:۱۶). از طریق زندگی، مرگ و رستاخیز او، محبت و رحمت خدا را به ما نشان می‌دهد.\n\nJesus is the Son of God and the central figure of Christianity. He is believed to be both fully divine and fully human, who came to earth to teach, heal, and ultimately sacrifice Himself for the sins of humanity, offering salvation to all who believe in Him (John 3:16). Through His life, death, and resurrection, He reveals God's love and grace to us."
+            }
         }
     ],
-    "last_updated": "2025-08-16T20:49:10.201333"
+    "last_updated": "2025-08-16T21:59:37.672849"
 }
