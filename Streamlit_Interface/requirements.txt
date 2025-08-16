@@ -1,0 +1,15 @@
+streamlit
+langchain
+langchain-community
+langchain-openai
+langchain-chroma
+chromadb
+pandas
+python-dotenv
+langgraph
+pydantic
+openpyxl
+pysqlite3-binary
+langchain-core
+rank-bm25
+pymongo
