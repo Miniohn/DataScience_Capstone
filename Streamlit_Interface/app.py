@@ -17,18 +17,19 @@ try:
     load_bot_once()  # 최초 로드
     print("✅ Bot adapter loaded successfully")
 except Exception as e:
+    # 에러도 채팅 말풍선으로 표시
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
+    st.session_state.messages.append({
+        "sender": "bot",
+        "text": f"⚠️ Bot loading error: {e}",
+        "time": datetime.now().strftime("%H:%M")
+    })
     print(f"❌ Bot adapter load failed: {e}")
-    st.error(f"Bot loading error: {e}")  # Streamlit에서 오류 표시
-    
+
     def get_bot_reply(message: str, history: List[Dict[str, str]]) -> str:
         return f"(demo) You said: {message}"
-    def load_bot_once():
-        pass
 
-
-except Exception as e:
-    def get_bot_reply(message: str, history: List[Dict[str, str]]) -> str:
-        return f"(demo) You said: {message}"
     def load_bot_once():
         pass
 
@@ -49,7 +50,11 @@ if "initialized" not in st.session_state:
     try:
         load_bot_once()
     except Exception as e:
-        st.toast(f"Bot load failed: {e}", icon="⚠️")
+        st.session_state.messages.append({
+            "sender": "bot",
+            "text": f"⚠️ Bot load failed: {e}",
+            "time": datetime.now().strftime("%H:%M")
+        })
     st.session_state.initialized = True
 
 def now_hhmm():
@@ -250,15 +255,16 @@ if send_clicked:
                 for m in st.session_state.messages
                 if (m.get("text") or "").strip()
             ]
-            bot_reply = get_bot_reply(msg, history_for_bot)
+            try:
+                bot_reply = get_bot_reply(msg, history_for_bot)
+            except Exception as e:
+                bot_reply = f"⚠️ Bot error: {e}"
             reply_text = (bot_reply or "").strip()
             if reply_text:
                 add_message("bot", reply_text)
             else:
-                st.toast("No reply (blocked or empty).", icon="🛑")
+                add_message("bot", "🛑 No reply (blocked or empty).")
         st.session_state.draft = ""
         st.rerun()
 
 st.markdown('</div>', unsafe_allow_html=True)
-
-##

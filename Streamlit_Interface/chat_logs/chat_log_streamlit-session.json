@@ -1048,7 +1048,445 @@
             "step_output": {
                 "final_translated": "عیسی پسر خدا و شخصیت مرکزی مسیحیت است. او به‌عنوان کسی که هم کاملاً الهی و هم کاملاً انسانی است، باور دارد که به زمین آمده تا آموزش دهد، شفا بخشد و در نهایت خود را برای گناهان بشریت قربانی کند و نجات را به همه کسانی که به او ایمان دارند، ارائه دهد (یوحنا ۳:۱۶). از طریق زندگی، مرگ و رستاخیز او، محبت و رحمت خدا را به ما نشان می‌دهد.\n\nJesus is the Son of God and the central figure of Christianity. He is believed to be both fully divine and fully human, who came to earth to teach, heal, and ultimately sacrifice Himself for the sins of humanity, offering salvation to all who believe in Him (John 3:16). Through His life, death, and resurrection, He reveals God's love and grace to us."
             }
+        },
+        {
+            "step_name": "translate_persian_to_english",
+            "timestamp": "2025-08-16T22:09:37.246658",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 0,
+                "input_msg": "Hello!",
+                "initial_translated": "Hello!",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "initial_translated": "Hello!"
+            }
+        },
+        {
+            "step_name": "receive_initial_input",
+            "timestamp": "2025-08-16T22:09:37.433783",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "Hello!",
+                "initial_translated": "Hello!",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {}
+        },
+        {
+            "step_name": "route_query",
+            "timestamp": "2025-08-16T22:09:48.194652",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "Hello!",
+                "initial_translated": "Hello!",
+                "route": "default",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "route": "default"
+            }
+        },
+        {
+            "step_name": "node_default_responser",
+            "timestamp": "2025-08-16T22:09:58.521368",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "Hello!",
+                "initial_translated": "Hello!",
+                "route": "default",
+                "source": "",
+                "documents": [],
+                "generation": "Hello! It's wonderful to hear from you. How can I assist you today? If there's something on your heart or mind, feel free to share!",
+                "final_translated": "",
+                "default_count": 1
+            },
+            "step_output": {
+                "generation": "Hello! It's wonderful to hear from you. How can I assist you today? If there's something on your heart or mind, feel free to share!"
+            }
+        },
+        {
+            "step_name": "translate_english_to_persian",
+            "timestamp": "2025-08-16T22:10:09.582654",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "Hello!",
+                "initial_translated": "Hello!",
+                "route": "default",
+                "source": "",
+                "documents": [],
+                "generation": "Hello! It's wonderful to hear from you. How can I assist you today? If there's something on your heart or mind, feel free to share!",
+                "final_translated": "سلام! شنیدن از شما فوق‌العاده است. چگونه می‌توانم امروز به شما کمک کنم؟ اگر چیزی در دل یا ذهنتان دارید، با کمال میل به اشتراک بگذارید!\n\nHello! It's wonderful to hear from you. How can I assist you today? If there's something on your heart or mind, feel free to share!"
+            },
+            "step_output": {
+                "final_translated": "سلام! شنیدن از شما فوق‌العاده است. چگونه می‌توانم امروز به شما کمک کنم؟ اگر چیزی در دل یا ذهنتان دارید، با کمال میل به اشتراک بگذارید!\n\nHello! It's wonderful to hear from you. How can I assist you today? If there's something on your heart or mind, feel free to share!"
+            }
+        },
+        {
+            "step_name": "translate_persian_to_english",
+            "timestamp": "2025-08-16T22:13:29.198201",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 0,
+                "default_count": 1,
+                "input_msg": "سلام امروز هوا بسیار عالی است",
+                "initial_translated": "Hello, the weather is very nice today.",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "initial_translated": "Hello, the weather is very nice today."
+            }
+        },
+        {
+            "step_name": "receive_initial_input",
+            "timestamp": "2025-08-16T22:13:37.464084",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "سلام امروز هوا بسیار عالی است",
+                "initial_translated": "Hello, the weather is very nice today.",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {}
+        },
+        {
+            "step_name": "route_query",
+            "timestamp": "2025-08-16T22:13:48.326211",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "سلام امروز هوا بسیار عالی است",
+                "initial_translated": "Hello, the weather is very nice today.",
+                "route": "default",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "route": "default"
+            }
+        },
+        {
+            "step_name": "node_default_responser",
+            "timestamp": "2025-08-16T22:13:59.680357",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 2,
+                "input_msg": "سلام امروز هوا بسیار عالی است",
+                "initial_translated": "Hello, the weather is very nice today.",
+                "route": "default",
+                "source": "",
+                "documents": [],
+                "generation": "Hello! I'm glad to hear you're enjoying the nice weather. It's a beautiful gift from God, isn't it? Nature often reminds us of His creation and love. Is there something specific on your mind today that you'd like to talk about?",
+                "final_translated": ""
+            },
+            "step_output": {
+                "generation": "Hello! I'm glad to hear you're enjoying the nice weather. It's a beautiful gift from God, isn't it? Nature often reminds us of His creation and love. Is there something specific on your mind today that you'd like to talk about?"
+            }
+        },
+        {
+            "step_name": "translate_english_to_persian",
+            "timestamp": "2025-08-16T22:14:10.330162",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 2,
+                "input_msg": "سلام امروز هوا بسیار عالی است",
+                "initial_translated": "Hello, the weather is very nice today.",
+                "route": "default",
+                "source": "",
+                "documents": [],
+                "generation": "Hello! I'm glad to hear you're enjoying the nice weather. It's a beautiful gift from God, isn't it? Nature often reminds us of His creation and love. Is there something specific on your mind today that you'd like to talk about?",
+                "final_translated": "سلام! خوشحالم که از هوای خوب لذت می‌بری. این یک هدیه زیبا از طرف خدا نیست؟ طبیعت اغلب ما را به یاد آفرینش و محبت او می‌اندازد. آیا موضوع خاصی در ذهنت هست که بخواهی درباره‌اش صحبت کنی؟\n\nHello! I'm glad to hear you're enjoying the nice weather. It's a beautiful gift from God, isn't it? Nature often reminds us of His creation and love. Is there something specific on your mind today that you'd like to talk about?"
+            },
+            "step_output": {
+                "final_translated": "سلام! خوشحالم که از هوای خوب لذت می‌بری. این یک هدیه زیبا از طرف خدا نیست؟ طبیعت اغلب ما را به یاد آفرینش و محبت او می‌اندازد. آیا موضوع خاصی در ذهنت هست که بخواهی درباره‌اش صحبت کنی؟\n\nHello! I'm glad to hear you're enjoying the nice weather. It's a beautiful gift from God, isn't it? Nature often reminds us of His creation and love. Is there something specific on your mind today that you'd like to talk about?"
+            }
+        },
+        {
+            "step_name": "translate_persian_to_english",
+            "timestamp": "2025-08-16T22:16:22.438060",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 0,
+                "default_count": 2,
+                "input_msg": "آیا عیسی پسر خدا است؟ اگر هست مگر او ازدواج کرده و عیسی را زاییده یا از همسرش متولد شده؟ این خیلی خنده دار و مضحک است",
+                "initial_translated": "Is Jesus the Son of God? If so, did he marry and give birth to Jesus or was he born from his wife? This is very funny and ridiculous.",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "initial_translated": "Is Jesus the Son of God? If so, did he marry and give birth to Jesus or was he born from his wife? This is very funny and ridiculous."
+            }
+        },
+        {
+            "step_name": "receive_initial_input",
+            "timestamp": "2025-08-16T22:16:27.544866",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 2,
+                "input_msg": "آیا عیسی پسر خدا است؟ اگر هست مگر او ازدواج کرده و عیسی را زاییده یا از همسرش متولد شده؟ این خیلی خنده دار و مضحک است",
+                "initial_translated": "Is Jesus the Son of God? If so, did he marry and give birth to Jesus or was he born from his wife? This is very funny and ridiculous.",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {}
+        },
+        {
+            "step_name": "route_query",
+            "timestamp": "2025-08-16T22:16:38.312382",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 2,
+                "input_msg": "آیا عیسی پسر خدا است؟ اگر هست مگر او ازدواج کرده و عیسی را زاییده یا از همسرش متولد شده؟ این خیلی خنده دار و مضحک است",
+                "initial_translated": "Is Jesus the Son of God? If so, did he marry and give birth to Jesus or was he born from his wife? This is very funny and ridiculous.",
+                "route": "rag",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "route": "rag"
+            }
+        },
+        {
+            "step_name": "node_rag_responser",
+            "timestamp": "2025-08-16T22:17:11.638277",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 2,
+                "input_msg": "آیا عیسی پسر خدا است؟ اگر هست مگر او ازدواج کرده و عیسی را زاییده یا از همسرش متولد شده؟ این خیلی خنده دار و مضحک است",
+                "initial_translated": "Is Jesus the Son of God? If so, did he marry and give birth to Jesus or was he born from his wife? This is very funny and ridiculous.",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/God-in-the-flesh.html",
+                            "row_number": 187
+                        },
+                        "page_content": "Since Jesus’ conception by the Holy Spirit in the womb of the virgin Mary (Luke 1:26-38), the real identity of Jesus Christ has always been questioned by skeptics. It began with Mary’s fiancé, Joseph, who was afraid to marry her when she revealed that she was pregnant (Matthew 1:18-24). He took her as his wife only after the angel confirmed to him that the child she carried was the Son of God.\n\nHundreds of years before the birth of Christ, the prophet Isaiah foretold the coming of God’s Son: \"For to us a child is born, to us a son is given, and the government will be on his shoulders. And he will be called Wonderful Counselor, Mighty God, Everlasting Father, Prince of Peace\" (Isaiah 9:6). When the angel spoke to Joseph and announced the impending birth of Jesus, he alluded to Isaiah’s prophecy: \"The virgin will conceive and give birth to a son, and they will call him Immanuel (which means ‘God with us’)\" (Matthew 1:23). This did not mean they were to name the baby Immanuel; it meant that \"God with us\" was the baby’s identity. Jesus was God coming in the flesh to dwell with man.\n\nJesus Himself understood the speculation about His identity. He asked His disciples, \"Who do people say that I am?\" (Matthew 16:13; Mark 8:27). The answers varied, as they do today. Then Jesus asked a more pressing question: \"Who do you say that I am?\" (Matthew 16:15). Peter gave the right answer: \"You are the Christ, the Son of the living God\" (Matthew 16:16). Jesus affirmed the truth of Peter’s answer and promised that, upon that truth, He would build His church (Matthew 16:18).\n\nThe true nature and identity of Jesus Christ has eternal significance. Every person must answer the question Jesus asked His disciples: \"Who do you say that I am?\"\n\nHe gave us the correct answer in many ways. In John 14:9-10, Jesus said, \"Anyone who has seen me has seen the Father. How can you say, ‘Show us the Father’? Don’t you believe that I am in the Father, and that the Father is in me? The words I say to you I do not speak on my own authority. Rather, it is the Father, living in me, who is doing his work.\"\n\nThe Bible is clear about the divine nature of the Lord Jesus Christ (see John 1:1-14). Philippians 2:6-7 says that, although Jesus was \"in very nature God, He did not consider equality with God something to be used to his own advantage; rather, he made himself nothing by taking the very nature of a servant, being made in human likeness.\" Colossians 2:9 says, “In Christ all the fullness of the Deity lives in bodily form.”\n\nJesus is fully God and fully man, and the fact of His incarnation is of utmost importance. He lived a human life but did not possess a sin nature as we do. He was tempted but never sinned (Hebrews 2:14-18; 4:15). Sin entered the world through Adam, and Adam’s sinful nature has been transferred to every baby born into the world (Romans 5:12)—except for Jesus. Because Jesus did not have a human father, He did not inherit a sin nature. He possessed the divine nature from His Heavenly Father."
+                    }
+                ],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "retrieved_docs_summary": [
+                    {
+                        "page_content_preview": "Since Jesus’ conception by the Holy Spirit in the womb of the virgin Mary (Luke 1:26-38), the real i...",
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/God-in-the-flesh.html",
+                            "row_number": 187
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "step_name": "judge_retrieval",
+            "timestamp": "2025-08-16T22:17:12.623312",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 2,
+                "input_msg": "آیا عیسی پسر خدا است؟ اگر هست مگر او ازدواج کرده و عیسی را زاییده یا از همسرش متولد شده؟ این خیلی خنده دار و مضحک است",
+                "initial_translated": "Is Jesus the Son of God? If so, did he marry and give birth to Jesus or was he born from his wife? This is very funny and ridiculous.",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/God-in-the-flesh.html",
+                            "row_number": 187
+                        },
+                        "page_content": "Since Jesus’ conception by the Holy Spirit in the womb of the virgin Mary (Luke 1:26-38), the real identity of Jesus Christ has always been questioned by skeptics. It began with Mary’s fiancé, Joseph, who was afraid to marry her when she revealed that she was pregnant (Matthew 1:18-24). He took her as his wife only after the angel confirmed to him that the child she carried was the Son of God.\n\nHundreds of years before the birth of Christ, the prophet Isaiah foretold the coming of God’s Son: \"For to us a child is born, to us a son is given, and the government will be on his shoulders. And he will be called Wonderful Counselor, Mighty God, Everlasting Father, Prince of Peace\" (Isaiah 9:6). When the angel spoke to Joseph and announced the impending birth of Jesus, he alluded to Isaiah’s prophecy: \"The virgin will conceive and give birth to a son, and they will call him Immanuel (which means ‘God with us’)\" (Matthew 1:23). This did not mean they were to name the baby Immanuel; it meant that \"God with us\" was the baby’s identity. Jesus was God coming in the flesh to dwell with man.\n\nJesus Himself understood the speculation about His identity. He asked His disciples, \"Who do people say that I am?\" (Matthew 16:13; Mark 8:27). The answers varied, as they do today. Then Jesus asked a more pressing question: \"Who do you say that I am?\" (Matthew 16:15). Peter gave the right answer: \"You are the Christ, the Son of the living God\" (Matthew 16:16). Jesus affirmed the truth of Peter’s answer and promised that, upon that truth, He would build His church (Matthew 16:18).\n\nThe true nature and identity of Jesus Christ has eternal significance. Every person must answer the question Jesus asked His disciples: \"Who do you say that I am?\"\n\nHe gave us the correct answer in many ways. In John 14:9-10, Jesus said, \"Anyone who has seen me has seen the Father. How can you say, ‘Show us the Father’? Don’t you believe that I am in the Father, and that the Father is in me? The words I say to you I do not speak on my own authority. Rather, it is the Father, living in me, who is doing his work.\"\n\nThe Bible is clear about the divine nature of the Lord Jesus Christ (see John 1:1-14). Philippians 2:6-7 says that, although Jesus was \"in very nature God, He did not consider equality with God something to be used to his own advantage; rather, he made himself nothing by taking the very nature of a servant, being made in human likeness.\" Colossians 2:9 says, “In Christ all the fullness of the Deity lives in bodily form.”\n\nJesus is fully God and fully man, and the fact of His incarnation is of utmost importance. He lived a human life but did not possess a sin nature as we do. He was tempted but never sinned (Hebrews 2:14-18; 4:15). Sin entered the world through Adam, and Adam’s sinful nature has been transferred to every baby born into the world (Romans 5:12)—except for Jesus. Because Jesus did not have a human father, He did not inherit a sin nature. He possessed the divine nature from His Heavenly Father."
+                    }
+                ],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "filtered_docs": [
+                    {
+                        "source": "https://www.gotquestions.org/God-in-the-flesh.html",
+                        "row_number": 187
+                    }
+                ]
+            }
+        },
+        {
+            "step_name": "generate_rag_response",
+            "timestamp": "2025-08-16T22:17:19.465630",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 2,
+                "input_msg": "آیا عیسی پسر خدا است؟ اگر هست مگر او ازدواج کرده و عیسی را زاییده یا از همسرش متولد شده؟ این خیلی خنده دار و مضحک است",
+                "initial_translated": "Is Jesus the Son of God? If so, did he marry and give birth to Jesus or was he born from his wife? This is very funny and ridiculous.",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/God-in-the-flesh.html",
+                            "row_number": 187
+                        },
+                        "page_content": "Since Jesus’ conception by the Holy Spirit in the womb of the virgin Mary (Luke 1:26-38), the real identity of Jesus Christ has always been questioned by skeptics. It began with Mary’s fiancé, Joseph, who was afraid to marry her when she revealed that she was pregnant (Matthew 1:18-24). He took her as his wife only after the angel confirmed to him that the child she carried was the Son of God.\n\nHundreds of years before the birth of Christ, the prophet Isaiah foretold the coming of God’s Son: \"For to us a child is born, to us a son is given, and the government will be on his shoulders. And he will be called Wonderful Counselor, Mighty God, Everlasting Father, Prince of Peace\" (Isaiah 9:6). When the angel spoke to Joseph and announced the impending birth of Jesus, he alluded to Isaiah’s prophecy: \"The virgin will conceive and give birth to a son, and they will call him Immanuel (which means ‘God with us’)\" (Matthew 1:23). This did not mean they were to name the baby Immanuel; it meant that \"God with us\" was the baby’s identity. Jesus was God coming in the flesh to dwell with man.\n\nJesus Himself understood the speculation about His identity. He asked His disciples, \"Who do people say that I am?\" (Matthew 16:13; Mark 8:27). The answers varied, as they do today. Then Jesus asked a more pressing question: \"Who do you say that I am?\" (Matthew 16:15). Peter gave the right answer: \"You are the Christ, the Son of the living God\" (Matthew 16:16). Jesus affirmed the truth of Peter’s answer and promised that, upon that truth, He would build His church (Matthew 16:18).\n\nThe true nature and identity of Jesus Christ has eternal significance. Every person must answer the question Jesus asked His disciples: \"Who do you say that I am?\"\n\nHe gave us the correct answer in many ways. In John 14:9-10, Jesus said, \"Anyone who has seen me has seen the Father. How can you say, ‘Show us the Father’? Don’t you believe that I am in the Father, and that the Father is in me? The words I say to you I do not speak on my own authority. Rather, it is the Father, living in me, who is doing his work.\"\n\nThe Bible is clear about the divine nature of the Lord Jesus Christ (see John 1:1-14). Philippians 2:6-7 says that, although Jesus was \"in very nature God, He did not consider equality with God something to be used to his own advantage; rather, he made himself nothing by taking the very nature of a servant, being made in human likeness.\" Colossians 2:9 says, “In Christ all the fullness of the Deity lives in bodily form.”\n\nJesus is fully God and fully man, and the fact of His incarnation is of utmost importance. He lived a human life but did not possess a sin nature as we do. He was tempted but never sinned (Hebrews 2:14-18; 4:15). Sin entered the world through Adam, and Adam’s sinful nature has been transferred to every baby born into the world (Romans 5:12)—except for Jesus. Because Jesus did not have a human father, He did not inherit a sin nature. He possessed the divine nature from His Heavenly Father."
+                    }
+                ],
+                "generation": "Yes, Jesus is referred to as the Son of God in the Bible, particularly in passages like John 3:16. He was born of the Virgin Mary, which means He did not have a human father, and there’s no biblical basis for the idea that He was married or had children. The miraculous nature of His birth is central to the Christian faith, emphasizing His divine origin. If you have more questions about this, feel free to ask!",
+                "final_translated": ""
+            },
+            "step_output": {
+                "generation": "Yes, Jesus is referred to as the Son of God in the Bible, particularly in passages like John 3:16. He was born of the Virgin Mary, which means He did not have a human father, and there’s no biblical basis for the idea that He was married or had children. The miraculous nature of His birth is central to the Christian faith, emphasizing His divine origin. If you have more questions about this, feel free to ask!"
+            }
+        },
+        {
+            "step_name": "translate_english_to_persian",
+            "timestamp": "2025-08-16T22:17:34.120823",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 2,
+                "input_msg": "آیا عیسی پسر خدا است؟ اگر هست مگر او ازدواج کرده و عیسی را زاییده یا از همسرش متولد شده؟ این خیلی خنده دار و مضحک است",
+                "initial_translated": "Is Jesus the Son of God? If so, did he marry and give birth to Jesus or was he born from his wife? This is very funny and ridiculous.",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/God-in-the-flesh.html",
+                            "row_number": 187
+                        },
+                        "page_content": "Since Jesus’ conception by the Holy Spirit in the womb of the virgin Mary (Luke 1:26-38), the real identity of Jesus Christ has always been questioned by skeptics. It began with Mary’s fiancé, Joseph, who was afraid to marry her when she revealed that she was pregnant (Matthew 1:18-24). He took her as his wife only after the angel confirmed to him that the child she carried was the Son of God.\n\nHundreds of years before the birth of Christ, the prophet Isaiah foretold the coming of God’s Son: \"For to us a child is born, to us a son is given, and the government will be on his shoulders. And he will be called Wonderful Counselor, Mighty God, Everlasting Father, Prince of Peace\" (Isaiah 9:6). When the angel spoke to Joseph and announced the impending birth of Jesus, he alluded to Isaiah’s prophecy: \"The virgin will conceive and give birth to a son, and they will call him Immanuel (which means ‘God with us’)\" (Matthew 1:23). This did not mean they were to name the baby Immanuel; it meant that \"God with us\" was the baby’s identity. Jesus was God coming in the flesh to dwell with man.\n\nJesus Himself understood the speculation about His identity. He asked His disciples, \"Who do people say that I am?\" (Matthew 16:13; Mark 8:27). The answers varied, as they do today. Then Jesus asked a more pressing question: \"Who do you say that I am?\" (Matthew 16:15). Peter gave the right answer: \"You are the Christ, the Son of the living God\" (Matthew 16:16). Jesus affirmed the truth of Peter’s answer and promised that, upon that truth, He would build His church (Matthew 16:18).\n\nThe true nature and identity of Jesus Christ has eternal significance. Every person must answer the question Jesus asked His disciples: \"Who do you say that I am?\"\n\nHe gave us the correct answer in many ways. In John 14:9-10, Jesus said, \"Anyone who has seen me has seen the Father. How can you say, ‘Show us the Father’? Don’t you believe that I am in the Father, and that the Father is in me? The words I say to you I do not speak on my own authority. Rather, it is the Father, living in me, who is doing his work.\"\n\nThe Bible is clear about the divine nature of the Lord Jesus Christ (see John 1:1-14). Philippians 2:6-7 says that, although Jesus was \"in very nature God, He did not consider equality with God something to be used to his own advantage; rather, he made himself nothing by taking the very nature of a servant, being made in human likeness.\" Colossians 2:9 says, “In Christ all the fullness of the Deity lives in bodily form.”\n\nJesus is fully God and fully man, and the fact of His incarnation is of utmost importance. He lived a human life but did not possess a sin nature as we do. He was tempted but never sinned (Hebrews 2:14-18; 4:15). Sin entered the world through Adam, and Adam’s sinful nature has been transferred to every baby born into the world (Romans 5:12)—except for Jesus. Because Jesus did not have a human father, He did not inherit a sin nature. He possessed the divine nature from His Heavenly Father."
+                    }
+                ],
+                "generation": "Yes, Jesus is referred to as the Son of God in the Bible, particularly in passages like John 3:16. He was born of the Virgin Mary, which means He did not have a human father, and there’s no biblical basis for the idea that He was married or had children. The miraculous nature of His birth is central to the Christian faith, emphasizing His divine origin. If you have more questions about this, feel free to ask!",
+                "final_translated": "بله، عیسی در کتاب مقدس به عنوان پسر خدا معرفی شده است، به ویژه در آیات مانند یوحنا ۳:۱۶. او از مریم باکره متولد شد، به این معنی که پدر انسانی نداشت و هیچ مبنای کتاب مقدسی برای این ایده که او ازدواج کرده یا فرزندی داشته وجود ندارد. ماهیت معجزه‌آساي تولد او در ایمان مسیحی مرکزی است و بر منبع الهی او تأکید می‌کند. اگر سوالات بیشتری در این زمینه دارید، خوشحال می‌شوم که پاسخ دهم!\n\nYes, Jesus is referred to as the Son of God in the Bible, particularly in passages like John 3:16. He was born of the Virgin Mary, which means He did not have a human father, and there’s no biblical basis for the idea that He was married or had children. The miraculous nature of His birth is central to the Christian faith, emphasizing His divine origin. If you have more questions about this, feel free to ask!"
+            },
+            "step_output": {
+                "final_translated": "بله، عیسی در کتاب مقدس به عنوان پسر خدا معرفی شده است، به ویژه در آیات مانند یوحنا ۳:۱۶. او از مریم باکره متولد شد، به این معنی که پدر انسانی نداشت و هیچ مبنای کتاب مقدسی برای این ایده که او ازدواج کرده یا فرزندی داشته وجود ندارد. ماهیت معجزه‌آساي تولد او در ایمان مسیحی مرکزی است و بر منبع الهی او تأکید می‌کند. اگر سوالات بیشتری در این زمینه دارید، خوشحال می‌شوم که پاسخ دهم!\n\nYes, Jesus is referred to as the Son of God in the Bible, particularly in passages like John 3:16. He was born of the Virgin Mary, which means He did not have a human father, and there’s no biblical basis for the idea that He was married or had children. The miraculous nature of His birth is central to the Christian faith, emphasizing His divine origin. If you have more questions about this, feel free to ask!"
+            }
+        },
+        {
+            "step_name": "translate_persian_to_english",
+            "timestamp": "2025-08-16T22:29:25.703591",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 0,
+                "default_count": 2,
+                "input_msg": "احمق بی‌شعور این چه استدلالی هست که میکنید. شما مسیحیان همگی احمق هستید و مانند گاو و الاغ هستید که کافر شده‌اید. باید شما را کشت. سرتان را برید تا برای دیگران عبرت باشد",
+                "initial_translated": "The foolish and ignorant one, what kind of reasoning is this that you present? All of you Christians are foolish and like cows and donkeys who have become infidels. You should be killed. Your heads should be cut off to serve as a lesson for others.",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "initial_translated": "The foolish and ignorant one, what kind of reasoning is this that you present? All of you Christians are foolish and like cows and donkeys who have become infidels. You should be killed. Your heads should be cut off to serve as a lesson for others."
+            }
+        },
+        {
+            "step_name": "receive_initial_input",
+            "timestamp": "2025-08-16T22:29:27.702774",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 2,
+                "input_msg": "احمق بی‌شعور این چه استدلالی هست که میکنید. شما مسیحیان همگی احمق هستید و مانند گاو و الاغ هستید که کافر شده‌اید. باید شما را کشت. سرتان را برید تا برای دیگران عبرت باشد",
+                "initial_translated": "The foolish and ignorant one, what kind of reasoning is this that you present? All of you Christians are foolish and like cows and donkeys who have become infidels. You should be killed. Your heads should be cut off to serve as a lesson for others.",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {}
+        },
+        {
+            "step_name": "route_query",
+            "timestamp": "2025-08-16T22:29:38.503946",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 2,
+                "input_msg": "احمق بی‌شعور این چه استدلالی هست که میکنید. شما مسیحیان همگی احمق هستید و مانند گاو و الاغ هستید که کافر شده‌اید. باید شما را کشت. سرتان را برید تا برای دیگران عبرت باشد",
+                "initial_translated": "The foolish and ignorant one, what kind of reasoning is this that you present? All of you Christians are foolish and like cows and donkeys who have become infidels. You should be killed. Your heads should be cut off to serve as a lesson for others.",
+                "route": "block",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "route": "block"
+            }
+        },
+        {
+            "step_name": "node_block_responser",
+            "timestamp": "2025-08-16T22:29:47.698628",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 2,
+                "input_msg": "احمق بی‌شعور این چه استدلالی هست که میکنید. شما مسیحیان همگی احمق هستید و مانند گاو و الاغ هستید که کافر شده‌اید. باید شما را کشت. سرتان را برید تا برای دیگران عبرت باشد",
+                "initial_translated": "The foolish and ignorant one, what kind of reasoning is this that you present? All of you Christians are foolish and like cows and donkeys who have become infidels. You should be killed. Your heads should be cut off to serve as a lesson for others.",
+                "route": "block",
+                "source": "",
+                "documents": [],
+                "generation": null,
+                "final_translated": "",
+                "translated_response": null
+            },
+            "step_output": {
+                "generation": null
+            }
         }
     ],
-    "last_updated": "2025-08-16T21:59:37.672849"
+    "last_updated": "2025-08-16T22:29:47.698628"
 }
