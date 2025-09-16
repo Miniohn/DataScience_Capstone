@@ -803,6 +803,6 @@ def build_chain():
     def chain(message: str, history: List[Dict[str, str]]) -> str:
         session_id = "streamlit-session"  # 고정 ID 또는 uuid.uuid4() 가능
         result = run(message, session_id)   # run 함수에서 결과를 받아옴
-        return result if result else "죄송합니다. 응답을 생성할 수 없었습니다."
+        return result if result else ""
     return chain
 
