@@ -1665,7 +1665,401 @@
             "step_output": {
                 "final_translated": "عیسی پسر خدا و شخصیت مرکزی مسیحیت است. او به‌عنوان کسی که هم کاملاً الهی و هم کاملاً انسانی است، باور دارد که به زمین آمده تا آموزش دهد، شفا بخشد و در نهایت خود را برای گناهان بشریت قربانی کند و نجات را به همه کسانی که به او ایمان دارند، ارائه دهد (یوحنا ۳:۱۶). از طریق زندگی، مرگ و رستاخیز او، محبت و رحمت خدا را به ما نشان می‌دهد.\n\nJesus is the Son of God and the central figure of Christianity. He is believed to be both fully divine and fully human, who came to earth to teach, heal, and ultimately sacrifice Himself for the sins of humanity, offering salvation to all who believe in Him (John 3:16). Through His life, death, and resurrection, He reveals God's love and grace to us."
             }
+        },
+        {
+            "step_name": "translate_persian_to_english",
+            "timestamp": "2025-09-16T23:16:26.618466",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 0,
+                "input_msg": "hello",
+                "initial_translated": "hello",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "initial_translated": "hello"
+            }
+        },
+        {
+            "step_name": "receive_initial_input",
+            "timestamp": "2025-09-16T23:16:27.756463",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "hello",
+                "initial_translated": "hello",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {}
+        },
+        {
+            "step_name": "route_query",
+            "timestamp": "2025-09-16T23:16:40.253547",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "hello",
+                "initial_translated": "hello",
+                "route": "default",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "route": "default"
+            }
+        },
+        {
+            "step_name": "node_default_responser",
+            "timestamp": "2025-09-16T23:16:48.923349",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "input_msg": "hello",
+                "initial_translated": "hello",
+                "route": "default",
+                "source": "",
+                "documents": [],
+                "generation": "Hello! It's wonderful to connect with you. How can I assist you today? If there's something on your heart or mind, feel free to share.",
+                "final_translated": "",
+                "default_count": 1
+            },
+            "step_output": {
+                "generation": "Hello! It's wonderful to connect with you. How can I assist you today? If there's something on your heart or mind, feel free to share."
+            }
+        },
+        {
+            "step_name": "translate_english_to_persian",
+            "timestamp": "2025-09-16T23:17:00.253798",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "hello",
+                "initial_translated": "hello",
+                "route": "default",
+                "source": "",
+                "documents": [],
+                "generation": "Hello! It's wonderful to connect with you. How can I assist you today? If there's something on your heart or mind, feel free to share.",
+                "final_translated": "سلام! بسیار خوشحالم که با شما ارتباط برقرار می‌کنم. چگونه می‌توانم امروز به شما کمک کنم؟ اگر چیزی در دل یا ذهنتان دارید، با کمال میل به اشتراک بگذارید.\n\nHello! It's wonderful to connect with you. How can I assist you today? If there's something on your heart or mind, feel free to share."
+            },
+            "step_output": {
+                "final_translated": "سلام! بسیار خوشحالم که با شما ارتباط برقرار می‌کنم. چگونه می‌توانم امروز به شما کمک کنم؟ اگر چیزی در دل یا ذهنتان دارید، با کمال میل به اشتراک بگذارید.\n\nHello! It's wonderful to connect with you. How can I assist you today? If there's something on your heart or mind, feel free to share."
+            }
+        },
+        {
+            "step_name": "translate_persian_to_english",
+            "timestamp": "2025-09-16T23:19:07.258375",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 0,
+                "default_count": 1,
+                "input_msg": "Can I get more Info on this? like God you said",
+                "initial_translated": "Can I get more information on this? Like you mentioned, God.",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "initial_translated": "Can I get more information on this? Like you mentioned, God."
+            }
+        },
+        {
+            "step_name": "receive_initial_input",
+            "timestamp": "2025-09-16T23:19:07.787498",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "Can I get more Info on this? like God you said",
+                "initial_translated": "Can I get more information on this? Like you mentioned, God.",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {}
+        },
+        {
+            "step_name": "route_query",
+            "timestamp": "2025-09-16T23:19:18.625970",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "Can I get more Info on this? like God you said",
+                "initial_translated": "Can I get more information on this? Like you mentioned, God.",
+                "route": "rag",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "route": "rag"
+            }
+        },
+        {
+            "step_name": "node_rag_responser",
+            "timestamp": "2025-09-16T23:19:41.816114",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "Can I get more Info on this? like God you said",
+                "initial_translated": "Can I get more information on this? Like you mentioned, God.",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/toxic-cult.html",
+                            "row_number": 1595,
+                            "category": "أسئلة عن الأنظمة الدينية والأديان المختلفة"
+                        },
+                        "page_content": "The first thing to do, as mentioned, is to be praying for them. Prayer is the most effective and powerful tool we have, because only God can cause the scales to fall from their eyes. The God of truth can set them free (John 8:32)."
+                    },
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/divorced-remarry.html",
+                            "row_number": 894
+                        },
+                        "page_content": "What we can know for sure is that it is God’s plan for a married couple to stay married as long as both spouses are alive (\nGenesis 2:24\n; \nMatthew 19:6\n). The basic principle concerning divorce and remarriage is laid out clearly in \n1 Corinthians 7:10–11\n: “To the married I give this command (not I, but the Lord): A wife must not separate from her husband. But if she does, she must remain unmarried or else be reconciled to her husband. And a husband must not divorce his wife.” So, the foundational rule is that there should be no divorce and, if a divorce does happen, no remarriage.\n\nWhile God \nhates divorce\n (\nMalachi 2:16\n), God is also merciful and forgiving. Every divorce is a result of sin, either on the part of one spouse or both. Does God forgive divorce? Absolutely! Divorce is no less forgivable than any other sin. Forgiveness of all sins is available through faith in Jesus Christ (\nMatthew 26:28\n; \nEphesians 1:7\n). If God forgives the sin of divorce, does that mean you are free to remarry? In light of the command to “remain unmarried or else be reconciled” in \n1 Corinthians 7:11\n, the answer would seem to be no, except in the specific circumstances mentioned in \n1 Corinthians 7:12–15\n and \nMatthew 5:32\n and \nMatthew 19:9\n.\n\nUltimately, that is between you, your potential spouse, and, most importantly, God. The only advice we can give is for you to search the Scripture and pray to God for wisdom regarding what He would have you do (\nJames 1:5\n). Pray with an open mind and genuinely ask the Lord to place His desires on your heart (\nPsalm 37:4\n). Seek the Lord’s will (\nProverbs 3:5–6\n) and follow His leading."
+                    }
+                ],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "retrieved_docs_summary": [
+                    {
+                        "page_content_preview": "The first thing to do, as mentioned, is to be praying for them. Prayer is the most effective and pow...",
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/toxic-cult.html",
+                            "row_number": 1595,
+                            "category": "أسئلة عن الأنظمة الدينية والأديان المختلفة"
+                        }
+                    },
+                    {
+                        "page_content_preview": "What we can know for sure is that it is God’s plan for a married couple to stay married as long as b...",
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/divorced-remarry.html",
+                            "row_number": 894
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "step_name": "judge_retrieval",
+            "timestamp": "2025-09-16T23:19:44.779956",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "Can I get more Info on this? like God you said",
+                "initial_translated": "Can I get more information on this? Like you mentioned, God.",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/toxic-cult.html",
+                            "row_number": 1595,
+                            "category": "أسئلة عن الأنظمة الدينية والأديان المختلفة"
+                        },
+                        "page_content": "The first thing to do, as mentioned, is to be praying for them. Prayer is the most effective and powerful tool we have, because only God can cause the scales to fall from their eyes. The God of truth can set them free (John 8:32)."
+                    },
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/divorced-remarry.html",
+                            "row_number": 894
+                        },
+                        "page_content": "What we can know for sure is that it is God’s plan for a married couple to stay married as long as both spouses are alive (\nGenesis 2:24\n; \nMatthew 19:6\n). The basic principle concerning divorce and remarriage is laid out clearly in \n1 Corinthians 7:10–11\n: “To the married I give this command (not I, but the Lord): A wife must not separate from her husband. But if she does, she must remain unmarried or else be reconciled to her husband. And a husband must not divorce his wife.” So, the foundational rule is that there should be no divorce and, if a divorce does happen, no remarriage.\n\nWhile God \nhates divorce\n (\nMalachi 2:16\n), God is also merciful and forgiving. Every divorce is a result of sin, either on the part of one spouse or both. Does God forgive divorce? Absolutely! Divorce is no less forgivable than any other sin. Forgiveness of all sins is available through faith in Jesus Christ (\nMatthew 26:28\n; \nEphesians 1:7\n). If God forgives the sin of divorce, does that mean you are free to remarry? In light of the command to “remain unmarried or else be reconciled” in \n1 Corinthians 7:11\n, the answer would seem to be no, except in the specific circumstances mentioned in \n1 Corinthians 7:12–15\n and \nMatthew 5:32\n and \nMatthew 19:9\n.\n\nUltimately, that is between you, your potential spouse, and, most importantly, God. The only advice we can give is for you to search the Scripture and pray to God for wisdom regarding what He would have you do (\nJames 1:5\n). Pray with an open mind and genuinely ask the Lord to place His desires on your heart (\nPsalm 37:4\n). Seek the Lord’s will (\nProverbs 3:5–6\n) and follow His leading."
+                    }
+                ],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "filtered_docs": [
+                    {
+                        "source": "https://www.gotquestions.org/toxic-cult.html",
+                        "row_number": 1595,
+                        "category": "أسئلة عن الأنظمة الدينية والأديان المختلفة"
+                    },
+                    {
+                        "source": "https://www.gotquestions.org/divorced-remarry.html",
+                        "row_number": 894
+                    }
+                ]
+            }
+        },
+        {
+            "step_name": "generate_rag_response",
+            "timestamp": "2025-09-16T23:19:49.966067",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "Can I get more Info on this? like God you said",
+                "initial_translated": "Can I get more information on this? Like you mentioned, God.",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/toxic-cult.html",
+                            "row_number": 1595,
+                            "category": "أسئلة عن الأنظمة الدينية والأديان المختلفة"
+                        },
+                        "page_content": "The first thing to do, as mentioned, is to be praying for them. Prayer is the most effective and powerful tool we have, because only God can cause the scales to fall from their eyes. The God of truth can set them free (John 8:32)."
+                    },
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/divorced-remarry.html",
+                            "row_number": 894
+                        },
+                        "page_content": "What we can know for sure is that it is God’s plan for a married couple to stay married as long as both spouses are alive (\nGenesis 2:24\n; \nMatthew 19:6\n). The basic principle concerning divorce and remarriage is laid out clearly in \n1 Corinthians 7:10–11\n: “To the married I give this command (not I, but the Lord): A wife must not separate from her husband. But if she does, she must remain unmarried or else be reconciled to her husband. And a husband must not divorce his wife.” So, the foundational rule is that there should be no divorce and, if a divorce does happen, no remarriage.\n\nWhile God \nhates divorce\n (\nMalachi 2:16\n), God is also merciful and forgiving. Every divorce is a result of sin, either on the part of one spouse or both. Does God forgive divorce? Absolutely! Divorce is no less forgivable than any other sin. Forgiveness of all sins is available through faith in Jesus Christ (\nMatthew 26:28\n; \nEphesians 1:7\n). If God forgives the sin of divorce, does that mean you are free to remarry? In light of the command to “remain unmarried or else be reconciled” in \n1 Corinthians 7:11\n, the answer would seem to be no, except in the specific circumstances mentioned in \n1 Corinthians 7:12–15\n and \nMatthew 5:32\n and \nMatthew 19:9\n.\n\nUltimately, that is between you, your potential spouse, and, most importantly, God. The only advice we can give is for you to search the Scripture and pray to God for wisdom regarding what He would have you do (\nJames 1:5\n). Pray with an open mind and genuinely ask the Lord to place His desires on your heart (\nPsalm 37:4\n). Seek the Lord’s will (\nProverbs 3:5–6\n) and follow His leading."
+                    }
+                ],
+                "generation": "Of course! God is often described in the Bible as loving, just, and merciful. He desires a personal relationship with each of us, as seen in verses like John 3:16, which tells us that He loves the world so much that He gave His only Son. If you have specific questions or topics about God you'd like to explore, feel free to share!",
+                "final_translated": ""
+            },
+            "step_output": {
+                "generation": "Of course! God is often described in the Bible as loving, just, and merciful. He desires a personal relationship with each of us, as seen in verses like John 3:16, which tells us that He loves the world so much that He gave His only Son. If you have specific questions or topics about God you'd like to explore, feel free to share!"
+            }
+        },
+        {
+            "step_name": "translate_english_to_persian",
+            "timestamp": "2025-09-16T23:20:04.432240",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "Can I get more Info on this? like God you said",
+                "initial_translated": "Can I get more information on this? Like you mentioned, God.",
+                "route": "rag",
+                "source": "vectorstore",
+                "documents": [
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/toxic-cult.html",
+                            "row_number": 1595,
+                            "category": "أسئلة عن الأنظمة الدينية والأديان المختلفة"
+                        },
+                        "page_content": "The first thing to do, as mentioned, is to be praying for them. Prayer is the most effective and powerful tool we have, because only God can cause the scales to fall from their eyes. The God of truth can set them free (John 8:32)."
+                    },
+                    {
+                        "id": null,
+                        "metadata": {
+                            "source": "https://www.gotquestions.org/divorced-remarry.html",
+                            "row_number": 894
+                        },
+                        "page_content": "What we can know for sure is that it is God’s plan for a married couple to stay married as long as both spouses are alive (\nGenesis 2:24\n; \nMatthew 19:6\n). The basic principle concerning divorce and remarriage is laid out clearly in \n1 Corinthians 7:10–11\n: “To the married I give this command (not I, but the Lord): A wife must not separate from her husband. But if she does, she must remain unmarried or else be reconciled to her husband. And a husband must not divorce his wife.” So, the foundational rule is that there should be no divorce and, if a divorce does happen, no remarriage.\n\nWhile God \nhates divorce\n (\nMalachi 2:16\n), God is also merciful and forgiving. Every divorce is a result of sin, either on the part of one spouse or both. Does God forgive divorce? Absolutely! Divorce is no less forgivable than any other sin. Forgiveness of all sins is available through faith in Jesus Christ (\nMatthew 26:28\n; \nEphesians 1:7\n). If God forgives the sin of divorce, does that mean you are free to remarry? In light of the command to “remain unmarried or else be reconciled” in \n1 Corinthians 7:11\n, the answer would seem to be no, except in the specific circumstances mentioned in \n1 Corinthians 7:12–15\n and \nMatthew 5:32\n and \nMatthew 19:9\n.\n\nUltimately, that is between you, your potential spouse, and, most importantly, God. The only advice we can give is for you to search the Scripture and pray to God for wisdom regarding what He would have you do (\nJames 1:5\n). Pray with an open mind and genuinely ask the Lord to place His desires on your heart (\nPsalm 37:4\n). Seek the Lord’s will (\nProverbs 3:5–6\n) and follow His leading."
+                    }
+                ],
+                "generation": "Of course! God is often described in the Bible as loving, just, and merciful. He desires a personal relationship with each of us, as seen in verses like John 3:16, which tells us that He loves the world so much that He gave His only Son. If you have specific questions or topics about God you'd like to explore, feel free to share!",
+                "final_translated": "البته! خداوند در کتاب مقدس اغلب به عنوان موجودی محبت‌آمیز، عادل و رحیم توصیف می‌شود. او خواهان یک رابطه شخصی با هر یک از ماست، همان‌طور که در آیه‌هایی مانند یوحنا ۳:۱۶ دیده می‌شود که به ما می‌گوید او آن‌قدر جهان را دوست داشت که تنها پسرش را داد. اگر سوالات یا موضوعات خاصی درباره خدا دارید که می‌خواهید بررسی کنید، خوشحال می‌شوم که به اشتراک بگذارید!\n\nOf course! God is often described in the Bible as loving, just, and merciful. He desires a personal relationship with each of us, as seen in verses like John 3:16, which tells us that He loves the world so much that He gave His only Son. If you have specific questions or topics about God you'd like to explore, feel free to share!"
+            },
+            "step_output": {
+                "final_translated": "البته! خداوند در کتاب مقدس اغلب به عنوان موجودی محبت‌آمیز، عادل و رحیم توصیف می‌شود. او خواهان یک رابطه شخصی با هر یک از ماست، همان‌طور که در آیه‌هایی مانند یوحنا ۳:۱۶ دیده می‌شود که به ما می‌گوید او آن‌قدر جهان را دوست داشت که تنها پسرش را داد. اگر سوالات یا موضوعات خاصی درباره خدا دارید که می‌خواهید بررسی کنید، خوشحال می‌شوم که به اشتراک بگذارید!\n\nOf course! God is often described in the Bible as loving, just, and merciful. He desires a personal relationship with each of us, as seen in verses like John 3:16, which tells us that He loves the world so much that He gave His only Son. If you have specific questions or topics about God you'd like to explore, feel free to share!"
+            }
+        },
+        {
+            "step_name": "translate_persian_to_english",
+            "timestamp": "2025-09-17T00:02:48.211347",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 0,
+                "default_count": 1,
+                "input_msg": "You r lier",
+                "initial_translated": "You are a liar.",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "initial_translated": "You are a liar."
+            }
+        },
+        {
+            "step_name": "receive_initial_input",
+            "timestamp": "2025-09-17T00:02:48.754225",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "You r lier",
+                "initial_translated": "You are a liar.",
+                "route": "",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {}
+        },
+        {
+            "step_name": "route_query",
+            "timestamp": "2025-09-17T00:02:59.594241",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "You r lier",
+                "initial_translated": "You are a liar.",
+                "route": "block",
+                "source": "",
+                "documents": [],
+                "generation": "",
+                "final_translated": ""
+            },
+            "step_output": {
+                "route": "block"
+            }
+        },
+        {
+            "step_name": "node_block_responser",
+            "timestamp": "2025-09-17T00:03:08.768808",
+            "state_snapshot": {
+                "session_id": "streamlit-session",
+                "conversation_count": 1,
+                "default_count": 1,
+                "input_msg": "You r lier",
+                "initial_translated": "You are a liar.",
+                "route": "block",
+                "source": "",
+                "documents": [],
+                "generation": null,
+                "final_translated": "",
+                "translated_response": null
+            },
+            "step_output": {
+                "generation": null
+            }
         }
     ],
-    "last_updated": "2025-08-21T15:56:34.138899"
+    "last_updated": "2025-09-17T00:03:08.768808"
 }
