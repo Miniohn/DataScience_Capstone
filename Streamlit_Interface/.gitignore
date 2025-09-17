@@ -3,3 +3,22 @@
 **/.streamlit/secrets.toml
 *.toml
 !requirements.toml
+.DS_Store
+.vscode/
+.ipynb_checkpoints/
+.RData
+.Rhistory
+.Rproj.user
+./puppeteer_crawling/myUserDataDir/
+./puppeteer_crawling/node_modules/
+./puppeteer_crawling/Package-lock.json
+./puppeteer_crawling/package.json
+.code.Rproj
+**/.env
+# Local env & secrets
+.env
+.env.*
+*.env
+**/.env
+**/.env.*
+.streamlit/secrets.toml
