@@ -49,8 +49,19 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 logger = logging.getLogger(__name__)
 
 # 로그 저장 디렉토리 설정
-LOG_DIR = "chat_logs"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+PERSIST_DIR = os.path.join(BASE_DIR, "chroma_db")
+LOG_DIR   = os.path.join(BASE_DIR, "chat_logs")  # 이미 변수 쓰고 있다면 이것도 통일
+
 os.makedirs(LOG_DIR, exist_ok=True)
+# 디버깅용 출력
+print("DATA_DIR:", DATA_DIR, 
+      "exists:", os.path.exists(DATA_DIR), 
+      "files:", os.listdir(DATA_DIR) if os.path.exists(DATA_DIR) else None)
+
+data_folder = DATA_DIR
+persist_directory = PERSIST_DIR
 
 # MongoDB 클라이언트 설정 (⚠️ NoneType 방지)
 MONGO_IP = os.getenv("MONGO_IP", "127.0.0.1")
