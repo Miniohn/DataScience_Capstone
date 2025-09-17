@@ -1,12 +1,24 @@
 # Streamlit_bot.py (상단 부분)
-
 import os
 import streamlit as st
+from dotenv import load_dotenv
 
-# --- OpenAI API Key 세팅 (로컬 .env / 서버 secrets.toml 둘 다 대응) ---
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") or st.secrets.get("OPENAI_API_KEY", "")
+# .env를 먼저 로드 (현재 작업폴더/상위체인 + 파일기준 경로도 시도)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+load_dotenv()  # 현재 CWD 및 상위 경로
+load_dotenv(os.path.join(BASE_DIR, ".env"))  # 파일 옆에 .env가 있는 경우
+
+# .env 우선 → (있다면) secrets 순으로 읽기
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 if not OPENAI_API_KEY:
-    raise ValueError("❌ OPENAI_API_KEY not found. Please set it in .env or .streamlit/secrets.toml")
+    try:
+        OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]  # secrets.toml이 있으면
+    except Exception:
+        OPENAI_API_KEY = None
+
+if not OPENAI_API_KEY:
+    raise ValueError("❌ OPENAI_API_KEY not found. Put it in .env (next to Streamlit_bot.py) "
+                     "or in .streamlit/secrets.toml")
 
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 # %% [markdown]
