@@ -1,3 +1,4 @@
+import traceback
 import sys
 try:
     import pysqlite3
@@ -14,15 +15,15 @@ from streamlit.components.v1 import html as st_html
 # --- bot adapter 연결 ---
 try:
     from bot_adapter import get_bot_reply, load_bot_once
-    load_bot_once()  # 최초 로드
+    load_bot_once()
     print("✅ Bot adapter loaded successfully")
 except Exception as e:
-    # 에러도 채팅 말풍선으로 표시
+    tb = traceback.format_exc()
     if "messages" not in st.session_state:
         st.session_state.messages = []
     st.session_state.messages.append({
         "sender": "bot",
-        "text": f"⚠️ Bot loading error: {e}",
+        "text": f"⚠️ Bot loading error: {e}\n\n{tb}",
         "time": datetime.now().strftime("%H:%M")
     })
     print(f"❌ Bot adapter load failed: {e}")

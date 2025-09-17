@@ -28,7 +28,6 @@ import pandas as pd
 from typing import Literal, TypedDict, List, Dict
 from pydantic import BaseModel, Field
 from langchain_openai import ChatOpenAI
-from langchain.schema import Document
 from langchain_community.retrievers import BM25Retriever
 from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
@@ -105,11 +104,11 @@ class State(TypedDict):
 # %%
 #----3. RAG 설정 (수정된 버전)----
 
-persist_directory = "./chroma_db"
+persist_directory = PERSIST_DIR
 
 # docs를 먼저 생성 (항상 필요)
 docs = []
-data_folder = 'data'
+data_folder = DATA_DIR 
 
 if os.path.exists(data_folder):
     for file_name in os.listdir(data_folder):
@@ -136,6 +135,12 @@ if os.path.exists(data_folder):
                 metadata["category"] = row.get(title_column, '')
 
             docs.append(Document(page_content=content, metadata=metadata))
+
+print("docs count:", len(docs))
+if len(docs) == 0:
+    raise RuntimeError("No documents loaded. Ensure that data/*.xlsx exists at "
+                       f"{data_folder} and expected columns (e.g., Question_ENG, Answer_ENG).")
+
 
 # Chroma DB 로드 또는 생성
 if os.path.exists(persist_directory) and len(os.listdir(persist_directory)) > 0:
