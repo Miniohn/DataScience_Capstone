@@ -29,6 +29,15 @@ from langchain.retrievers.document_compressors import LLMChainExtractor
 from langchain.retrievers import ContextualCompressionRetriever
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Chatbot_ver2/revised.py  → Chatbot_ver2 → DataScience_Capstone 로 상위폴더 이동
+
+# --- 데이터 폴더 & chroma_db 폴더 절대경로 지정 ---
+data_folder = os.path.join(ROOT_DIR, "data")
+persist_directory = os.path.join(ROOT_DIR, "chroma_db")
+
+print("ROOT_DIR:", ROOT_DIR)
+print("data_folder:", data_folder)
 # %%
 # 환경 변수 로드
 load_dotenv()
@@ -63,11 +72,11 @@ class State(TypedDict):
 # %%
 #----3. RAG 설정 (미리 로드)----
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-# Chroma DB 경로
-persist_directory = "./chroma_db"
 
 docs = []
-data_folder = 'data' # 루트 데이터 폴더
+
+
+
 
 print(f"'{data_folder}'에서 데이터 로드 시작...")
 
@@ -753,6 +762,7 @@ def run(input_msg: str, session_id: str):
         print("\n")
         print("Generation: ", final_state.get("final_translated", final_state.get("generation", "")))
         print("="*100, "\n")
+        return final_state
         
     except Exception as e:
         print(f"\n[ERROR] An unexpected error occurred: {e}")
@@ -762,6 +772,8 @@ import uuid
 
 #----9. Main 실행 블록----
 if __name__ == "__main__":
+    # 기존: 미리 정해진 입력으로 테스트
+    """
     inputs = [
         ['Hello, I have a question about your religion. I hope you can answer me.', 'Can I get more info on this?']
     ]
@@ -772,5 +784,29 @@ if __name__ == "__main__":
         for msg in session:
             run(msg, session_id)
         print(f"--- Finished Session: {session_id} ---\n")
+    """
 
+    # 새 버전: 콘솔에서 실시간 입력받기
+    session_id = str(uuid.uuid4())
+    print(f"--- Starting Interactive Session: {session_id} ---")
+    print("질문을 입력해서 챗봇과 대화할 수 있습니다.")
+    print("대화를 끝내려면 'exit', 'quit', 또는 'q' 를 입력하세요.\n")
 
+    while True:
+        try:
+            user_input = input("You: ").strip()
+        except (KeyboardInterrupt, EOFError):
+            print("\n강제 종료 요청 감지. 대화를 종료합니다.")
+            break
+
+        # 종료 명령
+        if user_input.lower() in ("exit", "quit", "q"):
+            print("대화를 종료합니다.")
+            break
+
+        # 빈 입력이면 무시
+        if not user_input:
+            continue
+
+        # 한 턴 실행
+        run(user_input, session_id)
