@@ -1,15 +1,13 @@
 # %% [markdown]
-# 이 파일은 로그 저장을 mongoDB와 연결해둔 파일입니다. \
-# 로그를 chat_logs에 저정합니다. 
+# 이 파일은 로그 저장 방법 및 노드, 프롬포트가 수정된 버전입니다 \
+# 로그 저장 기능을 전부 삭제하였습니다. \
+# 100$ 충전된 OpenAI를 사용합니다.
 
 # %%
-# 라이브러리 설치
-# pip install langchain-openai langchain-core langgraph langchain-chroma rank_bm25
-
 import os
 import logging
+from logging.handlers import RotatingFileHandler
 import json
-import pymongo
 from pymongo import MongoClient
 from datetime import datetime
 from dotenv import load_dotenv
@@ -32,33 +30,19 @@ from langchain.retrievers import ContextualCompressionRetriever
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 # %%
-# 환경 변수 로드 및 로깅 설정
+# 환경 변수 로드
 load_dotenv()
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+# 로거 설정
 logger = logging.getLogger(__name__)
-
-# 로그 저장 디렉토리 설정
-LOG_DIR = "chat_logs"
-os.makedirs(LOG_DIR, exist_ok=True)
-
-# MongoDB 클라이언트 설정
-MONGO_IP = os.getenv("MONGO_IP")
-MONGO_PORT = int(os.getenv("MONGO_PORT"))
-MONGO_USER = os.getenv("MONGO_USER")
-MONGO_PASSWORD = os.getenv("MONGO_PASSWORD")
-
-# 연결 URI 생성
-mongo_uri = f"mongodb://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_IP}:{MONGO_PORT}/?authSource=admin"
-client = MongoClient(mongo_uri)
-
-# 사용할 데이터베이스와 컬렉션 지정
-db = client['chatbot_db']
-collection = db['chat_logs']
+logger.setLevel(logging.INFO)
+console_handler = logging.StreamHandler()
+logger.addHandler(console_handler)
 
 # %%
 #----1. 모델 정의----
 model = ChatOpenAI(
-    model_name='gpt-4o-mini',
+    model_name='gpt-4o',
     temperature=0
 )
 
@@ -79,58 +63,92 @@ class State(TypedDict):
 # %%
 #----3. RAG 설정 (미리 로드)----
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-
 # Chroma DB 경로
 persist_directory = "./chroma_db"
 
 docs = []
-data_folder = 'data'
+data_folder = 'data' # 루트 데이터 폴더
 
-for file_name in os.listdir(data_folder):
-    if not file_name.lower().endswith(('.xlsx', '.xls')):
-        continue
+print(f"'{data_folder}'에서 데이터 로드 시작...")
 
-    file_path = os.path.join(data_folder, file_name)
-    df = pd.read_excel(file_path)
+# os.walk를 사용하여 'data' 폴더와 모든 하위 폴더(gq, book)를 탐색
+for dirpath, _, filenames in os.walk(data_folder):
+    for file_name in filenames:
+        file_path = os.path.join(dirpath, file_name)
+        file_name_lower = file_name.lower()
+        
+        # 1. 엑셀 파일 처리 (기존 로직)
+        if file_name_lower.endswith(('.xlsx', '.xls')):
+            try:
+                df = pd.read_excel(file_path)
+                print(f"  [Excel] 로드: {file_path}")
 
-    title_column = None
-    if 'big_title_eng' in df.columns:
-        title_column = 'big_title_eng'
-    elif 'big_title_ara' in df.columns:
-        title_column = 'big_title_ara'
+                title_column = None
+                if 'big_title_eng' in df.columns:
+                    title_column = 'big_title_eng'
+                elif 'big_title_ara' in df.columns:
+                    title_column = 'big_title_ara'
 
-    for index, row in df.iterrows():
-        content = f"질문: {row.get('Question_ENG', '')}\n\n답변: {row.get('Answer_ENG', '')}"
-        metadata = {
-            "source": row.get('URL_ENG', ''),
-            "row_number": index + 1
-        }
-        if title_column:
-            metadata["category"] = row.get(title_column, '')
+                for index, row in df.iterrows():
+                    content = f"질문: {row.get('Question_ENG', '')}\n\n답변: {row.get('Answer_ENG', '')}"
+                    metadata = {
+                        # URL_ENG가 없으면 파일 경로를 source로 사용
+                        "source": row.get('URL_ENG', file_path), 
+                        "row_number": index + 1
+                    }
+                    
+                    # 카테고리 설정: 1순위 엑셀 컬럼, 2순위 하위 폴더명
+                    if title_column and pd.notna(row.get(title_column)):
+                        metadata["category"] = row.get(title_column)
+                    else:
+                        metadata["category"] = os.path.basename(dirpath) # 예: 'gq'
 
-        docs.append(Document(page_content=content, metadata=metadata))
+                    docs.append(Document(page_content=content, metadata=metadata))
+            except Exception as e:
+                print(f"  [Error] 엑셀 파일 처리 중 오류 {file_path}: {e}")
+
+        # 2. 텍스트 파일 처리 (새로운 로직)
+        elif file_name_lower.endswith('.txt'):
+            try:
+                # 텍스트 파일 인코딩은 'utf-8'로 가정 (환경에 따라 다를 수 있음)
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                print(f"  [Text] 로드: {file_path}")
+                
+                metadata = {
+                    "source": file_path,
+                    "category": os.path.basename(dirpath) # 예: 'book'
+                }
+                docs.append(Document(page_content=content, metadata=metadata))
+            except Exception as e:
+                print(f"  [Error] 텍스트 파일 처리 중 오류 {file_path}: {e}")
+
 print(f"총 {len(docs)}개의 문서를 로드했습니다.")
 
+
+embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 
 # Chroma DB 존재 여부 확인 및 처리 
 if os.path.exists(persist_directory) and len(os.listdir(persist_directory)) > 0:
     print("기존 Chroma DB 로드")
+    # [중요] 기존 DB를 로드할 때도 embedding_function을 꼭 넣어줘야 검색이 가능합니다.
     chroma_db = Chroma(
         persist_directory=persist_directory,
-        embedding_function=OpenAIEmbeddings(model="text-embedding-3-small")
+        embedding_function=embeddings 
     )
 else:
     print("새로운 Chroma DB 생성 및 저장")
-    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
     split_docs = text_splitter.split_documents(docs)
     print(f"청크 후 문서 개수: {len(split_docs)}")
 
+    # from_documents를 사용하면 persist_directory가 지정된 경우 자동 저장됩니다.
     chroma_db = Chroma.from_documents(
         documents=split_docs,
         embedding=embeddings,
         persist_directory=persist_directory
     )
+
 
 # Retriever 설정
 chroma_retriever = chroma_db.as_retriever(search_kwargs={"k": 10})
@@ -141,7 +159,7 @@ ensemble_retriever = EnsembleRetriever(
 )
 
 # Re-ranking
-llm_compressor = ChatOpenAI(temperature=0, model="gpt-4o-mini")
+llm_compressor = ChatOpenAI(model_name='gpt-4o', temperature=0.5)
 compressor = LLMChainExtractor.from_llm(llm_compressor)
 
 compression_retriever = ContextualCompressionRetriever(
@@ -165,73 +183,41 @@ def serialize_state(obj):
     return obj
 
 # %%
-#----4. 로그 저장 함수----
-def save_progress_log(state: dict, step_name: str, step_output: dict = None):
-    """
-    각 단계별 진행 상황을 MongoDB와 로컬 JSON 파일에 동일한 구조로 저장
-    """
-    
-    session_id = state["session_id"]
-    log_file = os.path.join(LOG_DIR, f"chat_log_{session_id}.json")
+#광고 내용 설정
+AD_CONTEXT = """
+The user initiated this conversation by clicking a link from an advertisement by 'Afghan Christians'.
+The user is likely a Persian (Dari) speaker from a Muslim background living in Afghanistan or the region.
+(Note: While there are some Pashto speakers, the primary audience is Persian/Dari speaking.)
 
-    # 1. 기존 로그 파일 로드 (없으면 새로 생성)
-    try:
-        if os.path.exists(log_file):
-            with open(log_file, "r", encoding="utf-8") as f:
-                full_log = json.load(f)
-        else:
-            raise FileNotFoundError
-    except (json.JSONDecodeError, FileNotFoundError) as e:
-        logger.warning(
-            f"Failed to load existing JSON log file {log_file}: {e}. Initializing new log."
-        )
-        full_log = {
-            "session_id": session_id,
-            "start_time": datetime.now().isoformat(),
-            "steps": []
-        }
+The advertisement invites users to:
+1. Learn about Jesus Christ (Isa al-Masih) through videos and teachings, primarily in Persian (Dari).
+2. Find and read the Bible (Injil) in their own language.
+3. Participate in online communities, church meetings, or Bible teaching sessions.
+4. Request prayer support from brothers and sisters for problems in their lives."""
+
+# %%
+#----4. 로그 저장 함수----
+def append_step_log(state: State, step_name: str, step_output: dict = None):
+    """
+    파일/DB 저장을 제거하고, 실행 중인 State 메모리에 로그 누적
+    """
     
-    # 2. 현재 단계 로그 생성
+    # 1. 현재 단계 로그 생성
     step_log = {
         "step_name": step_name,
         "timestamp": datetime.now().isoformat(),
-        "state_snapshot": serialize_state(state),  # 상태 스냅샷 저장
+        # "state_snapshot": serialize_state(state), 
         "step_output": step_output or {}
     }
 
-    # 3. JSON 로그 업데이트 및 저장
-    full_log["steps"].append(step_log)
-    full_log["last_updated"] = datetime.now().isoformat()
+    # 2. State에 'log_steps' 키가 없으면 생성
+    if "log_steps" not in state:
+        state["log_steps"] = []
 
-    # 4. 업데이트된 전체 로그를 파일에 덮어쓰기 
-    try:
-        with open(log_file, "w", encoding="utf-8") as f:
-            json.dump(full_log, f, ensure_ascii=False, indent=4)
-        logger.info(f"JSON log for session {session_id} saved to {log_file}.")
-    except Exception as e:
-        logger.error(f"Failed to save JSON log to {log_file}: {e}")
+    # 3. State 리스트에 추가 (메모리 상에만 존재)
+    state["log_steps"].append(step_log)
 
-    # 5. MongoDB에 로그 저장
-    try:
-        collection.find_one_and_update(
-            {"session_id": session_id},
-            {
-                "$push": {"steps": step_log},
-                "$set": {"last_updated": datetime.now().isoformat()},
-                "$setOnInsert": {
-                    "session_id": session_id,
-                    "start_time": datetime.now().isoformat()
-                }
-            },
-            upsert=True
-        )
-        logger.info(f"MongoDB log for session {session_id} successfully saved.")
-    except Exception as e:
-        logger.error(f"Failed to save log to MongoDB for session {session_id}: {e}")
-
-    state["log_steps"] = full_log["steps"]
     return state
-
 
 # %%
 #---5. 초기화 노드---
@@ -255,17 +241,19 @@ def initialize_turn(state: State) -> State:
     return state
 
 # %%
+
 #----5. 번역 노드----
 def translate_persian_to_english(state: State) -> State:
-    """페르시아어 입력을 영어로 번역하고 로그 남기기"""
-    print(">> TRANSLATE PERSIAN TO ENGLISH")
+    """파슈토어/페르시아어 입력을 영어로 번역"""
+    print(">> TRANSLATE INPUT (Pashto/Persian) TO ENGLISH")
     input_msg = state["input_msg"]
     
     system = """
     You are an expert translator.
-    Translate into English appropriately, reflecting the characteristics of the Persian language and the cultural context of the countries where it is used.
-    If the input is already in English or another language, return it to English. 
-    Only return the translated sentence.
+    The user is likely speaking Pashto or Persian (Dari).
+    Translate the input into English appropriately, reflecting the cultural context of Afghanistan and the region.
+    If the input is already in English, keep it as is.
+    Only return the English translated sentence.
     """
     
     prompt = ChatPromptTemplate.from_messages([("system", system), ("human", "{input_msg}")])
@@ -274,19 +262,24 @@ def translate_persian_to_english(state: State) -> State:
     translated_msg = chain.invoke({"input_msg": input_msg})
     state["initial_translated"] = translated_msg
     
-    # 단계별 로그 저장
-    return state #save_progress_log(state, "translate_persian_to_english", {"initial_translated": translated_msg})
+    return append_step_log(state, "translate_persian_to_english", {"initial_translated": translated_msg})
 
 def translate_english_to_persian(state: State) -> State:
-    """영어 응답을 페르시아어로 번역하고 로그 남기기"""
-    print(">> TRANSLATE ENGLISH TO PERSIAN")
+    """영어 응답을 파슈토어/페르시아어로 번역"""
+    print(">> TRANSLATE ENGLISH TO PASHTO/PERSIAN")
     generation = state.get("generation", "")
     
     system = """
     You are an expert translator.
-    Translate into Persian appropriately, reflecting the characteristics of the Persian language and the cultural context of the countries where it is used.
-    If the input is empty, return Nothing. Don't response anything if the input is empty or None.
-    Only return the translated sentence and add the English generation that has not been translated into Persian, press Enter once, and then place it below.
+    Translate the input into the user's language (Pashto or Persian/Dari) appropriately. 
+    Reflect the characteristics of the language and the cultural context of Afghanistan.
+    Usually, if the user initiated contact via the Pashto ad, reply in Pashto. If unsure, provide the translation that best fits the region.
+   
+    Strictly output raw plain text only. Do not use any Markdown formatting syntax. 
+    Specifically, avoid using asterisks (*), hashes (#), backticks (`), or bullet points. 
+    Do not use bold or italics for emphasis.
+    
+    After translating, insert two line breaks and output the generated English.
     """
     
     prompt = ChatPromptTemplate.from_messages([("system", system), ("human", "{generation}")])
@@ -295,13 +288,10 @@ def translate_english_to_persian(state: State) -> State:
     translated_response = chain.invoke({"generation": generation})
     state["final_translated"] = translated_response
 
-    # 최종 단계 로그 저장
     if translated_response == "":
-        return state #save_progress_log(state, "translate_english_to_persian", {"final_translated": None})
+        return append_step_log(state, "translate_english_to_persian", {"final_translated": None})
     else:
-        return state #save_progress_log(state, "translate_english_to_persian", {"final_translated": translated_response})
-
-
+        return append_step_log(state, "translate_english_to_persian", {"final_translated": translated_response})
 
 # %%
 #----6. 노드 및 체인 정의----
@@ -311,7 +301,7 @@ def router(state: State) -> State:
     
     # 초기 입력일 시 initial 표시 남기기
     """if state["conversation_count"] == 1:
-        state = save_progress_log(state, "receive_initial_input")"""
+        state = append_step_log(state, "receive_initial_input")"""
     return state
 
 class RouteQuery(BaseModel):
@@ -353,8 +343,7 @@ def route_query(state: State) -> Literal["block", "rag", "default"]:
     
     print(f">> ROUTE QUESTION TO {route.upper()}")
     state["route"] = route
-    #save_progress_log(state, "route_query", {"route": route})
-    return state 
+    return append_step_log(state, "route_query", {"route": route})
 
 def node_default_responser(state: State) -> State:
     """'Default' 주제에 대한 답변을 생성하고 로그 기록하기"""
@@ -363,12 +352,16 @@ def node_default_responser(state: State) -> State:
     translated_msg = state["initial_translated"]
     default_count = state.get("default_count", 0) + 1 
     
-    system = """
-    You are a Christian counselor AI, created to share the love of Jesus through gentle, compassionate conversation.
-    You were designed with a deep understanding of non-christians and their religions.
+    # 위에서 정의한 광고 맥락을 프롬프트에 포함
+    system = f"""
+    You are a Christian counselor AI for 'Afghan Christians'.
+    {AD_CONTEXT}
+    
+    You were designed with a deep understanding of Muslims and their background.
     Never rush faith — let love lead the way. Always return to the hope, healing, and dignity we have in Christ.
     
-    If the conversation is not progressing towards faith-related topics, respond politely and explain that the message does not align with the purpose and kindly ask them to share something relevant.
+    If the user simply says "Hello" or seems hesitant, warmly welcome them and gently mention the services offered in the ad (Bible, prayer, learning about Jesus) to guide the conversation.
+    If the conversation is not progressing towards faith-related topics, respond politely.
     """
     
     prompt = ChatPromptTemplate.from_messages(
@@ -391,7 +384,7 @@ def node_default_responser(state: State) -> State:
     state["generation"] = result
     state["default_count"] = default_count
     
-    return state #save_progress_log(state, "node_default_responser", {"generation": result})
+    return append_step_log(state, "node_default_responser", {"generation": result})
 
 def node_rag_responser(state: State) -> State:
     """'RAG' 주제에 대한 문서를 검색하고 로그 기록"""
@@ -404,7 +397,7 @@ def node_rag_responser(state: State) -> State:
 
     # 로그에는 문서 개수와 메타데이터만 기록
     doc_summary = [{"page_content_preview": doc.page_content[:100] + "...", "metadata": doc.metadata} for doc in documents]
-    return state #save_progress_log(state, "node_rag_responser", {"retrieved_docs_summary": doc_summary})
+    return append_step_log(state, "node_rag_responser", {"retrieved_docs_summary": doc_summary})
 
 def node_block_responser(state: State) -> State:
     """'Block' 주제에 대해 응답하지 않고 로그 기록"""
@@ -414,7 +407,7 @@ def node_block_responser(state: State) -> State:
     state["translated_response"] = result
     
     # 새로운 로그 함수 사용
-    return state #save_progress_log(state, "node_block_responser", {"generation": result})
+    return append_step_log(state, "node_block_responser", {"generation": result})
 
 
 def generate(state: State) -> State:
@@ -436,6 +429,10 @@ def generate(state: State) -> State:
     - Provide practical spiritual guidance in simple terms
     - Show understanding for people's spiritual struggles
     - Always respond in English as the default language
+    
+    Strictly output raw plain text only. Do not use any Markdown formatting syntax. 
+    Specifically, avoid using asterisks (*), hashes (#), backticks (`), or bullet points. 
+    Do not use bold or italics for emphasis.
     """
     
     prompt = ChatPromptTemplate.from_messages([("system", system), ("human", "{translated_msg}")])
@@ -444,7 +441,7 @@ def generate(state: State) -> State:
     out = chain_rag.invoke({"context": documents, "translated_msg": translated_msg})
     state["generation"] = out
     
-    return state #save_progress_log(state, "generate_rag_response", {"generation": out})
+    return append_step_log(state, "generate_rag_response", {"generation": out})
 
 def rewrite_query(state: State):
     print(">> REWRITE QUERY")
@@ -473,7 +470,7 @@ def rewrite_query(state: State):
     )
     
     state["initial_translated"] = new_question
-    return state #save_progress_log(state, "rewrite_query", {"new_question": new_question})
+    return append_step_log(state, "rewrite_query", {"new_question": new_question})
 
 class Relevancy(BaseModel):
     binary_score: str = Field(
@@ -519,7 +516,7 @@ def judge_retrieval(state: State):
             print("    >> DECISION: DOCUMENT IRRELEVANT")
     
     state["documents"] = filtered_docs
-    return state #save_progress_log(state, "judge_retrieval", {"filtered_docs": [doc.metadata for doc in filtered_docs]})
+    return append_step_log(state, "judge_retrieval", {"filtered_docs": [doc.metadata for doc in filtered_docs]})
 
 class Factfulness(BaseModel):
     reasoning: str = Field( #추가됨
@@ -575,15 +572,6 @@ def judge_factfullness(state: State) -> Literal["resolved", "not resolved", "hal
     print(">> CHECK HALLUCINATION")
     documents = state["documents"]
     generation = state["generation"]
-    
-    #기존 코드
-    """
-    system = 
-    You are a judge assessing if an LLM's generation is thematically consistent with a set of retrieved documents.
-    The generation does NOT have to be a direct quote from the documents.
-    It can be a summary, a logical inference, or a statement that aligns with the overall message or main argument of the documents.
-    Give a binary score 'yes' or 'no'. 'Yes' means the generation is consistent with or logically follows from the provided documents.
-    """
     
     # 단계별로 생각하라는 지침 추가
     system = """
@@ -706,8 +694,8 @@ graph = (
 )
 
 
-#그래프 시각화
-'''from IPython.display import display, Image
+'''#그래프 시각화
+from IPython.display import display, Image
 
 diagram = Image(graph.get_graph().draw_mermaid_png(draw_method=MermaidDrawMethod.PYPPETEER))
 display(diagram)'''
@@ -718,31 +706,14 @@ display(diagram)'''
 display(diagram)"""
 
 # %%
-#----8. Test----
-import uuid
-from langgraph.errors import GraphRecursionError
-
 def run(input_msg: str, session_id: str):
     """
-    (MongoDB 사용) 지정된 세션 ID로 대화를 실행하고, 이전 대화 기록 이어가기
+    파일/DB 로드 없이 그래프만 실행하고 콘솔에 출력
     """
     def clean(text):
         return text.replace("\n", "")[:50] + "..."
     
     conversation_count = 0
-
-    """# 1. MongoDB에서 이전 대화 기록을 찾아 마지막 conversation_count 가져오기
-    try:
-        existing_log = collection.find_one({"session_id": session_id})
-        if existing_log and "steps" in existing_log and existing_log["steps"]:
-            # 마지막 단계의 상태에서 conversation_count 찾기
-            last_step_state = existing_log["steps"][-1].get("state_snapshot", {})
-            conversation_count = last_step_state.get("conversation_count", 0)
-            default_count = last_step_state.get("default_count", 0)
-            print(f"MongoDB에서 세션({session_id})을 찾았습니다. 이전 대화 횟수: {conversation_count}")
-    except Exception as e:
-        print(f"MongoDB 조회 중 오류 발생: {e}")
-        conversation_count = 0"""
 
     # LangGraph 실행 설정 
     config = RunnableConfig(
@@ -755,16 +726,16 @@ def run(input_msg: str, session_id: str):
         "input_msg": input_msg,
         "session_id": session_id,
         "conversation_count": conversation_count,
-        "log_steps": []
+        # "log_steps": [] # 필요시
     }
-
-    #print(f"--- Continuing Session (MongoDB): {session_id} (Turn: {conversation_count + 1}) ---")
 
     try:    
         final_state = {}
         for output in graph.stream(inputs, config):
             for key, value in output.items():
                 final_state.update(value)
+                
+                # --- 콘솔 출력 로깅 ---
                 if "input_msg" in value:
                     print(f"     input_msg    : {value['input_msg']}")
                 if "documents" in value:
@@ -778,60 +749,28 @@ def run(input_msg: str, session_id: str):
                     print(f"     source     : {value['source']}")
                 if "route" in value:
                     print(f"     route      : {value['route']}")
+                    
         print("\n")
         print("Generation: ", final_state.get("final_translated", final_state.get("generation", "")))
         print("="*100, "\n")
         
-        return { #실제 실행할 때는 여기 지우기! 이거는 테스트용
-                "generation": final_state.get("generation", ""),
-                "final_translated": final_state.get("final_translated", "")
-        }
-    
     except Exception as e:
         print(f"\n[ERROR] An unexpected error occurred: {e}")
 
 # %%
-# ----9. Main 실행 블록 (REPL 전용)----
+import uuid
+
+#----9. Main 실행 블록----
 if __name__ == "__main__":
-    import uuid
-
-    # 하나의 세션으로 계속 대화
-    session_id = "SESSION-" + str(uuid.uuid4())[:8]
-    print(f"💬 대화형 모드 시작 (세션: {session_id})  |  종료: exit / quit")
-
-    while True:
-        try:
-            user_in = input("> ").strip()
-        except (EOFError, KeyboardInterrupt):
-            print("\n[INFO] 종료합니다.")
-            break
-
-        if user_in.lower() in ("exit", "quit"):
-            print("[INFO] 종료합니다.")
-            break
-        if not user_in:
-            continue
-
-        out = run(user_in, session_id) or {}
-        eng = out.get("generation", "")
-        fa  = out.get("final_translated", "")
-
-        print("-" * 50)
-        if eng:
-            print("EN:", eng)
-        if fa:
-            print("FA:", fa)
-        print("-" * 50)
-
-
-# %% [markdown]
-# 
-
-# %%
-print(df)
-df.to_csv("question_answer.csv")
-
-# %%
-
+    inputs = [
+        ['Hello, I have a question about your religion. I hope you can answer me.', 'Can I get more info on this?']
+    ]
+    
+    for session in inputs:
+        session_id = str(uuid.uuid4())
+        print(f"--- Starting New Session: {session_id} ---")
+        for msg in session:
+            run(msg, session_id)
+        print(f"--- Finished Session: {session_id} ---\n")
 
 
