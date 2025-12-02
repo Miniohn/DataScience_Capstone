@@ -14,11 +14,11 @@ from dotenv import load_dotenv
 import pandas as pd
 from typing import Literal, TypedDict, List
 from pydantic import BaseModel, Field
-from langchain_openai import ChatOpenAI
+#from langchain_openai import ChatOpenAI
 from langchain.schema import Document
 from langchain_community.retrievers import BM25Retriever
 from langchain_chroma import Chroma
-from langchain_openai import OpenAIEmbeddings
+#from langchain_openai import OpenAIEmbeddings
 from langchain_core.documents import Document
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
@@ -28,6 +28,8 @@ from langgraph.graph import StateGraph, START, END
 from langchain.retrievers.document_compressors import LLMChainExtractor
 from langchain.retrievers import ContextualCompressionRetriever
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_upstage import ChatUpstage
+from langchain_upstage import UpstageEmbeddings
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Chatbot_ver2/revised.py  → Chatbot_ver2 → DataScience_Capstone 로 상위폴더 이동
@@ -50,8 +52,13 @@ logger.addHandler(console_handler)
 
 # %%
 #----1. 모델 정의----
-model = ChatOpenAI(
+'''model = ChatOpenAI(
     model_name='gpt-4o',
+    temperature=0
+)'''
+#----1. 모델 정의----
+model = ChatUpstage(
+    model="solar-pro",   # solar-mini 로 바꿔도 됨
     temperature=0
 )
 
@@ -135,7 +142,11 @@ for dirpath, _, filenames in os.walk(data_folder):
 print(f"총 {len(docs)}개의 문서를 로드했습니다.")
 
 
-embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+# embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+embeddings = UpstageEmbeddings(
+    model="solar-embedding-1-large"
+)
+
 
 # Chroma DB 존재 여부 확인 및 처리 
 if os.path.exists(persist_directory) and len(os.listdir(persist_directory)) > 0:
@@ -168,7 +179,12 @@ ensemble_retriever = EnsembleRetriever(
 )
 
 # Re-ranking
-llm_compressor = ChatOpenAI(model_name='gpt-4o', temperature=0.5)
+# llm_compressor = ChatOpenAI(model_name='gpt-4o', temperature=0.5)
+llm_compressor = ChatUpstage(
+    model="solar-pro",
+    temperature=0.5
+)
+
 compressor = LLMChainExtractor.from_llm(llm_compressor)
 
 compression_retriever = ContextualCompressionRetriever(
