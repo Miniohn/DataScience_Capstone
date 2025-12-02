@@ -10,7 +10,7 @@ if PROJECT_DIR not in sys.path:
     sys.path.append(PROJECT_DIR)
 
 # 이제 상위 폴더에 있는 revised.py import
-from 시연용 import run
+from demo import run
 
 _BOT_INITIALIZED = False
 

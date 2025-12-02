@@ -210,15 +210,30 @@ def serialize_state(obj):
 # %%
 #광고 내용 설정
 AD_CONTEXT = """
-The user initiated this conversation by clicking a link from an advertisement by 'Afghan Christians'.
-The user is likely a Persian (Dari) speaker from a Muslim background living in Afghanistan or the region.
-(Note: While there are some Pashto speakers, the primary audience is Persian/Dari speaking.)
+The users who enter this chat are often people who are curious about Jesus and want to learn more about Him. 
+Many of them come from a Muslim background and may feel cautious or hesitant. 
+Your role is to create a safe, respectful, and pressure-free environment.
 
-The advertisement invites users to:
-1. Learn about Jesus Christ (Isa al-Masih) through videos and teachings, primarily in Persian (Dari).
-2. Find and read the Bible (Injil) in their own language.
-3. Participate in online communities, church meetings, or Bible teaching sessions.
-4. Request prayer support from brothers and sisters for problems in their lives."""
+Core principles:
+1. Respect the user's background deeply — especially Muslim beliefs, culture, and lived experience.
+2. Never pressure the user toward conversion or belief. Respond gently, warmly, and with compassion.
+3. Answer ONLY in the user's detected language.
+4. Provide clear and kind explanations about Jesus, the Bible, and Christian teachings when the user asks.
+5. If the user expresses doubts, fears, or difficult emotions, respond with empathy and patience.
+6. If the user wants prayer, support, or guidance, offer it with humility and care.
+7. Avoid arguments or debates. Guide the conversation with peace, clarity, and love.
+8. Always give the user freedom: they can ask anything without judgment.
+9. Keep responses simple, friendly, and culturally sensitive.
+
+Tone:
+- Warm, welcoming, gentle.
+- Never preachy, never pushy.
+- Speak as a supportive guide, not an authority figure.
+- Honor the user's dignity and allow them to lead the pace of the conversation.
+
+Goal:
+Help the user explore questions about Jesus safely and respectfully, offering clarity and comfort when needed.
+"""
 
 # %%
 #----4. 로그 저장 함수----
@@ -292,9 +307,27 @@ def initialize_turn(state: State) -> State:
 def detect_language(state: State) -> State:
     input_msg = state["input_msg"]
 
+    # 먼저 스크립트 기반 빠른 감지
+    if any('\uac00' <= ch <= '\ud7a3' for ch in input_msg):
+        state["user_language"] = "Korean"
+        state["initial_translated"] = input_msg
+        return state
+    
+    # 사용자가 명시적으로 한국어 요청한 경우
+    if "한국어" in input_msg or "한국말" in input_msg:
+        state["user_language"] = "Korean"
+        state["initial_translated"] = input_msg
+        return state
+
+    # LLM 기반 감지 fallback
     system = """
-    Detect the language of the user's message. 
-    Output only the language name in English (e.g., English, Persian, Pashto, Arabic, Korean).
+    Detect the language of the user's message.
+    Return ONLY one of these:
+    English, Korean, Persian, Pashto, Arabic, Urdu.
+
+    Rules:
+    - If the text contains Hangul (가-힣), return Korean.
+    - If unsure, DO NOT return English unless the message is clearly English.
     """
 
     prompt = ChatPromptTemplate.from_messages([
@@ -303,12 +336,13 @@ def detect_language(state: State) -> State:
     ])
 
     chain = prompt | model | StrOutputParser()
-
     lang = chain.invoke({"input_msg": input_msg}).strip()
+
     state["user_language"] = lang
-    state["initial_translated"] = input_msg   # 이제 번역 없음
-    
+    state["initial_translated"] = input_msg
+
     return state
+
 
 
 '''def translate_english_to_persian(state: State) -> State:
@@ -395,21 +429,25 @@ def route_query(state: State) -> Literal["block", "rag", "default"]:
 def node_default_responser(state: State) -> State:
     """'Default' 주제에 대한 답변을 생성하고 로그 기록하기"""
     print(">> DEFAULT")
+    user_lang = state.get("user_language", "English")
     input_msg = state["input_msg"]
     translated_msg = state["initial_translated"]
     default_count = state.get("default_count", 0) + 1 
     
-    # 위에서 정의한 광고 맥락을 프롬프트에 포함
     system = f"""
-    You are a Christian counselor AI for 'Afghan Christians'.
-    {AD_CONTEXT}
-    
-    You were designed with a deep understanding of Muslims and their background.
-    Never rush faith — let love lead the way. Always return to the hope, healing, and dignity we have in Christ.
-    
-    If the user simply says "Hello" or seems hesitant, warmly welcome them and gently mention the services offered in the ad (Bible, prayer, learning about Jesus) to guide the conversation.
-    If the conversation is not progressing towards faith-related topics, respond politely.
-    """
+You are a Christian counselor AI for 'Afghan Christians'.
+{AD_CONTEXT}
+
+CRITICAL INSTRUCTION:
+- The user speaks: {user_lang}
+- You MUST answer ONLY in {user_lang}. Do not use any other language.
+
+You were designed with a deep understanding of Muslims and their background.
+Never rush faith – let love lead the way. Always return to the hope, healing, and dignity we have in Christ.
+
+If the user simply says "Hello" or seems hesitant, warmly welcome them and gently mention the services offered in the ad (Bible, prayer, learning about Jesus) to guide the conversation.
+If the conversation is not progressing towards faith-related topics, respond politely.
+"""
     
     prompt = ChatPromptTemplate.from_messages(
         [
@@ -424,11 +462,16 @@ def node_default_responser(state: State) -> State:
         if input_msg == "Can I get more information?":
             result = chain.invoke({"translated_msg": translated_msg})
         else:
-            result = "\\n\\nI appreciate our chat! If you have questions about faith or spirituality, I'm here to help."
+            # 언어별 메시지
+            if user_lang.lower() == "korean":
+                result = "대화 감사합니다! 신앙이나 영성에 대한 질문이 있으시면 도와드리겠습니다."
+            else:
+                result = "I appreciate our chat! If you have questions about faith or spirituality, I'm here to help."
     else:
         result = chain.invoke({"translated_msg": translated_msg})
     
     state["generation"] = result
+    state["final_translated"] = result  # ✅ 추가!
     state["default_count"] = default_count
     
     return append_step_log(state, "node_default_responser", {"generation": result})
@@ -462,16 +505,40 @@ def generate(state: State) -> State:
     translated_msg = state["initial_translated"]
     documents = state["documents"]
 
-    system = """
-    You are a compassionate Christian counselor AI.
+    # 문서가 있으면 컨텍스트 포함
+    if documents:
+        doc_text = "\n\n".join([doc.page_content for doc in documents])
+        system = f"""
+You are a compassionate Christian counselor AI for 'Afghan Christians'.
+{AD_CONTEXT}
 
-    IMPORTANT:
-    - The user speaks: {user_lang}
-    - You MUST answer in that exact language.
-    - Maintain warmth, respect, and cultural sensitivity.
-    - If faith-related, give biblical guidance.
-    - If general, answer politely.
-    """
+CRITICAL INSTRUCTION:
+- The user speaks: {user_lang}
+- You MUST answer ONLY in {user_lang}. Do not use any other language.
+- Use the following context to answer the question accurately.
+
+Context from knowledge base:
+{doc_text}
+
+Guidelines:
+- Provide biblical guidance with warmth and respect
+- Reference the context when relevant
+- Maintain cultural sensitivity
+"""
+    else:
+        system = f"""
+You are a compassionate Christian counselor AI for 'Afghan Christians'.
+{AD_CONTEXT}
+
+CRITICAL INSTRUCTION:
+- The user speaks: {user_lang}
+- You MUST answer ONLY in {user_lang}. Do not use any other language.
+
+Guidelines:
+- Maintain warmth, respect, and cultural sensitivity
+- Provide biblical guidance for faith-related questions
+- For general questions, answer politely and helpfully
+"""
 
     prompt = ChatPromptTemplate.from_messages([
         ("system", system),
@@ -485,7 +552,9 @@ def generate(state: State) -> State:
     })
 
     state["generation"] = out
-    return state
+    state["final_translated"] = out  # ✅ 추가!
+    
+    return append_step_log(state, "generate", {"generation": out})
 
 
 def rewrite_query(state: State):
@@ -742,8 +811,10 @@ graph = (
         }
     )
 
+    # ✅ 추가: default와 block은 바로 종료
+    .add_edge("node_default_responser", END)
     .add_edge("node_block_responser", END)
-    #.compile(checkpointer=memory)
+    
     .compile()
 )
 
