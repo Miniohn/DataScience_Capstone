@@ -43,6 +43,7 @@ print("data_folder:", data_folder)
 # %%
 # 환경 변수 로드
 load_dotenv()
+API_KEY = os.getenv("UPSTAGE_API_KEY")
 
 # 로거 설정
 logger = logging.getLogger(__name__)
@@ -59,6 +60,7 @@ logger.addHandler(console_handler)
 #----1. 모델 정의----
 model = ChatUpstage(
     model="solar-pro",   # solar-mini 로 바꿔도 됨
+    api_key = API_KEY,
     temperature=0
 )
 
@@ -270,12 +272,12 @@ def initialize_turn(state: State) -> State:
 #----5. 번역 노드----
 def translate_persian_to_english(state: State) -> State:
     """파슈토어/페르시아어 입력을 영어로 번역"""
-    print(">> TRANSLATE INPUT (Pashto/Persian) TO ENGLISH")
+    print(">> TRANSLATE INPUT (Persian) TO ENGLISH")
     input_msg = state["input_msg"]
     
     system = """
     You are an expert translator.
-    The user is likely speaking Pashto or Persian (Dari).
+    The user is likely speaking Persian (Dari).
     Translate the input into English appropriately, reflecting the cultural context of Afghanistan and the region.
     If the input is already in English, keep it as is.
     Only return the English translated sentence.
@@ -291,14 +293,13 @@ def translate_persian_to_english(state: State) -> State:
 
 def translate_english_to_persian(state: State) -> State:
     """영어 응답을 파슈토어/페르시아어로 번역"""
-    print(">> TRANSLATE ENGLISH TO PASHTO/PERSIAN")
+    print(">> TRANSLATE ENGLISH TO PERSIAN")
     generation = state.get("generation", "")
     
     system = """
     You are an expert translator.
-    Translate the input into the user's language (Pashto or Persian/Dari) appropriately. 
+    Translate the input into the user's language (Persian/Dari) appropriately. 
     Reflect the characteristics of the language and the cultural context of Afghanistan.
-    Usually, if the user initiated contact via the Pashto ad, reply in Pashto. If unsure, provide the translation that best fits the region.
    
     Strictly output raw plain text only. Do not use any Markdown formatting syntax. 
     Specifically, avoid using asterisks (*), hashes (#), backticks (`), or bullet points. 

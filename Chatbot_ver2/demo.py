@@ -79,12 +79,46 @@ class State(TypedDict):
 # %%
 #----3. RAG 설정 (미리 로드)----
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+import pandas as pd
+import os
+from langchain_core.documents import Document
 
 docs = []
 
+# =========================================================
+# 루트 경로의 단일 CSV 파일 (Whatsapp_QnA.csv) 로드
+# =========================================================
+extra_csv_path = "Whatsapp_QnA.csv" # 파일명
 
+if os.path.exists(extra_csv_path):
+    try:
+        print(f"[Extra CSV] 로드: {extra_csv_path}")
+        df_csv = pd.read_csv(extra_csv_path)
+        
+        # Q, A 컬럼 확인 및 데이터 처리
+        if 'Q' in df_csv.columns and 'A' in df_csv.columns:
+            for index, row in df_csv.iterrows():
+                # 내용 포맷팅 (기존 엑셀 로직과 통일성 유지)
+                content = f"질문: {row.get('Q', '')}\n\n답변: {row.get('A', '')}"
+                
+                metadata = {
+                    "source": extra_csv_path,
+                    "row_number": index + 1,
+                    "category": "QnA_Dataset" # 별도 카테고리로 지정
+                }
+                docs.append(Document(page_content=content, metadata=metadata))
+            print(f"  -> {len(df_csv)}개의 Q&A 데이터 추가 완료")
+        else:
+            print(f"  [Warning] {extra_csv_path}에 'Q' 또는 'A' 컬럼이 없습니다.")
+            
+    except Exception as e:
+        print(f"  [Error] 추가 CSV 파일 처리 중 오류: {e}")
+else:
+    print(f"  [Info] {extra_csv_path} 파일이 없어 건너뜁니다.")
 
-
+# =========================================================
+# 기존 폴더 탐색 로직
+# =========================================================
 print(f"'{data_folder}'에서 데이터 로드 시작...")
 
 # os.walk를 사용하여 'data' 폴더와 모든 하위 폴더(gq, book)를 탐색
@@ -93,7 +127,7 @@ for dirpath, _, filenames in os.walk(data_folder):
         file_path = os.path.join(dirpath, file_name)
         file_name_lower = file_name.lower()
         
-        # 1. 엑셀 파일 처리 (기존 로직)
+        # 1. 엑셀 파일 처리
         if file_name_lower.endswith(('.xlsx', '.xls')):
             try:
                 df = pd.read_excel(file_path)
@@ -108,32 +142,29 @@ for dirpath, _, filenames in os.walk(data_folder):
                 for index, row in df.iterrows():
                     content = f"질문: {row.get('Question_ENG', '')}\n\n답변: {row.get('Answer_ENG', '')}"
                     metadata = {
-                        # URL_ENG가 없으면 파일 경로를 source로 사용
                         "source": row.get('URL_ENG', file_path), 
                         "row_number": index + 1
                     }
                     
-                    # 카테고리 설정: 1순위 엑셀 컬럼, 2순위 하위 폴더명
                     if title_column and pd.notna(row.get(title_column)):
                         metadata["category"] = row.get(title_column)
                     else:
-                        metadata["category"] = os.path.basename(dirpath) # 예: 'gq'
+                        metadata["category"] = os.path.basename(dirpath)
 
                     docs.append(Document(page_content=content, metadata=metadata))
             except Exception as e:
                 print(f"  [Error] 엑셀 파일 처리 중 오류 {file_path}: {e}")
 
-        # 2. 텍스트 파일 처리 (새로운 로직)
+        # 2. 텍스트 파일 처리
         elif file_name_lower.endswith('.txt'):
             try:
-                # 텍스트 파일 인코딩은 'utf-8'로 가정 (환경에 따라 다를 수 있음)
                 with open(file_path, 'r', encoding='utf-8') as f:
                     content = f.read()
                 print(f"  [Text] 로드: {file_path}")
                 
                 metadata = {
                     "source": file_path,
-                    "category": os.path.basename(dirpath) # 예: 'book'
+                    "category": os.path.basename(dirpath)
                 }
                 docs.append(Document(page_content=content, metadata=metadata))
             except Exception as e:
@@ -284,13 +315,13 @@ def initialize_turn(state: State) -> State:
 
 #----5. 번역 노드----
 '''def translate_persian_to_english(state: State) -> State:
-    """파슈토어/페르시아어 입력을 영어로 번역"""
-    print(">> TRANSLATE INPUT (Pashto/Persian) TO ENGLISH")
+    """페르시아어 입력을 영어로 번역"""
+    print(">> TRANSLATE INPUT (Persian) TO ENGLISH")
     input_msg = state["input_msg"]
     
     system = """
     You are an expert translator.
-    The user is likely speaking Pashto or Persian (Dari).
+    The user is likely speaking Persian (Dari).
     Translate the input into English appropriately, reflecting the cultural context of Afghanistan and the region.
     If the input is already in English, keep it as is.
     Only return the English translated sentence.
@@ -435,19 +466,21 @@ def node_default_responser(state: State) -> State:
     default_count = state.get("default_count", 0) + 1 
     
     system = f"""
-You are a Christian counselor AI for 'Afghan Christians'.
-{AD_CONTEXT}
+    You are a Christian counselor AI for 'Afghan Christians'.
+    {AD_CONTEXT}
 
-CRITICAL INSTRUCTION:
-- The user speaks: {user_lang}
-- You MUST answer ONLY in {user_lang}. Do not use any other language.
+    CRITICAL INSTRUCTION:
+    - The user speaks: {user_lang}
+    - You MUST answer ONLY in {user_lang}. Do not use any other language.
 
-You were designed with a deep understanding of Muslims and their background.
-Never rush faith – let love lead the way. Always return to the hope, healing, and dignity we have in Christ.
+    You were designed with a deep understanding of Muslims and their background.
+    Never rush faith – let love lead the way. Always return to the hope, healing, and dignity we have in Christ.
 
-If the user simply says "Hello" or seems hesitant, warmly welcome them and gently mention the services offered in the ad (Bible, prayer, learning about Jesus) to guide the conversation.
-If the conversation is not progressing towards faith-related topics, respond politely.
-"""
+    If the user simply says "Hello" or seems hesitant, warmly welcome them and gently mention the services offered in the ad (Bible, prayer, learning about Jesus) to guide the conversation.
+    If the conversation is not progressing towards faith-related topics, respond politely.
+    
+    If the user's messeage is not relevant to the Christian things, do not explain or answer to the question, but reply with pursuading to talk in the field of Christianity.
+    """
     
     prompt = ChatPromptTemplate.from_messages(
         [
@@ -709,14 +742,6 @@ def judge_factfullness(state: State) -> Literal["resolved", "not resolved", "hal
     chain_hallucination = prompt_hallucination_judge | model_with_structured_output
     
     out = chain_hallucination.invoke({"documents": documents, "generation": generation})
-    
-    #기존 코드
-    """model_with_structured_output = model.with_structured_output(Factfulness)
-    
-    chain_hallucination = prompt_hallucination_judge | model_with_structured_output
-    
-    out = chain_hallucination.invoke({"documents": documents, "generation": generation})
-    """
     
     # 모델의 생각의 연쇄(reasoning) 과정 출력하여 사고 과정 확인
     print(f"     >> Reasoning: {out.reasoning}")
