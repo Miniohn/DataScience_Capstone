@@ -58,7 +58,7 @@ logger.addHandler(console_handler)
 )'''
 #----1. 모델 정의----
 model = ChatUpstage(
-    model="solar-pro",   # solar-mini 로 바꿔도 됨
+    model="solar-pro",
     temperature=0
 )
 
@@ -84,46 +84,15 @@ import os
 from langchain_core.documents import Document
 
 docs = []
-
-# =========================================================
-# 루트 경로의 단일 CSV 파일 (Whatsapp_QnA.csv) 로드
-# =========================================================
-extra_csv_path = "Whatsapp_QnA.csv" # 파일명
-
-if os.path.exists(extra_csv_path):
-    try:
-        print(f"[Extra CSV] 로드: {extra_csv_path}")
-        df_csv = pd.read_csv(extra_csv_path)
-        
-        # Q, A 컬럼 확인 및 데이터 처리
-        if 'Q' in df_csv.columns and 'A' in df_csv.columns:
-            for index, row in df_csv.iterrows():
-                # 내용 포맷팅 (기존 엑셀 로직과 통일성 유지)
-                content = f"질문: {row.get('Q', '')}\n\n답변: {row.get('A', '')}"
-                
-                metadata = {
-                    "source": extra_csv_path,
-                    "row_number": index + 1,
-                    "category": "QnA_Dataset" # 별도 카테고리로 지정
-                }
-                docs.append(Document(page_content=content, metadata=metadata))
-            print(f"  -> {len(df_csv)}개의 Q&A 데이터 추가 완료")
-        else:
-            print(f"  [Warning] {extra_csv_path}에 'Q' 또는 'A' 컬럼이 없습니다.")
-            
-    except Exception as e:
-        print(f"  [Error] 추가 CSV 파일 처리 중 오류: {e}")
-else:
-    print(f"  [Info] {extra_csv_path} 파일이 없어 건너뜁니다.")
-
-# =========================================================
-# 기존 폴더 탐색 로직
-# =========================================================
 print(f"'{data_folder}'에서 데이터 로드 시작...")
 
-# os.walk를 사용하여 'data' 폴더와 모든 하위 폴더(gq, book)를 탐색
+# os.walk를 사용하여 'data' 폴더와 모든 하위 폴더(gq, book, whatsapp) 탐색
 for dirpath, _, filenames in os.walk(data_folder):
     for file_name in filenames:
+        
+        if file_name.startswith('.'): #.DS_store 무시하기
+            continue
+        
         file_path = os.path.join(dirpath, file_name)
         file_name_lower = file_name.lower()
         
@@ -142,33 +111,60 @@ for dirpath, _, filenames in os.walk(data_folder):
                 for index, row in df.iterrows():
                     content = f"질문: {row.get('Question_ENG', '')}\n\n답변: {row.get('Answer_ENG', '')}"
                     metadata = {
+                        # URL_ENG가 없으면 파일 경로를 source로 사용
                         "source": row.get('URL_ENG', file_path), 
                         "row_number": index + 1
                     }
                     
+                    # 카테고리 설정: 1순위 엑셀 컬럼, 2순위 하위 폴더명
                     if title_column and pd.notna(row.get(title_column)):
                         metadata["category"] = row.get(title_column)
                     else:
-                        metadata["category"] = os.path.basename(dirpath)
+                        metadata["category"] = os.path.basename(dirpath) # 예: 'gq'
 
                     docs.append(Document(page_content=content, metadata=metadata))
             except Exception as e:
                 print(f"  [Error] 엑셀 파일 처리 중 오류 {file_path}: {e}")
 
-        # 2. 텍스트 파일 처리
+        # 2. 텍스트 파일 처리 
         elif file_name_lower.endswith('.txt'):
             try:
+                # 텍스트 파일 인코딩은 'utf-8'로 가정
                 with open(file_path, 'r', encoding='utf-8') as f:
                     content = f.read()
                 print(f"  [Text] 로드: {file_path}")
                 
                 metadata = {
                     "source": file_path,
-                    "category": os.path.basename(dirpath)
+                    "category": os.path.basename(dirpath) # 예: 'book'
                 }
                 docs.append(Document(page_content=content, metadata=metadata))
             except Exception as e:
                 print(f"  [Error] 텍스트 파일 처리 중 오류 {file_path}: {e}")
+        
+        # 3. CSV 파일 처리
+        elif file_name_lower.endswith('.csv'):
+            try:
+                df = pd.read_csv(file_path)
+                print(f"  [Csv] 로드: {file_path}")
+                
+                # Q, A 컬럼 확인 및 데이터 처리
+                if 'Q' in df.columns and 'A' in df.columns:
+                    for index, row in df.iterrows():
+                        content = f"질문: {row.get('Q', '')}\n\n답변: {row.get('A', '')}"
+                        metadata = {
+                            "source": file_path,
+                            "row_number": index + 1,
+                        }
+                        docs.append(Document(page_content=content, metadata=metadata))
+                    print(f"  -> {len(df)}개의 Q&A 데이터 추가 완료")
+                else:
+                    print(f"  [Warning] {file_path}에 'Q' 또는 'A' 컬럼이 없습니다.")
+                    
+            except Exception as e:
+                print(f"  [Error] 추가 CSV 파일 처리 중 오류: {e}")
+        else:
+            print(f"  [Info] {file_path} 파일이 없어 건너뜁니다.")
 
 print(f"총 {len(docs)}개의 문서를 로드했습니다.")
 
@@ -182,7 +178,7 @@ embeddings = UpstageEmbeddings(
 # Chroma DB 존재 여부 확인 및 처리 
 if os.path.exists(persist_directory) and len(os.listdir(persist_directory)) > 0:
     print("기존 Chroma DB 로드")
-    # [중요] 기존 DB를 로드할 때도 embedding_function을 꼭 넣어줘야 검색이 가능합니다.
+    # 기존 DB를 로드할 때도 embedding_function을 꼭 넣어줘야 검색이 가능함
     chroma_db = Chroma(
         persist_directory=persist_directory,
         embedding_function=embeddings 
@@ -193,7 +189,7 @@ else:
     split_docs = text_splitter.split_documents(docs)
     print(f"청크 후 문서 개수: {len(split_docs)}")
 
-    # from_documents를 사용하면 persist_directory가 지정된 경우 자동 저장됩니다.
+    # from_documents를 사용하면 persist_directory가 지정된 경우 자동 저장됨
     chroma_db = Chroma.from_documents(
         documents=split_docs,
         embedding=embeddings,
@@ -504,7 +500,7 @@ def node_default_responser(state: State) -> State:
         result = chain.invoke({"translated_msg": translated_msg})
     
     state["generation"] = result
-    state["final_translated"] = result  # ✅ 추가!
+    state["final_translated"] = result
     state["default_count"] = default_count
     
     return append_step_log(state, "node_default_responser", {"generation": result})
