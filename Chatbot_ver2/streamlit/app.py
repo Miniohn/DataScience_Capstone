@@ -342,7 +342,7 @@ col1, col2 = st.columns([8, 1])
 
 with col1:
     user_input = st.text_input(
-        "",
+        "사용자 메시지",
         value=st.session_state.draft,
         placeholder="메시지를 입력하세요",
         label_visibility="collapsed",
