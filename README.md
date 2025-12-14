@@ -1,148 +1,115 @@
-# Digital Mission AI Chatbot (Last Call 프로젝트)
+# 🙌 Digital Mission AI Chatbot  
+AI 기반 디지털 선교 챗봇 (Last Call 협업 프로젝트)
 
-본 프로젝트는 디지털 선교 현장에서의 인력 부족 문제, 응답 지연, 정서적 소진, 악성 사용자 대응 문제 등을 해결하기 위해 개발된 AI 기반 전도 챗봇 시스템입니다. 특히 연간 30,000명 이상의 신규 유입자를 10~20명의 사역자가 감당해야 하는 Last Call 플랫폼의 실제 문제를 해결하기 위한 실무형 AI 솔루션으로 설계되었습니다.
+본 프로젝트는 **디지털 선교 현장의 구조적 인력 부족과 응답 지연 문제**를 해결하기 위해 개발된  
+**AI 기반 전도·상담 챗봇 시스템**입니다.  
 
----
-
-### 프로젝트 주요 기능
-
-- **Adaptive RAG 기반 AI 응답 시스템**
-- **Router / Block / Default / RAG 에이전트 구조**
-- **신학적 정확도 확보를 위한 RAG 기반 답변 생성**
-- **욕설·악성 사용자 자동 필터링**
-- **초기 응답 자동화 (평균 347.8분 → 30초 이하)**
-- **Streamlit 기반 챗봇 UI**
-- **MongoDB 기반 로그 저장 및 분석**
-- **Golden Dataset + RAGAS 평가를 통한 모델 지속 개선**
+Last Call 플랫폼은 연간 **약 30,000명의 신규 유입자**를 맞이하지만, 이를 감당하는 사역자는 10~20명뿐입니다.  
+이 챗봇은 사역자의 업무를 경감하고, 사용자가 즉시 도움을 받을 수 있도록 설계되었습니다.
 
 ---
 
-### 프로젝트 구조
+## 🌟 프로젝트 주요 기능
 
-```
+- **Adaptive Routing System**  
+  block / default / rag / handoff 로 세분화된 라우팅  
+- **RAG 기반 신학 지식 응답**  
+  BM25 + Embedding + LLM re-ranking을 사용한 고품질 답변  
+- **Handoff 기능 (사람 연결)**  
+  심층 신앙 대화 필요 시 자동으로 선교사 연결  
+- **Hallucination-safe Pipeline**  
+  문서 기반 factfulness + relevance 검사  
+- **다국어 지원 (Persian ↔ English)**  
+  입력 정규화 및 응답 번역  
+- **선교 현장 맞춤형 AD_CONTEXT 프롬프트**
+
+---
+
+## 📁 프로젝트 구조 (Overview)
+
 Chatbot_ver2/
- ├── streamlit/                # Streamlit 웹 앱 파일
- │     ├── app.py              # 메인 실행 파일
- │     ├── chatbot_revised.ipynb
- │     ├── demo.py
- │     └── revised.py
- │
- ├── data/                     # 원본 데이터
- │     ├── whatsapp/
- │     ├── gq/
- │     └── book/
- │
- ├── data_preprocessing/
- │     └── preprocessing.ipynb # 메시지 정제 파이프라인
- │
- ├── evaluation/               # RAGAS 및 모델 평가
- │     ├── chatbot_for_evaluation.ipynb
- │     ├── evaluation_with_ragas.ipynb
- │     ├── finaltest_with_ragas.ipynb
- │     └── GQ_summary_with_ai.ipynb
- │
- ├── requirements.txt
- └── README.md
-```
+├── data/ # RAG 학습 데이터
+├── streamlit/ # 웹 시연(Streamlit UI)
+├── chatbot_revised.ipynb # 챗봇 백엔드 핵심 로직
+├── requirements.txt
+└── README.md
+
+yaml
+코드 복사
+
+> 아래에서는 프로젝트가 커지는 것을 방지하기 위해  
+> **각 폴더별 역할을 토글 형식으로 설명합니다.**
 
 ---
 
-### 기술 스택 (Tech Stack)
+## 📂 폴더별 설명
 
-- Python 3.11  
-- Upstage LLM (Solar API)  
-- LangChain / LangGraph  
-- ChromaDB (벡터 스토어)  
-- Streamlit  
-- MongoDB  
-- pandas, pydantic, dotenv  
+<details>
+<summary>🖥️ streamlit/ — Web Demo (UI)</summary>
+
+`streamlit/` 폴더는 본 프로젝트의 AI 챗봇을  
+**웹 환경에서 시연(demo)** 하기 위한 Streamlit 기반 프런트엔드입니다.
+
+이 폴더의 목적은 **모델 개발이나 성능 실험이 아니라**,  
+외부 사용자·협업자·심사위원에게  
+👉 **“챗봇이 실제로 어떻게 동작하는지”를 직관적으로 보여주는 것**입니다.
+
+### 위치
+Chatbot_ver2/streamlit/
+
+shell
+코드 복사
+
+### 구성 파일 및 역할
+
+streamlit/
+├── app.py
+├── bot_adapter.py
+├── bible.png
+├── requirements.txt
+
+yaml
+코드 복사
+
+- **app.py**  
+  Streamlit 기반 웹 UI의 메인 실행 파일입니다.  
+  사용자의 입력을 받아 챗봇에 전달하고, 응답을 채팅 형태로 화면에 출력합니다.
+
+- **bot_adapter.py**  
+  Streamlit UI와 챗봇 백엔드(Graph 기반 RAG 시스템)를 연결하는 어댑터 모듈입니다.  
+  UI 코드가 챗봇 내부 로직에 직접 의존하지 않도록 중간 인터페이스 역할을 합니다.
+
+- **bible.png**  
+  챗봇 프로필 이미지 및 UI 시각 요소로 사용됩니다.
+
+- **requirements.txt**  
+  Streamlit 실행에 필요한 UI 관련 라이브러리 의존성을 정의합니다.
+
+> ⚠️ 이 폴더는 **시연(demo) 목적의 UI 코드**이며,  
+> 실제 챗봇 로직, RAG 파이프라인, 라우팅 및 평가 로직은  
+> 상위 디렉토리의 `chatbot_revised.ipynb`에 정의되어 있습니다.
+
+</details>
 
 ---
 
-### 환경 변수 (.env 설정)
+## 🚀 실행 방법 (요약)
 
-프로젝트 루트에 `.env` 파일을 생성하고 아래 내용을 작성합니다:
-
-```
-UPSTAGE_API_KEY=up_xxxxxx
-MONGO_IP=127.xx.xx.xx
-MONGO_PORT=27017
-MONGO_USER=your_username
-MONGO_PASSWORD=your_password
-```
-
-⚠️ **API Key와 DB 정보는 GitHub에 절대 노출하지 마세요.**
-
----
-
-### 실행 방법 (Run App)
-
-1. 저장소 클론  
-```
 git clone https://github.com/yourname/Chatbot_ver2.git
 cd Chatbot_ver2
-```
-
-2. 필요한 라이브러리 설치  
-```
 pip install -r requirements.txt
-```
 
-3. Streamlit 앱 실행  
-```
 cd streamlit
 streamlit run app.py
-```
 
-브라우저가 자동으로 열리며 챗봇이 실행됩니다.
-
----
-
-### LLM 엔진 교체 방법 (Upstage → 다른 모델)
-
-본 프로젝트는 기본적으로 **Upstage Solar LLM** 기반으로 설계되어 있지만,  
-LangChain의 ChatModel 부분만 변경하면  
-OpenAI · Claude · Gemini · Local LLM(Ollama 등)으로 교체할 수 있습니다.
-
-#### 현재 Upstage 사용:
-```python
-from langchain_upstage import ChatUpstage
-
-llm = ChatUpstage(
-    api_key=os.getenv("UPSTAGE_API_KEY"),
-    model="solar-1-mini-chat"
-)
-```
-
-#### OpenAI로 바꾸고 싶다면?
-```python
-from langchain_openai import ChatOpenAI
-
-llm = ChatOpenAI(
-    model="gpt-4o-mini",
-    api_key=os.getenv("OPENAI_API_KEY")
-)
-```
-
-#### 로컬 LLM(Ollama 등)을 쓰고 싶다면?
-```python
-from langchain_community.chat_models import ChatOllama
-
-llm = ChatOllama(model="llama3")
-```
-
-즉, **LLM 교체는 1줄만 바꾸면 가능하도록 구조화**되어 있습니다.
+yaml
+코드 복사
 
 ---
 
-### 데이터 및 평가
+## 🎯 프로젝트 목표 요약
 
-- WhatsApp 실제 대화 3,017건  
-- Got Questions 크롤링 데이터 2,175개  
-- 기독교 변증학 서적 기반 Q&A 약 1,000개  
-- 선교사 직접 검수 Golden Dataset 150개  
-
-**평가 지표 (RAGAS 기반)**  
-- Correctness  
-- Semantic Similarity  
-- Relevancy  
+- 사역자 1명이 감당할 수 있는 사용자 수 **5배 이상 증가**  
+- 평균 응답 지연 **347.8분 → 즉시(30초 이내)**  
+- 악성 사용자 자동 필터링으로 감정 노동 감소  
+- 심층 신앙 대화는 사람에게 전달하는 **Hybrid Human–AI 사역 모델**
