@@ -14,3 +14,4 @@ langchain-core
 rank-bm25
 pymongo
 langchain-upstage
+nest-asyncio
