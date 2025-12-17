@@ -12,7 +12,7 @@ import logging
 import json
 # import pymongo  # ← 삭제
 import uuid
-# from pymongo import MongoClient  # ← 삭제
+from pymongo import MongoClient  # ← 삭제
 from datetime import datetime
 from dotenv import load_dotenv
 import pandas as pd
