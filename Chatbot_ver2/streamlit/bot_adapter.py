@@ -50,5 +50,3 @@ def get_bot_reply(message: str, history: List[Dict[str, str]]) -> str:
 
 # bot_adapter.py 맨 아래(또는 적당한 위치)에 추가
 
-def get_bot_reply(user_message: str, history):
-    return run(user_message, history)

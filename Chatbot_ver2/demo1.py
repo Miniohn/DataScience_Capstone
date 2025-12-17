@@ -1,18 +1,14 @@
 # %% [markdown]
-# 이 파일은 로그 저장을 mongoDB와 연결해둔 파일입니다. \
-# 로그를 chat_logs에 저정합니다. 로컬에도 json 형식으로 저장됩니다. \
+# 로그 저장 기능이 전부 삭제된 오리지널 챗봇 파일입니다. \
 # Upstage API를 사용합니다. 
 
 # %%
-# 라이브러리 설치
-# pip install langchain-openai langchain-core langgraph langchain-chroma rank_bm25
-
 import os
 import logging
 import json
 # import pymongo  # ← 삭제
 import uuid
-from pymongo import MongoClient  # ← 삭제
+#from pymongo import MongoClient  # ← 삭제
 from datetime import datetime
 from dotenv import load_dotenv
 import pandas as pd
@@ -37,46 +33,13 @@ from langchain_classic.retrievers.document_compressors import LLMChainExtractor
 # %%
 # 환경 변수 로드
 load_dotenv()
+#print(os.getenv("UPSTAGE_API_KEY"))
 
-# 로그 저장 디렉토리 설정
-LOG_DIR = "chat_logs"
-os.makedirs(LOG_DIR, exist_ok=True)
-
-log_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-# 1. 콘솔 핸들러 (기존과 동일, INFO 레벨)
-console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.INFO)
-console_handler.setFormatter(log_formatter)
-
-# 2. TXT 파일 핸들러 (에러 및 심각한 오류만 기록)
-# 중간에 에러가 나도 기록하기 위함
-txt_log_path = os.path.join(LOG_DIR, "runtime_errors.txt")
-
-# 10MB 크기, 3개 파일 유지
-file_handler = RotatingFileHandler(txt_log_path, maxBytes=10*1024*1024, backupCount=3, encoding='utf-8')
-file_handler.setLevel(logging.ERROR) # ERROR 레벨 이상만 파일에 기록
-file_handler.setFormatter(log_formatter)
-
-# 3. 로거 설정
+# 로거 설정
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO) # 로거의 기본 레벨은 INFO
-logger.addHandler(console_handler) # 콘솔 핸들러 추가
-logger.addHandler(file_handler)    # 파일 핸들러 추가
-
-# MongoDB 클라이언트 설정
-MONGO_IP = os.getenv("MONGO_IP")
-MONGO_PORT = int(os.getenv("MONGO_PORT"))
-MONGO_USER = os.getenv("MONGO_USER")
-MONGO_PASSWORD = os.getenv("MONGO_PASSWORD")
-
-# 연결 URI 생성
-mongo_uri = f"mongodb://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_IP}:{MONGO_PORT}/?authSource=admin"
-client = MongoClient(mongo_uri)
-
-# 사용할 데이터베이스와 컬렉션 지정
-db = client['chatbot_db']
-collection = db['chat_logs']
+logger.setLevel(logging.INFO)
+console_handler = logging.StreamHandler()
+logger.addHandler(console_handler)
 
 # %%
 #----1. 모델 정의----
@@ -100,16 +63,22 @@ class State(TypedDict):
     documents: List[str]
     generation: str
     final_translated: str #Persian
-    log_steps: List[dict] #누적된 로그를 담을 state
 
 # %%
 #----3. RAG 설정----
 
-base_dir = os.getcwd() 
-print(f"Current Working Directory: {base_dir}")
+#----3. RAG 설정----
+
+# ✅ demo1.py 기준 경로로 고정
+base_dir = os.path.dirname(os.path.abspath(__file__))
+print(f"Base Directory (script location): {base_dir}")
 
 data_folder = os.path.join(base_dir, 'data')
 persist_directory = os.path.join(base_dir, 'chroma_db')
+
+print(f"Data Folder Path: {data_folder}")
+print(f"Chroma DB Path: {persist_directory}")
+
 
 print(f"Data Folder Path: {data_folder}")
 print(f"Chroma DB Path: {persist_directory}")
@@ -324,114 +293,34 @@ Help the user explore questions about Jesus safely and respectfully, offering cl
 """
 
 # %%
-import os
-import json
-from datetime import datetime
-from pymongo import UpdateOne
+"""#----4. 로그 저장 함수----
+def append_step_log(state: State, step_name: str, step_output: dict = None):
 
-# 1. 직렬화 헬퍼 함수
-def serialize_obj(obj):
-    if hasattr(obj, "to_json"):
-        return obj.to_json()
-    elif hasattr(obj, "dict"):
-        return obj.dict()
-    elif isinstance(obj, list):
-        return [serialize_obj(o) for o in obj]
-    elif isinstance(obj, dict):
-        return {k: serialize_obj(v) for k, v in obj.items()}
-    return str(obj)
+    #실행 중인 State 메모리에 로그 누적
 
-# 2. 턴(Turn) 기반 로그 저장 함수 (Dynamic Key 방식)
-def append_step_log(state: dict, step_name: str, step_output: dict = None):
-    session_id = state.get("session_id", "unknown_session")
     
-    # 1. 현재 Turn 번호와 User Input 가져오기
-    # conversation_count가 0이면 1로 보정 (보기 좋게 1부터 시작)
-    raw_count = state.get("conversation_count", 0)
-    current_turn_num = raw_count if raw_count > 0 else 1
-    
-    # 동적 키 생성 (예: turn_1, turn_2)
-    turn_key = f"turn_{current_turn_num}"
-    user_input = state.get("input_msg", "")
-    
-    # 2. 저장 경로 설정
-    log_dir = "chat_logs"
-    os.makedirs(log_dir, exist_ok=True)
-    log_file_path = os.path.join(log_dir, f"{session_id}.json")
-
-    current_timestamp = datetime.now().isoformat()
-    
-    # 3. 현재 스텝 데이터 생성
-    new_step_data = {
+    # 1. 현재 단계 로그 생성
+    step_log = {
         "step_name": step_name,
-        "timestamp": current_timestamp,
-        "step_output": serialize_obj(step_output) if step_output else {},
+        "timestamp": datetime.now().isoformat(),
+        # "state_snapshot": serialize_state(state), 
+        "step_output": step_output or {}
     }
 
-    # -------------------------------------------------------
-    # [로컬 저장] JSON 구조화 (턴 별로 Key 분리)
-    # -------------------------------------------------------
-    try:
-        # 파일 읽기 또는 초기화
-        if os.path.exists(log_file_path):
-            with open(log_file_path, "r", encoding="utf-8") as f:
-                try:
-                    file_data = json.load(f)
-                except json.JSONDecodeError:
-                    file_data = {"session_id": session_id, "start_time": current_timestamp}
-        else:
-            file_data = {"session_id": session_id, "start_time": current_timestamp}
+    # 2. State에 'log_steps' 키가 없으면 생성
+    if "log_steps" not in state:
+        state["log_steps"] = []
 
-        # 해당 턴(turn_N)이 없으면 새로 생성 (user_input과 빈 steps 리스트 포함)
-        if turn_key not in file_data:
-            file_data[turn_key] = {
-                "user_input": user_input,
-                "steps": []
-            }
-        
-        # 만약 같은 턴인데 user_input이 비어있었다면 업데이트 (혹시 모를 상황 대비)
-        if user_input and not file_data[turn_key].get("user_input"):
-            file_data[turn_key]["user_input"] = user_input
+    # 3. State 리스트에 추가 (메모리 상에만 존재)
+    state["log_steps"].append(step_log)
 
-        # 스텝 추가
-        file_data[turn_key]["steps"].append(new_step_data)
-        file_data["last_updated"] = current_timestamp
+    return state"""
 
-        # 파일 저장
-        with open(log_file_path, "w", encoding="utf-8") as f:
-            json.dump(file_data, f, ensure_ascii=False, indent=4)
-
-    except Exception as e:
-        print(f"   [Error] Failed to save local log: {e}")
-
-    # -------------------------------------------------------
-    # [MongoDB 저장] 동적 필드 업데이트 ($set과 $push 혼용)
-    # -------------------------------------------------------
-    try:
-        if "collection" in globals():
-            # MongoDB에서는 점(.) 표기법으로 중첩 필드에 접근합니다.
-            # 예: "turn_1.steps"
-            
-            update_query = {
-                "$push": {f"{turn_key}.steps": new_step_data}, # 해당 턴의 steps 배열에 추가
-                "$set": {
-                    "last_updated": current_timestamp,
-                    f"{turn_key}.user_input": user_input # 해당 턴의 user_input 설정/갱신
-                },
-                "$setOnInsert": {
-                    "session_id": session_id,
-                    "start_time": current_timestamp
-                }
-            }
-            
-            collection.update_one(
-                {"session_id": session_id},
-                update_query,
-                upsert=True
-            )
-    except Exception as e:
-        print(f"   [Error] Failed to push log to MongoDB: {e}")
-    
+#----4. 로그 저장 함수 (기능 비활성화)----
+def append_step_log(state: State, step_name: str, step_output: dict = None):
+    """
+    로그 저장 기능을 사용하지 않고 state를 그대로 반환합니다.
+    """
     return state
 
 # %%
@@ -1018,35 +907,6 @@ def node_ask_handoff(state: State):
     state["handoff_confirm"] = True
     return append_step_log(state, "node_ask_handoff", {"generation": ask_handoff})
 
-"""
-# [단계 2-Yes] 링크 제공 노드
-def node_handoff_link(state: State):
-    print(">> [HANDOFF] 2단계 (Yes): 링크 제공")
-    
-    handoff_msg = (
-        "Great! You can chat with a missionary here:\n"
-        "You can chat with them here: [Telegram Link](https://t.me/your_link_here)"
-    )
-    
-    state["generation"] = handoff_msg
-    state["route"] = "handoff"
-    state["handoff_confirm"] = False
-    return append_step_log(state, "node_handoff_link", {"generation": handoff_msg})
-
-
-# [단계 2-No] 거절 시 마무리 노드
-def node_handoff_rejection(state: State):
-    print(">> [HANDOFF] 2단계 (No): 거절 응답")
-    
-    reject_msg = "It's okay, I understand. If you have any other questions, feel free to ask me."
-    
-    # ★ 볼일 끝났으니 waiting 플래그 False
-    state["generation"] = reject_msg
-    state["route"] = "handoff_reject"
-    state["handoff_confirm"] = False
-    return append_step_log(state, "node_handoff_rejection", {"generation": reject_msg})
-"""
-
 # [단계 2] 유저 응답(Yes/No)에 따라 메시지 생성 및 종결
 def node_handoff_resolution(state: State):
     print(">> [HANDOFF] 2단계: 유저 응답 처리 (통합 노드)")
@@ -1060,7 +920,7 @@ def node_handoff_resolution(state: State):
         
         final_msg = (
             "Great! You can chat with a missionary here:\n"
-            "You can chat with them here: [Telegram Link](https://t.me/"
+            "You can chat with them here: [Telegram Link](https://t.me/)"
         )
         state["route"] = "handoff"
         state["handoff_confirm"] = False
@@ -1232,19 +1092,15 @@ graph = (
 diagram = Image(graph.get_graph().draw_mermaid_png(draw_method=MermaidDrawMethod.PYPPETEER))
 display(diagram)"""
 
-'''# 그래프 시각화 - 맥 M1/2/3 (PYPPETEER -> API 로 변경)
+# 그래프 시각화 - 맥 M1/2/3 (PYPPETEER -> API 로 변경)
 diagram = Image(
     graph.get_graph().draw_mermaid_png(
         draw_method=MermaidDrawMethod.API
     )
 )
-display(diagram)'''
+display(diagram)
 
 # %%
-#----8. Test----
-import uuid
-from langgraph.errors import GraphRecursionError
-
 def run(input_msg: str, session_id: str):
     """
     파일/DB 로드 없이 그래프만 실행하고 결과를 반환
@@ -1345,6 +1201,8 @@ if __name__ == "__main__":
 
         # 한 턴 실행
         run(user_input, session_id)
+
+
 
 
 
