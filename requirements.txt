@@ -1,17 +1,30 @@
-streamlit
-langchain # ver 0.3.26
-langchain-community # 0.3.27
-# langchain-openai
-langchain-chroma # 0.2.6
-chromadb
-pandas
-python-dotenv
-langgraph # ver 0.5.3
-pydantic
-openpyxl
-pysqlite3-binary
+# — LangChain & LangGraph —
+langchain==0.3.26
+langchain-community==0.3.27
 langchain-core
-rank-bm25
+langgraph==0.5.3
+
+# — 모델 및 벡터 DB 연동 (버전 고정) —
+langchain-upstage==0.7.4
+langchain-chroma==0.2.6
+langchain-openai
+
+# — 데이터베이스 및 검색 —
+chromadb
 pymongo
-langchain-upstage # ver 0.7.4
+rank-bm25
+pysqlite3-binary
+
+# — 데이터 처리 및 유틸리티 —
+pandas
+openpyxl
+pydantic
+python-dotenv
 nest-asyncio
+
+# — UI 및 웹 —
+streamlit
+
+# — 개발 도구 (Jupyter) —
+jupyterlab
+ipykernel
