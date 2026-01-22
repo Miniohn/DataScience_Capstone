@@ -59,6 +59,23 @@ AI로 디지털 선교의 “첫 응답”을 맡기다
 > **AI가 사역자가 더 중요한 일에 집중할 수 있도록 돕는 도구**를 만드는 것을 목표로 합니다.
 
 
+## 환경 변수 (.env)
+
+프로젝트 루트의 `chatbot_ver2` 폴더 안에 `.env` 파일을 생성하고  
+아래 환경 변수를 입력하세요.
+
+```env
+# .env example
+UPSTAGE_API_KEY="sk-..."          # Upstage API 키
+MONGODB_URI="mongodb+srv://..."   # MongoDB 접속 주소
+DB_NAME="chat_db"                 # 사용할 데이터베이스 이름
+COLLECTION_NAME="chat_logs"       # 로그를 저장할 컬렉션 이름
+
+
+
+
+
+
 <details>
 <summary><strong>📦 Chatbot_ver2 폴더 (프로젝트 루트)</strong></summary>
 
