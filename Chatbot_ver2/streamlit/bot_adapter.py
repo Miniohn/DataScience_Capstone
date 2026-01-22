@@ -3,19 +3,17 @@ from typing import List, Dict
 import os
 import sys
 
-# --- revised.py 를 import 할 수 있게 경로 추가 ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))      # .../Chatbot_ver2/streamlit
 PROJECT_DIR = os.path.dirname(BASE_DIR)                    # .../Chatbot_ver2
 if PROJECT_DIR not in sys.path:
     sys.path.append(PROJECT_DIR)
 
-# 이제 상위 폴더에 있는 revised.py import
 from demo1 import run
 
 _BOT_INITIALIZED = False
 
 def load_bot_once():
-    """지금 구조에서는 별도 초기화는 필요 없지만, app.py와 인터페이스 맞추기용."""
+    
     global _BOT_INITIALIZED
     if _BOT_INITIALIZED:
         return
