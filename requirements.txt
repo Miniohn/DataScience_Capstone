@@ -1,17 +1,17 @@
 streamlit
-langchain
-langchain-community
-langchain-openai
-langchain-chroma
+langchain # ver 0.3.26
+langchain-community # 0.3.27
+# langchain-openai
+langchain-chroma # 0.2.6
 chromadb
 pandas
 python-dotenv
-langgraph
+langgraph # ver 0.5.3
 pydantic
 openpyxl
 pysqlite3-binary
 langchain-core
 rank-bm25
 pymongo
-langchain-upstage
+langchain-upstage # ver 0.7.4
 nest-asyncio
