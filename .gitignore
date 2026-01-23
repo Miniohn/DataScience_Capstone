@@ -9,12 +9,12 @@
 ./puppeteer_crawling/Package-lock.json
 ./puppeteer_crawling/package.json
 .code.Rproj
-**/.env
+
+# database
+Chatbot_ver2/chroma_db
+
 # Local env & secrets
 .env
-.env.*
 *.env
 **/.env
-**/.env.*
 .streamlit/secrets.toml
-
