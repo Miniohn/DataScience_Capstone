@@ -46,7 +46,7 @@ AI로 디지털 선교의 “첫 응답”을 맡기다
 
 ## Setup
 
-- [Setup without MongoDB](./setupmd)
+- [Setup without MongoDB](./setup.md)
 
 ---
 

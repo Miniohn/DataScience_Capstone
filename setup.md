@@ -25,3 +25,10 @@ jupyter lab ./Chatbot_ver2/chatbot.ipynb
 ```
 
 This will take some time as it populates the vector database with documents.
+
+Finally, run the Streamlit app:
+
+```bash
+cd Chatbot_ver2
+streamlit run demo1.py
+```
