@@ -26,10 +26,8 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langgraph.graph import StateGraph, START, END
 from logging.handlers import RotatingFileHandler
 
-# Use langchain_classic for these:
-from langchain_classic.retrievers import EnsembleRetriever, ContextualCompressionRetriever
-from langchain_classic.retrievers.document_compressors import LLMChainExtractor
-
+from langchain.retrievers import EnsembleRetriever, ContextualCompressionRetriever
+from langchain.retrievers.document_compressors import LLMChainExtractor
 # %%
 # 환경 변수 로드
 load_dotenv()
