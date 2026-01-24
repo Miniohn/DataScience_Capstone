@@ -63,6 +63,10 @@ AI로 디지털 선교의 “첫 응답”을 맡기다
 > 이 프로젝트는 “AI가 사역을 대체한다”가 아니라,
 > **AI가 사역자가 더 중요한 일에 집중할 수 있도록 돕는 도구**를 만드는 것을 목표로 합니다.
 
+---
+
+# 프로젝트 빠르게 시작하기
+
 
 ## 환경 변수 (.env)
 
@@ -77,9 +81,164 @@ DB_NAME="chat_db"                 # 사용할 데이터베이스 이름
 COLLECTION_NAME="chat_logs"       # 로그를 저장할 컬렉션 이름
 ```
 
+## 사전 요구사항
 
+### 필수 소프트웨어
+- Python 3.10 이상 설치 필요
+- 인터넷 연결 (패키지 다운로드용)
 
+### Python 설치 확인
+```bash
+python --version
+```
 
+또는
+
+```bash
+python3 --version
+```
+
+출력 예시: `Python 3.10.11`
+
+---
+
+## Windows 설치 가이드
+
+### 1단계: 프로젝트 폴더로 이동
+
+**명령 프롬프트(CMD) 실행:**
+- `Windows 키 + R` → `cmd` 입력 → Enter
+- 또는 검색창에서 "명령 프롬프트" 검색
+
+**프로젝트 폴더로 이동:**
+```cmd
+cd C:\Users\Desktop\DataScience_Capstone
+```
+
+예시:
+```cmd
+cd C:\Users\Desktop\DataScience_Capstone
+```
+
+### 2단계: 가상환경 생성
+
+```cmd
+python -m venv venv
+```
+
+> **참고:** `venv`는 가상환경 폴더 이름입니다. 원하는 이름으로 변경 가능합니다.
+
+### 3단계: 가상환경 활성화
+
+```cmd
+venv\Scripts\activate.bat
+```
+
+**성공 확인:** 프롬프트 앞에 `(venv)`가 표시됩니다.
+```
+(venv) C:\UsersDesktop\DataScience_Capstone>
+```
+
+### 4단계: pip 업그레이드
+
+```cmd
+python -m pip install --upgrade pip
+```
+
+### 5단계: 필요한 패키지 설치
+
+```cmd
+pip install -r requirements.txt
+```
+
+**설치 시간:** 약 5-10분 소요될 수 있습니다.
+
+### 6단계: Streamlit 앱 실행
+
+```cmd
+cd Chatbot_ver2\streamlit
+streamlit run app.py
+```
+
+**실행 확인:** 브라우저가 자동으로 열리고 `http://localhost:8501`에서 앱이 실행됩니다.
+
+### 가상환경 비활성화 (종료 시)
+
+```cmd
+deactivate
+```
+
+---
+
+## macOS 설치 가이드
+
+### 1단계: 프로젝트 폴더로 이동
+
+**터미널 실행:**
+- `Command + Space` → "터미널" 입력 → Enter
+- 또는 응용 프로그램 > 유틸리티 > 터미널
+
+**프로젝트 폴더로 이동:**
+```bash
+cd ~/Desktop/DataScience_Capstone
+```
+
+또는 전체 경로:
+```bash
+cd /Users/Desktop/DataScience_Capstone
+```
+
+### 2단계: 가상환경 생성
+
+```bash
+python3 -m venv venv
+```
+
+> **참고:** macOS에서는 `python3` 명령어를 사용합니다.
+
+### 3단계: 가상환경 활성화
+
+```bash
+source venv/bin/activate
+```
+
+**성공 확인:** 프롬프트 앞에 `(venv)`가 표시됩니다.
+```
+(venv) username@MacBook-Pro DataScience_Capstone %
+```
+
+### 4단계: pip 업그레이드
+
+```bash
+python -m pip install --upgrade pip
+```
+
+### 5단계: 필요한 패키지 설치
+
+```bash
+pip install -r requirements.txt
+```
+
+**설치 시간:** 약 5-10분 소요될 수 있습니다.
+
+### 6단계: Streamlit 앱 실행
+
+```bash
+cd Chatbot_ver2/streamlit
+streamlit run app.py
+```
+
+**실행 확인:** 브라우저가 자동으로 열리고 `http://localhost:8501`에서 앱이 실행됩니다.
+
+### 가상환경 비활성화 (종료 시)
+
+```bash
+deactivate
+```
+
+---
+
+# 폴더별 설명 (아래 각 토글을 열어 확인해보세요!)
 
 <details>
 <summary><strong>📦 Chatbot_ver2 폴더 (프로젝트 루트)</strong></summary>
