@@ -18,3 +18,13 @@ Chatbot_ver2/chroma_db
 *.env
 **/.env
 .streamlit/secrets.toml
+
+# Added for safe upload
+.env.*
+!.env.example
+!.env.template
+.venv/
+**/chroma_db/
+**/chat_logs/
+__pycache__/
+*.pyc

@@ -11,34 +11,27 @@ import html
 import streamlit as st
 from streamlit.components.v1 import html as st_html
 import base64
+import uuid
+from pathlib import Path
 
 
 ###############################################################
-# BOT LOADING (디버깅 버전)
+# STREAMLIT PAGE CONFIG
+###############################################################
+st.set_page_config(page_title="Evan AI Chat", page_icon="💬", layout="wide")
+
+###############################################################
+# BOT LOADING: 기존 Evan AI 화면은 유지하고 공통 RAG 코어 연결
 ###############################################################
 try:
     from bot_adapter import get_bot_reply, load_bot_once
     load_bot_once()
     st.sidebar.success("✅ Bot loaded successfully!")
 except Exception as e:
-    # ⚠️ 에러 상세 정보 출력
-    st.sidebar.error(f"❌ Bot loading failed!")
+    st.sidebar.error("❌ Bot loading failed!")
     st.sidebar.error(f"Error: {str(e)}")
     st.sidebar.code(traceback.format_exc())
-    
-    # Fallback 함수
-    def get_bot_reply(message, history):
-        return f"(demo) {message}"
-
-
-###############################################################
-# STREAMLIT PAGE CONFIG
-###############################################################
-st.set_page_config(
-    page_title="Evan AI Chat",
-    page_icon="💬",
-    layout="wide",
-)
+    st.stop()  # 오류를 (demo) 답변으로 숨기지 않음
 
 
 ###############################################################
@@ -58,6 +51,9 @@ def get_image_base64(image_path):
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+if "session_id" not in st.session_state:
+    st.session_state.session_id = str(uuid.uuid4())
+
 if "input_field" not in st.session_state:
     st.session_state.input_field = ""
 
@@ -65,7 +61,7 @@ if "input_field" not in st.session_state:
 ###############################################################
 # CSS
 ###############################################################
-img_base64 = get_image_base64("bible.png")
+img_base64 = get_image_base64(str(Path(__file__).resolve().parent / "bible.png"))
 img_src = f"data:image/png;base64,{img_base64}" if img_base64 else "https://via.placeholder.com/90"
 
 st.markdown("""
@@ -242,7 +238,7 @@ def send_message():
 
     with st.spinner("Evan AI가 답변 중입니다..."):
         try:
-            reply = get_bot_reply(msg, st.session_state.messages)
+            reply = get_bot_reply(msg, st.session_state.messages, st.session_state.session_id)
         except Exception as e:
             reply = f"응답 생성 중 오류가 발생했습니다: {str(e)}"
 
@@ -264,7 +260,7 @@ col1, col2 = st.columns([8, 1])
 
 with col1:
     st.text_input(
-        "",
+        "메시지",
         key="input_field",
         placeholder="메시지를 입력하세요",
         label_visibility="collapsed",
